@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProfileDekho — Coding Profile Showcase</title>
+  <meta name="description" content="Search and showcase competitive coding profiles from LeetCode, CodeChef, Codeforces, HackerRank, InterviewBit and GitHub.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Brand colors */
+      --logo-p: #DFCC18;
+      --logo-d: #000000;
+
+      /* Natural warm palette */
+      --white:    #FFFFFF;
+      --cream-50: #FAFAF7;
+      --cream-100:#F5F3EE;
+      --sand-200: #EAE6DC;
+      --sand-300: #D6D0C4;
+      --stone-400:#AFA99A;
+      --stone-500:#8A8375;
+      --stone-600:#6B6559;
+      --stone-700:#4D4840;
+      --stone-800:#302C26;
+      --stone-900:#1A1714;
+
+      /* Semantic aliases */
+      --bg:          var(--cream-50);
+      --surface:     var(--white);
+      --border:      var(--sand-200);
+      --border-hover:var(--sand-300);
+      --text-primary:var(--stone-900);
+      --text-secondary:var(--stone-500);
+      --text-muted:  var(--stone-400);
+
+      --accent:      #DFCC18;
+      --accent-dark: #B8A810;
+      --blue-500:    #4A7FD4;
+      --green-500:   #3DAA6A;
+      --yellow-500:  #D4A017;
+      --red-500:     #C9483A;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ─── NAVBAR ─── */
+    .navbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+      cursor: pointer;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .pd-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--stone-900);
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .pd-logo .p { color: #DFCC18; }
+    .pd-logo .d { color: #FFFFFF; }
+
+    .navbar-actions { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .btn-ghost { background: transparent; color: var(--stone-600); }
+    .btn-ghost:hover { background: var(--cream-100); color: var(--stone-900); }
+    .btn-primary { background: var(--stone-900); color: var(--white); }
+    .btn-primary:hover { background: var(--stone-700); }
+    .btn-outline { background: transparent; color: var(--stone-700); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--cream-100); }
+
+    /* ─── HOME PAGE ─── */
+    .home-page {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .home-hero {
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .home-search-wrap {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .home-search-input {
+      flex: 1;
+      padding: 13px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 1.02rem;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .home-search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(223,204,24,0.15);
+    }
+    .home-search-input::placeholder { color: var(--text-muted); }
+
+    .home-search-btn {
+      padding: 13px 24px;
+      background: var(--stone-900);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .home-search-btn:hover { background: var(--stone-700); }
+
+    /* Marquee animation on home page */
+    .marquee-container {
+      overflow: hidden;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      position: relative;
+      mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 32px;
+      width: max-content;
+      animation: marquee 16s linear infinite;
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .marquee-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      flex-shrink: 0;
+    }
+
+    .marquee-logo:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .marquee-logo img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* ─── PROFILE DASHBOARD ─── */
+    .dashboard-page {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    .profile-header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .profile-info { flex: 1; }
+    .profile-name {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+      margin-bottom: 3px;
+    }
+    .profile-handle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 8px;
+    }
+    .profile-bio { font-size: 0.875rem; color: var(--stone-600); margin-bottom: 14px; }
+    .profile-links { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .platform-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.8rem;
+      color: var(--stone-600);
+      text-decoration: none;
+      transition: all 0.15s;
+      background: var(--cream-50);
+    }
+    .platform-link:hover { border-color: var(--border-hover); color: var(--text-primary); background: var(--surface); }
+    .platform-link img { width: 14px; height: 14px; object-fit: contain; }
+
+    .profile-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      background: rgba(223,204,24,0.12);
+      border: 1px solid rgba(223,204,24,0.35);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #7A6F00;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    /* ─── STATS GRID ─── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stat-sub { font-size: 0.8rem; color: var(--text-muted); }
+    .diff-row { display: flex; gap: 6px; margin-top: 6px; }
+    .diff-chip { padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; }
+    .diff-easy   { background: #dcfce7; color: #166534; }
+    .diff-medium { background: #fef9c3; color: #854d0e; }
+    .diff-hard   { background: #fee2e2; color: #991b1b; }
+
+    /* ─── PLATFORM FILTER TABS ─── */
+    .platform-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    .platform-filter-bar .filter-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-right: 4px;
+    }
+    .platform-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--cream-100);
+      color: var(--stone-600);
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .platform-tab:hover {
+      border-color: var(--accent);
+      background: var(--surface);
+      color: var(--stone-900);
+    }
+    .platform-tab.active {
+      background: var(--stone-900);
+      color: var(--white);
+      border-color: var(--stone-900);
+    }
+    .platform-tab img { width: 13px; height: 13px; object-fit: contain; }
+
+    /* ─── AGGREGATED TOTALS ─── */
+    .aggregated-totals {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .agg-item { display: flex; flex-direction: column; gap: 2px; }
+    .agg-value { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
+    .agg-label { font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.4px; }
+
+    /* ─── CHARTS ─── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .chart-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--stone-700);
+      margin-bottom: 16px;
+    }
+    .chart-wrap { height: 230px; position: relative; }
+
+    /* ─── ACTIVITY HEATMAP ─── */
+    .heatmap-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+    .heatmap-grid {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+    }
+    .heatmap-day {
+      width: 13px;
+      height: 13px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      position: relative;
+    }
+    .heatmap-day:hover { transform: scale(1.3); }
+    .heatmap-day.active { background: #4ade80; }
+    .heatmap-day.inactive { background: #fca5a5; }
+    .heatmap-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .heatmap-legend-box {
+      width: 13px; height: 13px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ─── MY HANDLES FORM ─── */
+    .form-page {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+    }
+    .form-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .form-desc { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    .form-field label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; font-weight: 600; color: var(--stone-600); margin-bottom: 5px;
+    }
+    .form-field label img { width: 14px; height: 14px; object-fit: contain; }
+    .form-field input {
+      width: 100%; padding: 9px 12px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.875rem; font-family: 'JetBrains Mono', monospace;
+      color: var(--text-primary); background: var(--cream-50);
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(223,204,24,0.12);
+      background: var(--surface);
+    }
+    .form-field input::placeholder { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+    .form-footer { display: flex; justify-content: flex-end; gap: 10px; }
+
+    /* ─── AUTH MODAL ─── */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 20px;
+    }
+    .modal {
+      background: var(--surface); border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 32px; width: 100%; max-width: 380px; position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 1.2rem; line-height: 1;
+      padding: 4px; border-radius: 6px;
+    }
+    .modal-close:hover { background: var(--cream-100); color: var(--stone-600); }
+    .modal-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .modal-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 24px; }
+    .field-group { margin-bottom: 14px; }
+    .field-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--stone-600); margin-bottom: 5px; }
+    .field-group input {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.875rem; font-family: inherit;
+      color: var(--text-primary);
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(223,204,24,0.12);
+    }
+    /* Social auth buttons & divider */
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      margin-bottom: 10px;
+    }
+    .social-btn:hover {
+      background: var(--cream-100);
+      border-color: var(--border-hover);
+    }
+    .social-btn svg, .social-btn img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 18px 0;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .field-error-text {
+      display: block;
+      color: var(--red-500);
+      font-size: 0.76rem;
+      font-weight: 500;
+      margin-top: 3px;
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 42px !important;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--stone-500);
+      line-height: 1;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .password-toggle-btn:hover {
+      color: var(--stone-900);
+    }
+    .password-toggle-btn svg { width: 17px; height: 17px; display: block; }
+
+    /* OAuth popup overlay */
+    .oauth-popup-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 500; padding: 20px;
+    }
+    .oauth-popup {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 36px 32px;
+      width: 100%; max-width: 360px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+      text-align: center;
+      animation: popIn 0.2s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+    .oauth-popup-logo { font-size: 2.2rem; margin-bottom: 12px; }
+    .oauth-popup-title { font-size: 1.05rem; font-weight: 700; color: var(--stone-900); margin-bottom: 6px; }
+    .oauth-popup-desc  { font-size: 0.82rem; color: var(--stone-600); margin-bottom: 24px; }
+    .oauth-popup-input {
+      width: 100%; padding: 10px 14px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; font-family: inherit;
+      color: var(--text-primary); outline: none;
+      margin-bottom: 14px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .oauth-popup-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(223,204,24,0.15);
+    }
+    .oauth-popup-btn {
+      width: 100%; padding: 11px;
+      border-radius: 8px; border: none;
+      font-size: 0.9rem; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+      color: var(--white); margin-bottom: 10px;
+      transition: opacity 0.15s;
+    }
+    .oauth-popup-btn:hover { opacity: 0.88; }
+    .oauth-popup-cancel {
+      font-size: 0.8rem; color: var(--stone-500);
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+    }
+    .oauth-popup-cancel:hover { color: var(--stone-900); text-decoration: underline; }
+
+    .strength-meter {
+      height: 4px;
+      background: var(--sand-200);
+      border-radius: 2px;
+      margin-top: 6px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .strength-bar {
+      height: 100%;
+      transition: width 0.3s, background-color 0.3s;
+    }
+    .demo-link:hover { text-decoration: underline; }
+
+    /* ─── TOAST ─── */
+    .toast {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--stone-900); color: var(--white);
+      padding: 10px 16px; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 500;
+      z-index: 300; animation: slideUp 0.2s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(8px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+
+    .user-pill {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 12px 5px 8px;
+      border: 1px solid var(--border); border-radius: 20px;
+      font-size: 0.8rem; font-weight: 500; color: var(--stone-700);
+      cursor: pointer; background: var(--cream-100); transition: background 0.15s;
+    }
+    .user-pill:hover { background: var(--sand-200); }
+    .user-avatar-sm { width: 24px; height: 24px; border-radius: 50%; }
+
+    @media (max-width: 640px) {
+      .navbar { padding: 0 16px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .charts-grid { grid-template-columns: 1fr; }
+      .profile-header { flex-direction: column; }
+      .form-grid { grid-template-columns: 1fr; }
+      .profile-actions { flex-direction: row; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    /* ─── PLATFORM LOGOS (hosted CDN favicons / official SVG sources) ─── */
+    const LOGOS = {
+      leetcode:    'https://assets.leetcode.com/static_assets/public/icons/favicon-96x96.png',
+      codeforces:  'https://codeforces.org/s/0/favicon-96x96.png',
+      codechef:    'https://www.codechef.com/favicon.ico',
+      hackerrank:  'https://hrcdn.net/fcore/assets/brand/h_mark_sm-966d2b45e3.svg',
+      interviewbit:'https://www.interviewbit.com/favicon.ico',
+      github:      'https://github.githubassets.com/favicons/favicon.svg',
+    };
+
+    /* ─── PLATFORM DEFINITIONS ─── */
+    const PLATFORMS = [
+      { id: 'leetcode',     handleKey: 'leetcodeHandle',     label: 'LeetCode',    base: 'https://leetcode.com/' },
+      { id: 'codeforces',   handleKey: 'codeforcesHandle',   label: 'Codeforces',  base: 'https://codeforces.com/profile/' },
+      { id: 'codechef',     handleKey: 'codechefHandle',     label: 'CodeChef',    base: 'https://www.codechef.com/users/' },
+      { id: 'hackerrank',   handleKey: 'hackerrankHandle',   label: 'HackerRank',  base: 'https://www.hackerrank.com/' },
+      { id: 'interviewbit', handleKey: 'interviewbitHandle', label: 'InterviewBit',base: 'https://www.interviewbit.com/profile/' },
+      { id: 'github',       handleKey: 'githubHandle',       label: 'GitHub',      base: 'https://github.com/' },
+    ];
+
+    /* ─── SEED DATA ─── */
+    const SEED = {
+      tourist: {
+        username: 'tourist', name: 'Gennady Korotkevich',
+        bio: 'ICPC World Champion. Codeforces Legendary Grandmaster.',
+        title: 'Legendary Grandmaster',
+        totalSolved: 1450, easySolved: 300, mediumSolved: 650, hardSolved: 500,
+        totalContests: 142, maxRating: 3858, currentRating: 3820, globalScore: 98500,
+        leetcodeHandle: 'tourist', codeforcesHandle: 'tourist',
+        codechefHandle: 'tourist', hackerrankHandle: 'tourist',
+        interviewbitHandle: 'tourist', githubHandle: 'tourist',
+        leetcodeStats:    { solved: 450, easy: 100, medium: 200, hard: 150, rating: 2850 },
+        codeforcesStats:  { solved: 850, rating: 3820, rankName: 'Legendary Grandmaster' },
+        codechefStats:    { solved: 150, rating: 2950, stars: '7★' },
+        hackerrankStats:  { solved: 100 },
+        interviewbitStats:{ solved: 90 },
+        githubStats:      { publicRepos: 18, stars: 450 },
+        topicScores: { "Data Structures": 99, "Algorithms": 100, "Dynamic Programming": 98, "Graphs": 97, "Math": 99, "System Design": 88 },
+        ratingHistory: [
+          { month: 'Mar', codeforces: 3720, leetcode: 2790 },
+          { month: 'Apr', codeforces: 3790, leetcode: 2810 },
+          { month: 'May', codeforces: 3840, leetcode: 2830 },
+          { month: 'Jun', codeforces: 3820, leetcode: 2850 },
+          { month: 'Jul', codeforces: 3855, leetcode: 2860 },
+          { month: 'Aug', codeforces: 3858, leetcode: 2870 },
+        ]
+      },
+      neal_wu: {
+        username: 'neal_wu', name: 'Neal Wu',
+        bio: 'IOI Gold Medalist. Software Engineer. Competitive Programmer.',
+        title: 'International Grandmaster',
+        totalSolved: 1120, easySolved: 350, mediumSolved: 520, hardSolved: 250,
+        totalContests: 98, maxRating: 2950, currentRating: 2880, globalScore: 76000,
+        leetcodeHandle: 'neal_wu', codeforcesHandle: 'neal_wu',
+        codechefHandle: 'neal_wu', hackerrankHandle: 'neal_wu',
+        interviewbitHandle: 'neal_wu', githubHandle: 'neal_wu',
+        leetcodeStats:    { solved: 520, easy: 150, medium: 250, hard: 120, rating: 2650 },
+        codeforcesStats:  { solved: 600, rating: 2880, rankName: 'International Grandmaster' },
+        codechefStats:    { solved: 180, rating: 2650, stars: '6★' },
+        hackerrankStats:  { solved: 110 },
+        interviewbitStats:{ solved: 85 },
+        githubStats:      { publicRepos: 32, stars: 210 },
+        topicScores: { "Data Structures": 95, "Algorithms": 96, "Dynamic Programming": 94, "Graphs": 93, "Math": 91, "System Design": 85 },
+        ratingHistory: [
+          { month: 'Mar', codeforces: 2810, leetcode: 2580 },
+          { month: 'Apr', codeforces: 2850, leetcode: 2610 },
+          { month: 'May', codeforces: 2890, leetcode: 2640 },
+          { month: 'Jun', codeforces: 2880, leetcode: 2650 },
+          { month: 'Jul', codeforces: 2920, leetcode: 2660 },
+          { month: 'Aug', codeforces: 2950, leetcode: 2680 },
+        ]
+      }
+    };
+
+    function buildDynamic(username) {
+      // Clean fallback object for unlinked handles without fake stats
+      return {
+        username, name: username,
+        bio: 'Competitive Programmer | ProfileDekho member',
+        title: 'Member',
+        totalSolved: 0, easySolved: 0, mediumSolved: 0, hardSolved: 0,
+        totalContests: 0, maxRating: 0, currentRating: 0,
+        globalScore: 0,
+        leetcodeHandle: '', codeforcesHandle: '', codechefHandle: '',
+        hackerrankHandle: '', interviewbitHandle: '', githubHandle: '',
+        leetcodeStats:    { solved: 0, valid: false },
+        codeforcesStats:  { solved: 0, valid: false },
+        codechefStats:    { solved: 0, valid: false },
+        hackerrankStats:  { solved: 0, valid: false },
+        interviewbitStats:{ solved: 0, valid: false },
+        githubStats:      { publicRepos: 0, valid: false },
+        topicScores: {
+          "Data Structures": 0, "Algorithms": 0,
+          "Dynamic Programming": 0, "Graphs": 0,
+          "Math": 0, "System Design": 0
+        },
+        ratingHistory: [
+          { month: 'Jan', codeforces: 0, leetcode: 0 },
+          { month: 'Jun', codeforces: 0, leetcode: 0 }
+        ]
+      };
+    }
+
+    async function fetchProfile(username) {
+      const key = username.toLowerCase().replace(/\s/g, '_');
+      if (SEED[key]) return SEED[key];
+      try {
+        const res = await fetch(`/api/profiles/${encodeURIComponent(key)}`);
+        if (res.ok) return await res.json();
+      } catch (_) {}
+      return buildDynamic(key);
+    }
+
+    /* ─── LOGO IMG component with onerror fallback ─── */
+    function Logo({ id, size = 14 }) {
+      const [err, setErr] = useState(false);
+      if (err) return null;
+      return (
+        <img
+          src={LOGOS[id]}
+          width={size} height={size}
+          style={{ objectFit: 'contain', flexShrink: 0 }}
+          onError={() => setErr(true)}
+          alt=""
+        />
+      );
+    }
+
+    /* ─── ACTIVITY HEATMAP ─── */
+    function ActivityHeatmap({ profile }) {
+      // Generate last 30 days of submission data
+      // Simulate from profile stats: if profile has solutions, scatter some active days
+      const today = new Date();
+      const days = [];
+      const totalSolved = (profile.totalSolved || 0);
+      // Seed random but deterministic based on username for consistency
+      let seed = 0;
+      if (profile.username) {
+        for (let i = 0; i < profile.username.length; i++) seed += profile.username.charCodeAt(i);
+      }
+      const pseudoRand = (i) => {
+        const x = Math.sin(seed + i) * 10000;
+        return x - Math.floor(x);
+      };
+
+      for (let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        // If user has solved problems, simulate submission probability
+        let hasActivity = false;
+        if (totalSolved > 0) {
+          const prob = Math.min(0.65, totalSolved / 500);
+          hasActivity = pseudoRand(i) < prob;
+        }
+        days.push({
+          date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          active: hasActivity
+        });
+      }
+
+      const activeDays = days.filter(d => d.active).length;
+
+      return (
+        <div className="heatmap-card">
+          <div className="chart-title" style={{ marginBottom: '12px' }}>
+            Activity Heatmap — Last 30 Days
+            <span style={{ marginLeft: '10px', fontSize: '0.72rem', fontWeight: '400', color: 'var(--stone-500)' }}>
+              {activeDays} active days
+            </span>
+          </div>
+          <div className="heatmap-grid">
+            {days.map((d, idx) => (
+              <div
+                key={idx}
+                className={`heatmap-day ${d.active ? 'active' : 'inactive'}`}
+                title={`${d.date}: ${d.active ? 'Solved problems' : 'No activity'}`}
+              />
+            ))}
+          </div>
+          <div className="heatmap-legend">
+            <div className="heatmap-legend-box" style={{ background: '#fca5a5' }} />
+            <span>No activity</span>
+            <div className="heatmap-legend-box" style={{ background: '#4ade80', marginLeft: '8px' }} />
+            <span>Submitted</span>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── CHARTS ─── */
+    function Charts({ profile }) {
+      const solvedRef = useRef(null);
+      const diffRef   = useRef(null);
+      const ratingRef = useRef(null);
+      const instances = useRef({});
+
+      useEffect(() => {
+        if (!profile || !window.Chart) return;
+        const Chart = window.Chart;
+        Object.values(instances.current).forEach(c => c && c.destroy());
+        instances.current = {};
+
+        const gridColor = 'rgba(0,0,0,0.06)';
+        const tickColor = '#6b7280';
+
+        if (solvedRef.current) {
+          instances.current.bar = new Chart(solvedRef.current.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: ['LeetCode','Codeforces','CodeChef','HackerRank','InterviewBit','GitHub'],
+              datasets: [{
+                data: [
+                  profile.leetcodeStats?.solved    || 0,
+                  profile.codeforcesStats?.solved  || 0,
+                  profile.codechefStats?.solved    || 0,
+                  profile.hackerrankStats?.solved  || 0,
+                  profile.interviewbitStats?.solved || 0,
+                  profile.githubStats?.publicRepos || 0
+                ],
+                backgroundColor: ['#D4A017','#4A7FD4','#9B6B2F','#3DAA6A','#2B8CB8','#4D4840'],
+                borderRadius: 5, borderSkipped: false
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } },
+                y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } } }
+              }
+            }
+          });
+        }
+
+        if (diffRef.current) {
+          instances.current.diff = new Chart(diffRef.current.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+              labels: ['Easy', 'Medium', 'Hard'],
+              datasets: [{
+                data: [profile.easySolved || 0, profile.mediumSolved || 0, profile.hardSolved || 0],
+                backgroundColor: ['#3DAA6A','#D4A017','#C9483A'],
+                borderWidth: 2, borderColor: '#fff', hoverOffset: 4
+              }]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false, cutout: '68%',
+              plugins: { legend: { position: 'bottom', labels: { color: tickColor, padding: 14, font: { size: 11 } } } }
+            }
+          });
+        }
+
+        if (ratingRef.current && profile.ratingHistory) {
+          instances.current.line = new Chart(ratingRef.current.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: profile.ratingHistory.map(h => h.month),
+              datasets: [
+                {
+                  label: 'Codeforces',
+                  data: profile.ratingHistory.map(h => h.codeforces),
+                  borderColor: '#4A7FD4', backgroundColor: 'rgba(74,127,212,0.08)',
+                  tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: '#4A7FD4'
+                },
+                {
+                  label: 'LeetCode',
+                  data: profile.ratingHistory.map(h => h.leetcode),
+                  borderColor: '#D4A017', borderDash: [4, 3],
+                  tension: 0.3, fill: false, pointRadius: 4, pointBackgroundColor: '#D4A017'
+                }
+              ]
+            },
+            options: {
+              responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { position: 'top', labels: { color: tickColor, font: { size: 11 }, boxWidth: 12 } } },
+              scales: {
+                x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 11 } } },
+                y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } } }
+              }
+            }
+          });
+        }
+
+        return () => Object.values(instances.current).forEach(c => c && c.destroy());
+      }, [profile]);
+
+      return (
+        <div>
+          <div className="charts-grid">
+            <div className="chart-card">
+              <div className="chart-title">Problems solved by platform</div>
+              <div className="chart-wrap"><canvas ref={solvedRef} /></div>
+            </div>
+            <div className="chart-card">
+              <div className="chart-title">Difficulty distribution</div>
+              <div className="chart-wrap"><canvas ref={diffRef} /></div>
+            </div>
+            <div className="chart-card" style={{ gridColumn: '1 / -1' }}>
+              <div className="chart-title">Contest rating over time</div>
+              <div className="chart-wrap"><canvas ref={ratingRef} /></div>
+            </div>
+          </div>
+          <div style={{ marginTop: '12px' }}>
+            <ActivityHeatmap profile={profile} />
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── SHOWCASE ─── */
+    function Showcase({ profile }) {
+      const [copied, setCopied] = useState(false);
+      if (!profile) return null;
+
+      const copy = () => {
+        navigator.clipboard.writeText(`${location.origin}/#/${profile.username}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      };
+
+      return (
+        <div className="dashboard-page">
+          <div className="profile-header">
+            <img
+              className="profile-avatar"
+              src={`https://api.dicebear.com/7.x/initials/svg?seed=${profile.username}&backgroundColor=e5e7eb&textColor=374151`}
+              alt={profile.username}
+            />
+            <div className="profile-info">
+              <div className="rank-badge">{profile.title}</div>
+              <div className="profile-name">{profile.name}</div>
+              <div className="profile-handle">@{profile.username}</div>
+              {profile.bio && <div className="profile-bio">{profile.bio}</div>}
+              <div className="profile-links">
+                {PLATFORMS.map(p => profile[p.handleKey] && (
+                  <a key={p.id} className="platform-link"
+                     href={`${p.base}${profile[p.handleKey]}`} target="_blank" rel="noreferrer">
+                    <Logo id={p.id} size={14} />
+                    {p.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="profile-actions">
+              <button className="btn btn-outline" onClick={copy}>
+                {copied ? 'Copied' : 'Share link'}
+              </button>
+            </div>
+          </div>
+
+          {/* ── PLATFORM FILTER TABS ── */}
+          <PlatformFilterSection profile={profile} />
+        </div>
+      );
+    }
+
+    /* ─── PLATFORM FILTER SECTION ─── */
+    function PlatformFilterSection({ profile }) {
+      const [active, setActive] = useState('all');
+
+      const platformStats = [
+        {
+          id: 'leetcode', label: 'LeetCode',
+          solved: profile.leetcodeStats?.solved || 0,
+          easy: profile.leetcodeStats?.easy || 0,
+          medium: profile.leetcodeStats?.medium || 0,
+          hard: profile.leetcodeStats?.hard || 0,
+          contests: null,
+          rating: profile.leetcodeStats?.rating || 0,
+          extra: profile.leetcodeHandle ? `@${profile.leetcodeHandle}` : null
+        },
+        {
+          id: 'codeforces', label: 'Codeforces',
+          solved: profile.codeforcesStats?.solved || 0,
+          contests: profile.totalContests || 0,
+          rating: profile.codeforcesStats?.rating || 0,
+          rankName: profile.codeforcesStats?.rankName,
+          extra: profile.codeforcesHandle ? `@${profile.codeforcesHandle}` : null
+        },
+        {
+          id: 'codechef', label: 'CodeChef',
+          solved: profile.codechefStats?.solved || 0,
+          rating: profile.codechefStats?.rating || 0,
+          stars: profile.codechefStats?.stars,
+          extra: profile.codechefHandle ? `@${profile.codechefHandle}` : null
+        },
+        {
+          id: 'hackerrank', label: 'HackerRank',
+          solved: profile.hackerrankStats?.solved || 0,
+          extra: profile.hackerrankHandle ? `@${profile.hackerrankHandle}` : null
+        },
+        {
+          id: 'interviewbit', label: 'InterviewBit',
+          solved: profile.interviewbitStats?.solved || 0,
+          extra: profile.interviewbitHandle ? `@${profile.interviewbitHandle}` : null
+        },
+        {
+          id: 'github', label: 'GitHub',
+          solved: profile.githubStats?.publicRepos || 0,
+          stars: profile.githubStats?.stars,
+          extra: profile.githubHandle ? `@${profile.githubHandle}` : null,
+          isGithub: true
+        },
+      ];
+
+      const visiblePlatforms = active === 'all'
+        ? platformStats
+        : platformStats.filter(p => p.id === active);
+
+      // Totals across all
+      const totalSolved = platformStats.reduce((s, p) => s + (p.isGithub ? 0 : p.solved), 0);
+      const totalContests = (profile.codeforcesStats ? (profile.totalContests || 0) : 0);
+
+      return (
+        <React.Fragment>
+          {/* Filter bar */}
+          <div className="platform-filter-bar">
+            <span className="filter-label">Filter:</span>
+            <button
+              className={`platform-tab ${active === 'all' ? 'active' : ''}`}
+              onClick={() => setActive('all')}
+            >All</button>
+            {platformStats.map(p => (
+              <button
+                key={p.id}
+                className={`platform-tab ${active === p.id ? 'active' : ''}`}
+                onClick={() => setActive(p.id)}
+              >
+                <Logo id={p.id} size={13} />
+                {p.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Aggregated totals when showing all */}
+          {active === 'all' && (
+            <div className="aggregated-totals">
+              <div className="agg-item">
+                <div className="agg-value">{totalSolved}</div>
+                <div className="agg-label">Total Questions Solved</div>
+              </div>
+              <div className="agg-item">
+                <div className="agg-value">{totalContests}</div>
+                <div className="agg-label">Contests Attended</div>
+              </div>
+              <div className="agg-item">
+                <div className="agg-value">{profile.maxRating || 0}</div>
+                <div className="agg-label">Peak Rating</div>
+              </div>
+              <div className="agg-item">
+                <div className="agg-value">{profile.globalScore > 0 ? (profile.globalScore / 1000).toFixed(1) + 'K' : '—'}</div>
+                <div className="agg-label">Dekho Score</div>
+              </div>
+            </div>
+          )}
+
+          {/* Per-platform stat cards */}
+          <div className="stats-grid" style={{ gridTemplateColumns: visiblePlatforms.length === 1 ? '1fr' : 'repeat(auto-fill, minmax(220px, 1fr))', marginBottom: '20px' }}>
+            {visiblePlatforms.map(p => (
+              <div className="stat-card" key={p.id}>
+                <div className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                  <Logo id={p.id} size={14} />
+                  {p.label}
+                  {p.extra && <span style={{ marginLeft: 'auto', fontWeight: '400', color: 'var(--stone-400)', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem' }}>{p.extra}</span>}
+                </div>
+                {p.isGithub ? (
+                  <React.Fragment>
+                    <div className="stat-value">{p.solved}</div>
+                    <div className="stat-sub">Public Repos{p.stars ? ` · ★ ${p.stars}` : ''}</div>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <div className="stat-value">{p.solved}</div>
+                    <div className="stat-sub">Questions solved</div>
+                    {p.rating > 0 && <div className="stat-sub" style={{ marginTop: '4px' }}>Rating: {p.rating}{p.rankName ? ` · ${p.rankName}` : ''}{p.stars ? ` · ${p.stars}` : ''}</div>}
+                    {p.contests != null && <div className="stat-sub" style={{ marginTop: '4px' }}>Contests: {p.contests}</div>}
+                    {p.easy != null && (
+                      <div className="diff-row" style={{ marginTop: '6px' }}>
+                        <span className="diff-chip diff-easy">E {p.easy}</span>
+                        <span className="diff-chip diff-medium">M {p.medium}</span>
+                        <span className="diff-chip diff-hard">H {p.hard}</span>
+                      </div>
+                    )}
+                  </React.Fragment>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <Charts profile={profile} />
+        </React.Fragment>
+      );
+    }
+
+    /* ─── HANDLES FORM ─── */
+    function HandlesForm({ currentUser, onSave }) {
+      const stored = (() => { try { return JSON.parse(localStorage.getItem('pd_handles') || '{}'); } catch { return {}; } })();
+      const [handles, setHandles] = useState({
+        leetcode:     stored.leetcode     || '',
+        codeforces:   stored.codeforces   || '',
+        codechef:     stored.codechef     || '',
+        hackerrank:   stored.hackerrank   || '',
+        interviewbit: stored.interviewbit || '',
+        github:       stored.github       || '',
+      });
+      const [errors, setErrors] = useState({});
+      const [loading, setLoading] = useState(false);
+
+      const set = (k, v) => {
+        setHandles(prev => ({ ...prev, [k]: v }));
+        if (errors[k]) setErrors(prev => ({ ...prev, [k]: null }));
+      };
+
+      const sync = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setErrors({});
+
+        localStorage.setItem('pd_handles', JSON.stringify(handles));
+        const params = new URLSearchParams({ username: currentUser, ...handles });
+        try {
+          const res = await fetch(`/api/profiles/fetch?${params}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.errors && Object.keys(data.errors).length > 0) {
+              setErrors(data.errors);
+            }
+            onSave(data);
+            setLoading(false);
+            return;
+          }
+        } catch (_) {}
+
+        // Fallback local validation check
+        const localErrors = {};
+        if (handles.leetcode && !/^[a-zA-Z0-9_-]{3,25}$/.test(handles.leetcode)) localErrors.leetcode = "Invalid username";
+        if (handles.codeforces && !/^[a-zA-Z0-9_.-]{3,24}$/.test(handles.codeforces)) localErrors.codeforces = "Invalid username";
+        if (handles.codechef && !/^[a-zA-Z0-9_]{3,25}$/.test(handles.codechef)) localErrors.codechef = "Invalid username";
+        if (handles.hackerrank && !/^[a-zA-Z0-9_.-]{3,25}$/.test(handles.hackerrank)) localErrors.hackerrank = "Invalid username";
+        if (handles.interviewbit && !/^[a-zA-Z0-9_.-]{3,25}$/.test(handles.interviewbit)) localErrors.interviewbit = "Invalid username";
+
+        if (Object.keys(localErrors).length > 0) {
+          setErrors(localErrors);
+        }
+
+        const p = buildDynamic(currentUser);
+        p.leetcodeHandle     = handles.leetcode;
+        p.codeforcesHandle   = handles.codeforces;
+        p.codechefHandle     = handles.codechef;
+        p.hackerrankHandle   = handles.hackerrank;
+        p.interviewbitHandle = handles.interviewbit;
+        p.githubHandle       = handles.github;
+        p.errors = localErrors;
+
+        setLoading(false);
+        onSave(p);
+      };
+
+      const fields = [
+        { id: 'leetcode',     label: 'LeetCode',     ph: 'neal_wu' },
+        { id: 'codeforces',   label: 'Codeforces',   ph: 'tourist' },
+        { id: 'codechef',     label: 'CodeChef',     ph: 'tourist' },
+        { id: 'hackerrank',   label: 'HackerRank',   ph: 'tourist' },
+        { id: 'interviewbit', label: 'InterviewBit', ph: 'your_handle' },
+        { id: 'github',       label: 'GitHub',       ph: 'torvalds' },
+      ];
+
+      return (
+        <div className="form-page">
+          <div className="form-card">
+            <div className="form-title">Your coding handles</div>
+            <div className="form-desc">Link your accounts to build your unified profile showcase.</div>
+            <form onSubmit={sync}>
+              <div className="form-grid">
+                {fields.map(f => (
+                  <div className="form-field" key={f.id}>
+                    <label>
+                      <Logo id={f.id} size={14} />
+                      {f.label}
+                    </label>
+                    <input
+                      type="text" placeholder={f.ph}
+                      value={handles[f.id]} onChange={e => set(f.id, e.target.value)}
+                      style={errors[f.id] ? { borderColor: 'var(--red-500)' } : {}}
+                    />
+                    {errors[f.id] && (
+                      <span className="field-error-text">Invalid username</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="form-footer">
+                <button type="submit" className="btn btn-primary" disabled={loading}>
+                  {loading ? 'Syncing…' : 'Save & view my profile'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── AUTH MODAL ─── */
+    function AuthModal({ mode, onClose, onSuccess }) {
+      const [username, setUsername] = useState('');
+      const [password, setPassword] = useState('');
+      const [showPassword, setShowPassword] = useState(false);
+
+      const getStrength = (pass) => {
+        if (!pass) return { score: 0, text: '', color: 'transparent', valid: false };
+        let s = 0;
+        if (pass.length >= 8) s++;
+        if (/[A-Z]/.test(pass)) s++;
+        if (/[a-z]/.test(pass)) s++;
+        if (/[0-9]/.test(pass)) s++;
+        if (/[^A-Za-z0-9]/.test(pass)) s++;
+
+        if (s <= 2) return { score: 33, text: 'Weak password', color: 'var(--red-500)', valid: false };
+        if (s <= 3) return { score: 66, text: 'Medium password', color: 'var(--yellow-500)', valid: true };
+        return { score: 100, text: 'Strong password', color: 'var(--green-500)', valid: true };
+      };
+
+      const strength = getStrength(password);
+
+      const [oauthPopup, setOauthPopup] = useState(null); // { provider, input }
+      const [oauthInput, setOauthInput] = useState('');
+      const [oauthLoading, setOauthLoading] = useState(false);
+
+      const openOAuthPopup = (provider) => {
+        setOauthInput('');
+        setOauthPopup(provider);
+      };
+
+      const confirmOAuth = async () => {
+        if (!oauthInput.trim()) return;
+        setOauthLoading(true);
+        try {
+          const body = oauthPopup === 'google'
+            ? { email: oauthInput.trim() }
+            : { username: oauthInput.trim() };
+          const res = await fetch(`/api/auth/${oauthPopup}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+          const data = res.ok ? await res.json() : {};
+          onSuccess(data.username || oauthInput.split('@')[0] || `${oauthPopup}_user`);
+        } catch (_) {
+          onSuccess(oauthInput.split('@')[0] || `${oauthPopup}_user`);
+        }
+        setOauthLoading(false);
+        setOauthPopup(null);
+        onClose();
+      };
+
+      // Keep legacy for direct calls if needed
+      const handleSocialAuth = (provider) => openOAuthPopup(provider);
+
+      const submit = async e => {
+        e.preventDefault();
+        const handle = username.trim() || 'coder';
+        try {
+          await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: handle, password })
+          });
+        } catch (_) {}
+        onSuccess(handle);
+        onClose();
+      };
+
+      return (
+        <React.Fragment>
+        <div className="modal-backdrop" onClick={onClose}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={onClose}>✕</button>
+            <div className="modal-title">{mode === 'login' ? 'Sign in' : 'Create account'}</div>
+            <div className="modal-desc">
+              {mode === 'login'
+                ? 'Sign in to manage your coding handles and view your profile.'
+                : 'Join ProfileDekho to build your showcase.'}
+            </div>
+
+            {/* Email/Pass Form at TOP */}
+            <form onSubmit={submit}>
+              <div className="field-group">
+                <label>Username / Email</label>
+                <input
+                  type="text"
+                  placeholder="your_handle or email"
+                  required
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                />
+              </div>
+
+              <div className="field-group">
+                <label>Password</label>
+                <div className="password-wrap">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
+                    required
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle-btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? (
+                      /* Eye-off icon */
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                      </svg>
+                    ) : (
+                      /* Eye icon */
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      </svg>
+                    )}
+                  </button>
+                </div>
+
+                {password && (
+                  <React.Fragment>
+                    <div className="strength-meter">
+                      <div
+                        className="strength-bar"
+                        style={{ width: `${strength.score}%`, backgroundColor: strength.color }}
+                      ></div>
+                    </div>
+                    <span style={{ fontSize: '0.72rem', color: strength.color, fontWeight: '500', marginTop: '3px', display: 'block' }}>
+                      {strength.text}
+                    </span>
+                  </React.Fragment>
+                )}
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '10px', marginTop: '4px' }}>
+                {mode === 'login' ? 'Sign in' : 'Create account'}
+              </button>
+            </form>
+
+            <div className="auth-divider">or</div>
+
+            {/* Social Auth Buttons at BOTTOM */}
+            <button className="social-btn" onClick={() => handleSocialAuth('google')}>
+              <svg viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              Continue with Google
+            </button>
+
+            <button className="social-btn" onClick={() => handleSocialAuth('github')}>
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+        </div>
+
+        {/* OAuth Popup */}
+        {oauthPopup && (
+          <div className="oauth-popup-backdrop" onClick={() => setOauthPopup(null)}>
+            <div className="oauth-popup" onClick={e => e.stopPropagation()}>
+              <div className="oauth-popup-logo">
+                {oauthPopup === 'google' ? (
+                  <svg viewBox="0 0 48 48" style={{ width: '48px', height: '48px' }}>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.16C6.51 42.62 14.62 48 24 48z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.16C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.97 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '48px', height: '48px', color: '#24292e' }}>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
+                )}
+              </div>
+              <div className="oauth-popup-title">
+                Sign in with {oauthPopup === 'google' ? 'Google' : 'GitHub'}
+              </div>
+              <div className="oauth-popup-desc">
+                {oauthPopup === 'google'
+                  ? 'Enter your Google email address to continue'
+                  : 'Enter your GitHub username to continue'}
+              </div>
+              <input
+                className="oauth-popup-input"
+                type={oauthPopup === 'google' ? 'email' : 'text'}
+                placeholder={oauthPopup === 'google' ? 'you@gmail.com' : 'your-github-username'}
+                value={oauthInput}
+                onChange={e => setOauthInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && confirmOAuth()}
+                autoFocus
+              />
+              <button
+                className="oauth-popup-btn"
+                style={{ background: oauthPopup === 'google' ? '#4285F4' : '#24292e' }}
+                onClick={confirmOAuth}
+                disabled={oauthLoading || !oauthInput.trim()}
+              >
+                {oauthLoading ? 'Signing in…' : `Continue with ${oauthPopup === 'google' ? 'Google' : 'GitHub'}`}
+              </button>
+              <button className="oauth-popup-cancel" onClick={() => setOauthPopup(null)}>Cancel</button>
+            </div>
+          </div>
+        )}
+        </React.Fragment>
+      );
+    }
+
+    /* ─── HOME PAGE ─── */
+    function HomePage({ onSearch }) {
+      const [q, setQ] = useState('');
+      const submit = e => { e.preventDefault(); if (q.trim()) onSearch(q.trim()); };
+      const marqueePlatforms = [...PLATFORMS, ...PLATFORMS, ...PLATFORMS, ...PLATFORMS];
+
+      return (
+        <div className="home-page">
+          <div className="home-hero">
+            <form className="home-search-wrap" onSubmit={submit}>
+              <input
+                className="home-search-input"
+                type="text"
+                placeholder="Search ProfileDekho username…"
+                value={q}
+                onChange={e => setQ(e.target.value)}
+                autoFocus
+              />
+              <button type="submit" className="home-search-btn">Search</button>
+            </form>
+
+            <div className="marquee-container">
+              <div className="marquee-track">
+                {marqueePlatforms.map((p, idx) => (
+                  <div key={`${p.id}-${idx}`} className="marquee-logo" title={p.label}>
+                    <Logo id={p.id} size={32} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─── ROOT APP ─── */
+    function App() {
+      const [currentUser, setCurrentUser] = useState(localStorage.getItem('pd_user') || null);
+      const [view, setView]       = useState('home');
+      const [profile, setProfile] = useState(null);
+      const [authModal, setAuthModal] = useState(null);
+      const [toast, setToast]     = useState(null);
+
+      const showToast = msg => { setToast(msg); setTimeout(() => setToast(null), 3000); };
+
+      const search = async (q) => {
+        const p = await fetchProfile(q);
+        setProfile(p); setView('profile');
+      };
+
+      const openMyProfile = async () => {
+        const p = await fetchProfile(currentUser);
+        setProfile(p); setView('profile');
+      };
+
+      const login = (username) => {
+        setCurrentUser(username);
+        localStorage.setItem('pd_user', username);
+        showToast(`Signed in as @${username}`);
+        setView('handles');
+      };
+
+      const logout = () => {
+        setCurrentUser(null);
+        localStorage.removeItem('pd_user');
+        setView('home'); setProfile(null);
+        showToast('Signed out');
+      };
+
+      return (
+        <React.Fragment>
+          {/* ── NAVBAR ── */}
+          <nav className="navbar">
+            <a className="navbar-brand" onClick={() => { setView('home'); setProfile(null); }} style={{ cursor: 'pointer' }}>
+              <div className="pd-logo"><span className="p">P</span><span className="d">D</span></div>
+              ProfileDekho
+            </a>
+
+            <div className="navbar-actions">
+              {currentUser ? (
+                <React.Fragment>
+                  <button className="btn btn-ghost" onClick={() => setView('handles')}>Edit handles</button>
+                  <button className="user-pill" onClick={openMyProfile}>
+                    <img className="user-avatar-sm"
+                      src={`https://api.dicebear.com/7.x/initials/svg?seed=${currentUser}&backgroundColor=e5e7eb&textColor=374151`}
+                      alt="" />
+                    @{currentUser}
+                  </button>
+                  <button className="btn btn-ghost" onClick={logout}>Sign out</button>
+                </React.Fragment>
+              ) : (
+                <button className="btn btn-primary" onClick={() => setAuthModal('login')}>Sign in</button>
+              )}
+            </div>
+          </nav>
+
+          {/* ── MAIN ── */}
+          {view === 'home'    && <HomePage onSearch={search} />}
+          {view === 'profile' && profile && <Showcase profile={profile} />}
+          {view === 'handles' && currentUser && (
+            <HandlesForm
+              currentUser={currentUser}
+              onSave={(p) => { setProfile(p); setView('profile'); showToast('Profile synced!'); }}
+            />
+          )}
+
+          {authModal && (
+            <AuthModal mode={authModal} onClose={() => setAuthModal(null)} onSuccess={login} />
+          )}
+          {toast && <div className="toast">{toast}</div>}
+        </React.Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
