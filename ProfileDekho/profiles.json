@@ -94,94 +94,95 @@
   },
   "neal_wu": {
     "username": "neal_wu",
-    "name": "Neal Wu",
+    "name": "NEAL_WU",
     "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=neal_wu",
-    "bio": "Software Engineer & Competitive Programmer | IOI Gold Medalist",
-    "title": "Grandmaster",
-    "globalScore": 76000,
-    "leetcodeHandle": "neal_wu",
-    "codeforcesHandle": "neal_wu",
-    "codechefHandle": "neal_wu",
-    "hackerrankHandle": "neal_wu",
-    "gfgHandle": "neal_wu",
-    "githubHandle": "neal_wu",
-    "totalSolved": 1120,
-    "easySolved": 350,
-    "mediumSolved": 520,
-    "hardSolved": 250,
-    "totalContests": 98,
-    "maxRating": 2950,
-    "currentRating": 2880,
+    "bio": "Competitive Programmer @neal_wu | ProfileDekho",
+    "title": "Specialist",
+    "globalScore": 2140,
+    "errors": {},
+    "leetcodeHandle": "Varun___22222",
+    "codeforcesHandle": "Varun__2222",
+    "codechefHandle": "contactv",
+    "hackerrankHandle": "",
+    "interviewbitHandle": "",
+    "githubHandle": "",
+    "totalSolved": 270,
+    "easySolved": 84,
+    "mediumSolved": 50,
+    "hardSolved": 1,
+    "totalContests": 0,
+    "maxRating": 1500,
+    "currentRating": 934,
     "leetcodeStats": {
-      "solved": 520,
-      "easy": 150,
-      "medium": 250,
-      "hard": 120,
-      "rating": 2650
+      "solved": 135,
+      "easy": 84,
+      "medium": 50,
+      "hard": 1,
+      "valid": true
     },
     "codeforcesStats": {
-      "solved": 600,
-      "easy": 200,
-      "medium": 270,
-      "hard": 130,
-      "rating": 2880,
-      "rankName": "International Grandmaster"
+      "solved": 15,
+      "rating": 934,
+      "maxRating": 934,
+      "rankName": "newbie",
+      "valid": true
     },
     "codechefStats": {
-      "solved": 180,
-      "rating": 2650,
-      "stars": "6\u2605"
+      "solved": 120,
+      "rating": 1500,
+      "stars": "3\u2605",
+      "valid": true
     },
     "hackerrankStats": {
-      "solved": 110,
-      "stars": 6
+      "solved": 0,
+      "valid": false
     },
-    "gfgStats": {
-      "solved": 160,
-      "codingScore": 1100
+    "interviewbitStats": {
+      "solved": 0,
+      "valid": false
     },
     "githubStats": {
-      "publicRepos": 32,
-      "stars": 210
+      "publicRepos": 0,
+      "valid": false
     },
     "topicScores": {
-      "Data Structures": 95,
-      "Dynamic Programming": 94,
-      "Algorithms": 96,
-      "Graphs & Trees": 93,
-      "Math & Bitmask": 91,
-      "System Design": 85
+      "Data Structures": 85,
+      "Dynamic Programming": 80,
+      "Algorithms": 88,
+      "Graphs & Trees": 82,
+      "Math & Bitmask": 75,
+      "System Design": 70
     },
     "ratingHistory": [
       {
         "month": "Jan",
-        "codeforces": 2750,
-        "leetcode": 2500
+        "codeforces": 684,
+        "leetcode": 1600
       },
       {
         "month": "Feb",
-        "codeforces": 2790,
-        "leetcode": 2540
+        "codeforces": 734,
+        "leetcode": 1650
       },
       {
         "month": "Mar",
-        "codeforces": 2810,
-        "leetcode": 2580
+        "codeforces": 784,
+        "leetcode": 1710
       },
       {
         "month": "Apr",
-        "codeforces": 2850,
-        "leetcode": 2610
+        "codeforces": 834,
+        "leetcode": 1760
       },
       {
         "month": "May",
-        "codeforces": 2890,
-        "leetcode": 2640
+        "codeforces": 894,
+        "leetcode": 1810
       },
       {
         "month": "Jun",
-        "codeforces": 2880,
-        "leetcode": 2650
+        "codeforces": 934,
+        "leetcode": 1850
       }
     ]
   },
@@ -1093,6 +1094,568 @@
     "errors": {
       "codeforces": "Invalid username"
     },
+    "leetcodeHandle": "",
+    "codeforcesHandle": "",
+    "codechefHandle": "",
+    "hackerrankHandle": "",
+    "interviewbitHandle": "",
+    "githubHandle": "",
+    "totalSolved": 0,
+    "easySolved": 0,
+    "mediumSolved": 0,
+    "hardSolved": 0,
+    "totalContests": 0,
+    "maxRating": 0,
+    "currentRating": 0,
+    "leetcodeStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codeforcesStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codechefStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "hackerrankStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "interviewbitStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "githubStats": {
+      "publicRepos": 0,
+      "valid": false
+    },
+    "topicScores": {
+      "Data Structures": 0,
+      "Dynamic Programming": 0,
+      "Algorithms": 0,
+      "Graphs & Trees": 0,
+      "Math & Bitmask": 0,
+      "System Design": 0
+    },
+    "ratingHistory": [
+      {
+        "month": "Jan",
+        "codeforces": 0,
+        "leetcode": 1600
+      },
+      {
+        "month": "Feb",
+        "codeforces": 0,
+        "leetcode": 1650
+      },
+      {
+        "month": "Mar",
+        "codeforces": 0,
+        "leetcode": 1710
+      },
+      {
+        "month": "Apr",
+        "codeforces": 0,
+        "leetcode": 1760
+      },
+      {
+        "month": "May",
+        "codeforces": 0,
+        "leetcode": 1810
+      },
+      {
+        "month": "Jun",
+        "codeforces": 0,
+        "leetcode": 1850
+      }
+    ]
+  },
+  "testuser": {
+    "username": "testuser",
+    "name": "TESTUSER",
+    "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=testuser",
+    "bio": "Competitive Programmer @testuser | ProfileDekho",
+    "title": "Specialist",
+    "globalScore": 2445,
+    "errors": {
+      "hackerrank": "Invalid username",
+      "github": "Invalid username"
+    },
+    "leetcodeHandle": "testuser",
+    "codeforcesHandle": "testuser",
+    "codechefHandle": "testuser",
+    "hackerrankHandle": "",
+    "interviewbitHandle": "testuser",
+    "githubHandle": "",
+    "totalSolved": 293,
+    "easySolved": 12,
+    "mediumSolved": 55,
+    "hardSolved": 19,
+    "totalContests": 0,
+    "maxRating": 1500,
+    "currentRating": 0,
+    "leetcodeStats": {
+      "solved": 86,
+      "easy": 12,
+      "medium": 55,
+      "hard": 19,
+      "valid": true
+    },
+    "codeforcesStats": {
+      "solved": 7,
+      "rating": 0,
+      "maxRating": 0,
+      "rankName": "Unrated",
+      "valid": true
+    },
+    "codechefStats": {
+      "solved": 120,
+      "rating": 1500,
+      "stars": "3\u2605",
+      "valid": true
+    },
+    "hackerrankStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "interviewbitStats": {
+      "solved": 80,
+      "valid": true
+    },
+    "githubStats": {
+      "publicRepos": 0,
+      "valid": false
+    },
+    "topicScores": {
+      "Data Structures": 85,
+      "Dynamic Programming": 80,
+      "Algorithms": 88,
+      "Graphs & Trees": 82,
+      "Math & Bitmask": 75,
+      "System Design": 70
+    },
+    "ratingHistory": [
+      {
+        "month": "Jan",
+        "codeforces": 0,
+        "leetcode": 1600
+      },
+      {
+        "month": "Feb",
+        "codeforces": 0,
+        "leetcode": 1650
+      },
+      {
+        "month": "Mar",
+        "codeforces": 0,
+        "leetcode": 1710
+      },
+      {
+        "month": "Apr",
+        "codeforces": 0,
+        "leetcode": 1760
+      },
+      {
+        "month": "May",
+        "codeforces": 0,
+        "leetcode": 1810
+      },
+      {
+        "month": "Jun",
+        "codeforces": 0,
+        "leetcode": 1850
+      }
+    ]
+  },
+  "newdev": {
+    "username": "newdev",
+    "name": "NEWDEV",
+    "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=newdev",
+    "bio": "Competitive Programmer @newdev | ProfileDekho",
+    "title": "Specialist",
+    "globalScore": 11580,
+    "errors": {
+      "hackerrank": "Invalid username"
+    },
+    "leetcodeHandle": "newdev",
+    "codeforcesHandle": "newdev",
+    "codechefHandle": "newdev",
+    "hackerrankHandle": "",
+    "interviewbitHandle": "newdev",
+    "githubHandle": "newdev",
+    "totalSolved": 764,
+    "easySolved": 138,
+    "mediumSolved": 286,
+    "hardSolved": 61,
+    "totalContests": 0,
+    "maxRating": 1500,
+    "currentRating": 0,
+    "leetcodeStats": {
+      "solved": 485,
+      "easy": 138,
+      "medium": 286,
+      "hard": 61,
+      "valid": true
+    },
+    "codeforcesStats": {
+      "solved": 79,
+      "rating": 0,
+      "maxRating": 0,
+      "rankName": "Unrated",
+      "valid": true
+    },
+    "codechefStats": {
+      "solved": 120,
+      "rating": 1500,
+      "stars": "3\u2605",
+      "valid": true
+    },
+    "hackerrankStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "interviewbitStats": {
+      "solved": 80,
+      "valid": true
+    },
+    "githubStats": {
+      "publicRepos": 1,
+      "stars": 12,
+      "valid": true
+    },
+    "topicScores": {
+      "Data Structures": 85,
+      "Dynamic Programming": 80,
+      "Algorithms": 88,
+      "Graphs & Trees": 82,
+      "Math & Bitmask": 75,
+      "System Design": 70
+    },
+    "ratingHistory": [
+      {
+        "month": "Jan",
+        "codeforces": 0,
+        "leetcode": 1600
+      },
+      {
+        "month": "Feb",
+        "codeforces": 0,
+        "leetcode": 1650
+      },
+      {
+        "month": "Mar",
+        "codeforces": 0,
+        "leetcode": 1710
+      },
+      {
+        "month": "Apr",
+        "codeforces": 0,
+        "leetcode": 1760
+      },
+      {
+        "month": "May",
+        "codeforces": 0,
+        "leetcode": 1810
+      },
+      {
+        "month": "Jun",
+        "codeforces": 0,
+        "leetcode": 1850
+      }
+    ]
+  },
+  "sam_google": {
+    "username": "sam_google",
+    "name": "SAM_GOOGLE",
+    "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=sam_google",
+    "bio": "Competitive Programmer @sam_google | ProfileDekho",
+    "title": "Specialist",
+    "globalScore": 0,
+    "errors": {
+      "leetcode": "Invalid username",
+      "codeforces": "Invalid username",
+      "hackerrank": "Invalid username",
+      "github": "Invalid username"
+    },
+    "leetcodeHandle": "",
+    "codeforcesHandle": "",
+    "codechefHandle": "sam_google",
+    "hackerrankHandle": "",
+    "interviewbitHandle": "sam_google",
+    "githubHandle": "",
+    "totalSolved": 200,
+    "easySolved": 0,
+    "mediumSolved": 0,
+    "hardSolved": 0,
+    "totalContests": 0,
+    "maxRating": 1500,
+    "currentRating": 0,
+    "leetcodeStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codeforcesStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codechefStats": {
+      "solved": 120,
+      "rating": 1500,
+      "stars": "3\u2605",
+      "valid": true
+    },
+    "hackerrankStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "interviewbitStats": {
+      "solved": 80,
+      "valid": true
+    },
+    "githubStats": {
+      "publicRepos": 0,
+      "valid": false
+    },
+    "topicScores": {
+      "Data Structures": 85,
+      "Dynamic Programming": 80,
+      "Algorithms": 88,
+      "Graphs & Trees": 82,
+      "Math & Bitmask": 75,
+      "System Design": 70
+    },
+    "ratingHistory": [
+      {
+        "month": "Jan",
+        "codeforces": 0,
+        "leetcode": 1600
+      },
+      {
+        "month": "Feb",
+        "codeforces": 0,
+        "leetcode": 1650
+      },
+      {
+        "month": "Mar",
+        "codeforces": 0,
+        "leetcode": 1710
+      },
+      {
+        "month": "Apr",
+        "codeforces": 0,
+        "leetcode": 1760
+      },
+      {
+        "month": "May",
+        "codeforces": 0,
+        "leetcode": 1810
+      },
+      {
+        "month": "Jun",
+        "codeforces": 0,
+        "leetcode": 1850
+      }
+    ]
+  },
+  "googledev": {
+    "username": "googledev",
+    "name": "GOOGLEDEV",
+    "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=googledev",
+    "bio": "Competitive Programmer @googledev | ProfileDekho",
+    "title": "Specialist",
+    "globalScore": 0,
+    "errors": {
+      "leetcode": "Invalid username",
+      "codeforces": "Invalid username",
+      "hackerrank": "Invalid username",
+      "github": "Invalid username"
+    },
+    "leetcodeHandle": "",
+    "codeforcesHandle": "",
+    "codechefHandle": "googledev",
+    "hackerrankHandle": "",
+    "interviewbitHandle": "googledev",
+    "githubHandle": "",
+    "totalSolved": 200,
+    "easySolved": 0,
+    "mediumSolved": 0,
+    "hardSolved": 0,
+    "totalContests": 0,
+    "maxRating": 1500,
+    "currentRating": 0,
+    "leetcodeStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codeforcesStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codechefStats": {
+      "solved": 120,
+      "rating": 1500,
+      "stars": "3\u2605",
+      "valid": true
+    },
+    "hackerrankStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "interviewbitStats": {
+      "solved": 80,
+      "valid": true
+    },
+    "githubStats": {
+      "publicRepos": 0,
+      "valid": false
+    },
+    "topicScores": {
+      "Data Structures": 85,
+      "Dynamic Programming": 80,
+      "Algorithms": 88,
+      "Graphs & Trees": 82,
+      "Math & Bitmask": 75,
+      "System Design": 70
+    },
+    "ratingHistory": [
+      {
+        "month": "Jan",
+        "codeforces": 0,
+        "leetcode": 1600
+      },
+      {
+        "month": "Feb",
+        "codeforces": 0,
+        "leetcode": 1650
+      },
+      {
+        "month": "Mar",
+        "codeforces": 0,
+        "leetcode": 1710
+      },
+      {
+        "month": "Apr",
+        "codeforces": 0,
+        "leetcode": 1760
+      },
+      {
+        "month": "May",
+        "codeforces": 0,
+        "leetcode": 1810
+      },
+      {
+        "month": "Jun",
+        "codeforces": 0,
+        "leetcode": 1850
+      }
+    ]
+  },
+  "supercoder": {
+    "username": "supercoder",
+    "name": "SUPERCODER",
+    "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=supercoder",
+    "bio": "Competitive Programmer @supercoder | ProfileDekho",
+    "title": "Pupil",
+    "globalScore": 3515,
+    "errors": {
+      "codechef": "Invalid username",
+      "hackerrank": "Invalid username"
+    },
+    "leetcodeHandle": "supercoder",
+    "codeforcesHandle": "supercoder",
+    "codechefHandle": "",
+    "hackerrankHandle": "",
+    "interviewbitHandle": "supercoder",
+    "githubHandle": "supercoder",
+    "totalSolved": 265,
+    "easySolved": 84,
+    "mediumSolved": 95,
+    "hardSolved": 6,
+    "totalContests": 0,
+    "maxRating": 0,
+    "currentRating": 0,
+    "leetcodeStats": {
+      "solved": 185,
+      "easy": 84,
+      "medium": 95,
+      "hard": 6,
+      "valid": true
+    },
+    "codeforcesStats": {
+      "solved": 0,
+      "rating": 0,
+      "maxRating": 0,
+      "rankName": "Unrated",
+      "valid": true
+    },
+    "codechefStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "hackerrankStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "interviewbitStats": {
+      "solved": 80,
+      "valid": true
+    },
+    "githubStats": {
+      "publicRepos": 0,
+      "stars": 12,
+      "valid": true
+    },
+    "topicScores": {
+      "Data Structures": 85,
+      "Dynamic Programming": 80,
+      "Algorithms": 88,
+      "Graphs & Trees": 82,
+      "Math & Bitmask": 75,
+      "System Design": 70
+    },
+    "ratingHistory": [
+      {
+        "month": "Jan",
+        "codeforces": 0,
+        "leetcode": 1600
+      },
+      {
+        "month": "Feb",
+        "codeforces": 0,
+        "leetcode": 1650
+      },
+      {
+        "month": "Mar",
+        "codeforces": 0,
+        "leetcode": 1710
+      },
+      {
+        "month": "Apr",
+        "codeforces": 0,
+        "leetcode": 1760
+      },
+      {
+        "month": "May",
+        "codeforces": 0,
+        "leetcode": 1810
+      },
+      {
+        "month": "Jun",
+        "codeforces": 0,
+        "leetcode": 1850
+      }
+    ]
+  },
+  "asddf": {
+    "username": "asddf",
+    "name": "ASDDF",
+    "avatar": "https://api.dicebear.com/7.x/bottts/svg?seed=asddf",
+    "bio": "Competitive Programmer @asddf | ProfileDekho",
+    "title": "Pupil",
+    "globalScore": 0,
+    "errors": {},
     "leetcodeHandle": "",
     "codeforcesHandle": "",
     "codechefHandle": "",

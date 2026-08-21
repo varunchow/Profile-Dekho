@@ -167,9 +167,13 @@ export default function App() {
     }
   };
 
-  const handleLoginSuccess = (username) => {
+  const handleLoginSuccess = (userPayload) => {
+    const username = typeof userPayload === 'string' ? userPayload : (userPayload.username || 'coder');
+    const userObj = typeof userPayload === 'object' ? userPayload : { username: userPayload, email: `${userPayload}@gmail.com` };
+    
     setCurrentUser(username);
     localStorage.setItem('pd_user', username);
+    localStorage.setItem('pd_user_data', JSON.stringify(userObj));
     showAlert(`Logged in as @${username}!`);
     setActiveTab('dashboard');
   };
@@ -177,6 +181,7 @@ export default function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem('pd_user');
+    localStorage.removeItem('pd_user_data');
     showAlert('Logged out successfully.');
     setActiveTab('home');
   };

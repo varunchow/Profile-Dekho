@@ -1,62 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ProfileDekho — Coding Profile Showcase</title>
-  <meta name="description" content="Search and showcase competitive coding profiles from LeetCode, CodeChef, Codeforces, HackerRank, InterviewBit and GitHub.">
+  <meta name="description"
+    content="Search and showcase competitive coding profiles from LeetCode, CodeChef, Codeforces, HackerRank, InterviewBit and GitHub.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       /* Brand colors */
       --logo-p: #DFCC18;
       --logo-d: #000000;
 
-      /* Natural warm palette */
-      --white:    #FFFFFF;
+      /* Natural light theme */
+      --bg: #FAFAF7;
+      --surface: #FFFFFF;
+      --surface-2: #F5F3EE;
       --cream-50: #FAFAF7;
-      --cream-100:#F5F3EE;
+      --cream-100: #F5F3EE;
       --sand-200: #EAE6DC;
       --sand-300: #D6D0C4;
-      --stone-400:#AFA99A;
-      --stone-500:#8A8375;
-      --stone-600:#6B6559;
-      --stone-700:#4D4840;
-      --stone-800:#302C26;
-      --stone-900:#1A1714;
+      --stone-400: #AFA99A;
+      --stone-500: #8A8375;
+      --stone-600: #6B6559;
+      --stone-700: #4D4840;
+      --stone-800: #302C26;
+      --stone-900: #1A1714;
 
-      /* Semantic aliases */
-      --bg:          var(--cream-50);
-      --surface:     var(--white);
-      --border:      var(--sand-200);
-      --border-hover:var(--sand-300);
-      --text-primary:var(--stone-900);
-      --text-secondary:var(--stone-500);
-      --text-muted:  var(--stone-400);
+      --border: #EAE6DC;
+      --border-hover: #D6D0C4;
+      --text-primary: #1A1714;
+      --text-secondary: #6B6559;
+      --text-muted: #8A8375;
 
-      --accent:      #DFCC18;
+      --form-bg: #FFFFFF;
+      --input-bg: #F5F3EE;
+      --input-border: #D6D0C4;
+      --form-text: #1A1714;
+
+      --accent: #DFCC18;
       --accent-dark: #B8A810;
-      --blue-500:    #4A7FD4;
-      --green-500:   #3DAA6A;
-      --yellow-500:  #D4A017;
-      --red-500:     #C9483A;
+      --blue-500: #2D79F3;
+      --green-500: #3DAA6A;
+      --yellow-500: #D4A017;
+      --red-500: #C9483A;
+      --rank-bg: rgba(223, 204, 24, 0.12);
+      --rank-border: rgba(223, 204, 24, 0.35);
+      --rank-text: #7A6F00;
+    }
+
+    [data-theme="dark"] {
+      --logo-p: #DFCC18;
+      --logo-d: #FFFFFF;
+
+      --bg: #121212;
+      --surface: #1E1E1E;
+      --surface-2: #282828;
+      --cream-50: #181818;
+      --cream-100: #252525;
+      --sand-200: #333333;
+      --sand-300: #444444;
+      --stone-400: #777777;
+      --stone-500: #9E9E9E;
+      --stone-600: #BBBBBB;
+      --stone-700: #DDDDDD;
+      --stone-800: #EEEEEE;
+      --stone-900: #F5F5F5;
+
+      --border: #2E2E2E;
+      --border-hover: #444444;
+      --text-primary: #F3F4F6;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+
+      --form-bg: #1F1F1F;
+      --input-bg: #2B2B2B;
+      --input-border: #333333;
+      --form-text: #F1F1F1;
+
+      --accent: #DFCC18;
+      --accent-dark: #F5E535;
+      --blue-500: #3B82F6;
+      --green-500: #10B981;
+      --yellow-500: #F59E0B;
+      --red-500: #EF4444;
+      --rank-bg: rgba(223, 204, 24, 0.15);
+      --rank-border: rgba(223, 204, 24, 0.4);
+      --rank-text: #DFCC18;
     }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text-primary);
       min-height: 100vh;
       font-size: 15px;
       line-height: 1.6;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     /* ─── NAVBAR ─── */
@@ -71,6 +129,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      transition: background-color 0.2s, border-color 0.2s;
     }
 
     .navbar-brand {
@@ -101,10 +160,40 @@
       line-height: 1;
     }
 
-    .pd-logo .p { color: #DFCC18; }
-    .pd-logo .d { color: #FFFFFF; }
+    .pd-logo .p {
+      color: #DFCC18;
+    }
 
-    .navbar-actions { display: flex; align-items: center; gap: 10px; }
+    .pd-logo .d {
+      color: #FFFFFF;
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: all 0.18s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--cream-100);
+      border-color: var(--border-hover);
+      transform: scale(1.05);
+    }
 
     .btn {
       display: inline-flex;
@@ -119,12 +208,35 @@
       border: none;
       transition: all 0.15s;
     }
-    .btn-ghost { background: transparent; color: var(--stone-600); }
-    .btn-ghost:hover { background: var(--cream-100); color: var(--stone-900); }
-    .btn-primary { background: var(--stone-900); color: var(--white); }
-    .btn-primary:hover { background: var(--stone-700); }
-    .btn-outline { background: transparent; color: var(--stone-700); border: 1px solid var(--border); }
-    .btn-outline:hover { background: var(--cream-100); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--stone-600);
+    }
+
+    .btn-ghost:hover {
+      background: var(--cream-100);
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--blue-500);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--cream-100);
+    }
 
     /* ─── HOME PAGE ─── */
     .home-page {
@@ -160,26 +272,35 @@
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
+
     .home-search-input:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(223,204,24,0.15);
+      box-shadow: 0 0 0 3px rgba(223, 204, 24, 0.15);
     }
-    .home-search-input::placeholder { color: var(--text-muted); }
+
+    .home-search-input::placeholder {
+      color: var(--text-muted);
+    }
 
     .home-search-btn {
       padding: 13px 24px;
-      background: var(--stone-900);
-      color: var(--white);
+      background: #2d79f3;
+      color: #ffffff;
       border: none;
       border-radius: 10px;
       font-size: 0.95rem;
-      font-weight: 500;
+      font-weight: 600;
       font-family: inherit;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s, transform 0.1s;
       white-space: nowrap;
+      letter-spacing: 0.01em;
     }
-    .home-search-btn:hover { background: var(--stone-700); }
+
+    .home-search-btn:hover {
+      background: #1a68e8;
+      transform: translateY(-1px);
+    }
 
     /* Marquee animation on home page */
     .marquee-container {
@@ -219,7 +340,7 @@
     .marquee-logo:hover {
       transform: translateY(-3px);
       border-color: var(--accent);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
     .marquee-logo img {
@@ -232,6 +353,7 @@
       0% {
         transform: translateX(0);
       }
+
       100% {
         transform: translateX(-50%);
       }
@@ -263,7 +385,10 @@
       flex-shrink: 0;
     }
 
-    .profile-info { flex: 1; }
+    .profile-info {
+      flex: 1;
+    }
+
     .profile-name {
       font-size: 1.35rem;
       font-weight: 700;
@@ -271,14 +396,25 @@
       letter-spacing: -0.3px;
       margin-bottom: 3px;
     }
+
     .profile-handle {
       font-size: 0.85rem;
       color: var(--text-secondary);
       font-family: 'JetBrains Mono', monospace;
       margin-bottom: 8px;
     }
-    .profile-bio { font-size: 0.875rem; color: var(--stone-600); margin-bottom: 14px; }
-    .profile-links { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .profile-bio {
+      font-size: 0.875rem;
+      color: var(--stone-600);
+      margin-bottom: 14px;
+    }
+
+    .profile-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
 
     .platform-link {
       display: inline-flex;
@@ -293,18 +429,33 @@
       transition: all 0.15s;
       background: var(--cream-50);
     }
-    .platform-link:hover { border-color: var(--border-hover); color: var(--text-primary); background: var(--surface); }
-    .platform-link img { width: 14px; height: 14px; object-fit: contain; }
 
-    .profile-actions { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+    .platform-link:hover {
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+      background: var(--surface);
+    }
+
+    .platform-link img {
+      width: 14px;
+      height: 14px;
+      object-fit: contain;
+    }
+
+    .profile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-shrink: 0;
+    }
 
     .rank-badge {
       display: inline-flex;
       align-items: center;
       gap: 5px;
       padding: 4px 12px;
-      background: rgba(223,204,24,0.12);
-      border: 1px solid rgba(223,204,24,0.35);
+      background: rgba(223, 204, 24, 0.12);
+      border: 1px solid rgba(223, 204, 24, 0.35);
       border-radius: 20px;
       font-size: 0.8rem;
       color: #7A6F00;
@@ -319,12 +470,14 @@
       gap: 12px;
       margin-bottom: 20px;
     }
+
     .stat-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 20px;
     }
+
     .stat-label {
       font-size: 0.75rem;
       font-weight: 600;
@@ -333,6 +486,7 @@
       letter-spacing: 0.5px;
       margin-bottom: 8px;
     }
+
     .stat-value {
       font-size: 1.8rem;
       font-weight: 700;
@@ -341,12 +495,39 @@
       margin-bottom: 4px;
       font-family: 'JetBrains Mono', monospace;
     }
-    .stat-sub { font-size: 0.8rem; color: var(--text-muted); }
-    .diff-row { display: flex; gap: 6px; margin-top: 6px; }
-    .diff-chip { padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600; }
-    .diff-easy   { background: #dcfce7; color: #166534; }
-    .diff-medium { background: #fef9c3; color: #854d0e; }
-    .diff-hard   { background: #fee2e2; color: #991b1b; }
+
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .diff-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .diff-chip {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .diff-easy {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .diff-medium {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    .diff-hard {
+      background: #fee2e2;
+      color: #991b1b;
+    }
 
     /* ─── PLATFORM FILTER TABS ─── */
     .platform-filter-bar {
@@ -360,6 +541,7 @@
       border-radius: 10px;
       padding: 12px 16px;
     }
+
     .platform-filter-bar .filter-label {
       font-size: 0.75rem;
       font-weight: 600;
@@ -368,6 +550,7 @@
       letter-spacing: 0.5px;
       margin-right: 4px;
     }
+
     .platform-tab {
       display: inline-flex;
       align-items: center;
@@ -383,17 +566,24 @@
       transition: all 0.15s;
       font-family: inherit;
     }
+
     .platform-tab:hover {
       border-color: var(--accent);
       background: var(--surface);
       color: var(--stone-900);
     }
+
     .platform-tab.active {
       background: var(--stone-900);
       color: var(--white);
       border-color: var(--stone-900);
     }
-    .platform-tab img { width: 13px; height: 13px; object-fit: contain; }
+
+    .platform-tab img {
+      width: 13px;
+      height: 13px;
+      object-fit: contain;
+    }
 
     /* ─── AGGREGATED TOTALS ─── */
     .aggregated-totals {
@@ -407,9 +597,27 @@
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
-    .agg-item { display: flex; flex-direction: column; gap: 2px; }
-    .agg-value { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
-    .agg-label { font-size: 0.72rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.4px; }
+
+    .agg-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .agg-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .agg-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
 
     /* ─── CHARTS ─── */
     .charts-grid {
@@ -417,54 +625,137 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
     }
+
     .chart-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 20px;
     }
+
     .chart-title {
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--stone-700);
       margin-bottom: 16px;
     }
-    .chart-wrap { height: 230px; position: relative; }
+
+    .chart-wrap {
+      height: 230px;
+      position: relative;
+    }
 
     /* ─── ACTIVITY HEATMAP ─── */
     .heatmap-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 20px 24px;
       margin-bottom: 12px;
+      overflow-x: auto;
     }
-    .heatmap-grid {
+
+    .heatmap-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-width: 720px;
+    }
+
+    .heatmap-months {
+      display: flex;
+      gap: 0;
+      padding-left: 28px;
+      margin-bottom: 4px;
+    }
+
+    .heatmap-month-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      flex: 1;
+      white-space: nowrap;
+    }
+
+    .heatmap-body {
+      display: flex;
+      gap: 4px;
+    }
+
+    .heatmap-days-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.63rem;
+      color: var(--text-muted);
+      margin-right: 4px;
+      padding-top: 2px;
+      min-width: 24px;
+      text-align: right;
+    }
+
+    .heatmap-day-label {
+      line-height: 13px;
+      height: 13px;
+    }
+
+    .heatmap-weeks {
       display: flex;
       gap: 3px;
-      flex-wrap: wrap;
     }
-    .heatmap-day {
+
+    .heatmap-week {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .heatmap-cell {
       width: 13px;
       height: 13px;
       border-radius: 3px;
       cursor: pointer;
-      transition: transform 0.1s;
-      position: relative;
+      transition: transform 0.1s, outline 0.1s;
     }
-    .heatmap-day:hover { transform: scale(1.3); }
-    .heatmap-day.active { background: #4ade80; }
-    .heatmap-day.inactive { background: #fca5a5; }
+
+    .heatmap-cell:hover {
+      transform: scale(1.25);
+      outline: 2px solid var(--accent);
+    }
+
+    .heatmap-cell.level-0 {
+      background: var(--sand-200);
+    }
+
+    .heatmap-cell.level-1 {
+      background: #86efac;
+    }
+
+    .heatmap-cell.level-2 {
+      background: #4ade80;
+    }
+
+    .heatmap-cell.level-3 {
+      background: #22c55e;
+    }
+
+    .heatmap-cell.level-4 {
+      background: #16a34a;
+    }
+
     .heatmap-legend {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-      font-size: 0.72rem;
+      gap: 5px;
+      margin-top: 10px;
+      font-size: 0.7rem;
       color: var(--text-muted);
+      justify-content: flex-end;
     }
-    .heatmap-legend-box {
-      width: 13px; height: 13px;
+
+    .heatmap-legend-cell {
+      width: 13px;
+      height: 13px;
       border-radius: 3px;
       flex-shrink: 0;
     }
@@ -475,203 +766,422 @@
       margin: 0 auto;
       padding: 32px 20px 60px;
     }
+
     .form-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 28px 32px;
     }
-    .form-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-    .form-desc { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 24px; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
-    .form-field label {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.8rem; font-weight: 600; color: var(--stone-600); margin-bottom: 5px;
-    }
-    .form-field label img { width: 14px; height: 14px; object-fit: contain; }
-    .form-field input {
-      width: 100%; padding: 9px 12px;
-      border: 1px solid var(--border); border-radius: 8px;
-      font-size: 0.875rem; font-family: 'JetBrains Mono', monospace;
-      color: var(--text-primary); background: var(--cream-50);
-      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
-    }
-    .form-field input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(223,204,24,0.12);
-      background: var(--surface);
-    }
-    .form-field input::placeholder { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-    .form-footer { display: flex; justify-content: flex-end; gap: 10px; }
 
-    /* ─── AUTH MODAL ─── */
-    .modal-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 200; padding: 20px;
-    }
-    .modal {
-      background: var(--surface); border-radius: 14px;
-      border: 1px solid var(--border);
-      padding: 32px; width: 100%; max-width: 380px; position: relative;
-    }
-    .modal-close {
-      position: absolute; top: 16px; right: 16px;
-      background: none; border: none; cursor: pointer;
-      color: var(--text-muted); font-size: 1.2rem; line-height: 1;
-      padding: 4px; border-radius: 6px;
-    }
-    .modal-close:hover { background: var(--cream-100); color: var(--stone-600); }
-    .modal-title { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-    .modal-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 24px; }
-    .field-group { margin-bottom: 14px; }
-    .field-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--stone-600); margin-bottom: 5px; }
-    .field-group input {
-      width: 100%; padding: 10px 12px;
-      border: 1px solid var(--border); border-radius: 8px;
-      font-size: 0.875rem; font-family: inherit;
+    .form-title {
+      font-size: 1.1rem;
+      font-weight: 700;
       color: var(--text-primary);
-      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+      margin-bottom: 4px;
     }
-    .field-group input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(223,204,24,0.12);
+
+    .form-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
     }
-    /* Social auth buttons & divider */
-    .social-btn {
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .form-field label {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface);
-      color: var(--text-primary);
-      font-size: 0.875rem;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-      margin-bottom: 10px;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--stone-600);
+      margin-bottom: 5px;
     }
-    .social-btn:hover {
-      background: var(--cream-100);
-      border-color: var(--border-hover);
-    }
-    .social-btn svg, .social-btn img {
-      width: 18px;
-      height: 18px;
+
+    .form-field label img {
+      width: 14px;
+      height: 14px;
       object-fit: contain;
     }
 
-    .auth-divider {
+    .form-field input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-primary);
+      background: var(--cream-50);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .form-field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(223, 204, 24, 0.12);
+      background: var(--surface);
+    }
+
+    .form-field input::placeholder {
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* ─── UIVERSE.IO AUTH MODAL STYLES ─── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin: 18px 0;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
     }
-    .auth-divider::before, .auth-divider::after {
-      content: '';
-      flex: 1;
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: var(--form-bg);
+      padding: 30px;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      position: relative;
+      animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+      padding: 6px;
+      border-radius: 8px;
+      transition: all 0.15s;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: var(--cream-100);
+      color: var(--text-primary);
+    }
+
+    .form ::placeholder {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      color: var(--text-muted);
+    }
+
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .flex-column>label {
+      color: var(--form-text);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .inputForm {
+      border: 1.5px solid var(--input-border);
+      border-radius: 10px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      padding-left: 12px;
+      padding-right: 12px;
+      transition: 0.2s ease-in-out;
+      background-color: var(--input-bg);
+    }
+
+    .inputForm svg {
+      flex-shrink: 0;
+      fill: var(--text-muted);
+      color: var(--text-muted);
+    }
+
+    .input {
+      margin-left: 10px;
+      border-radius: 10px;
+      border: none;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      color: var(--form-text);
+      font-size: 14px;
+    }
+
+    .input:focus {
+      outline: none;
+    }
+
+    .inputForm:focus-within {
+      border: 1.5px solid #2d79f3;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .flex-row>div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .flex-row>div>label {
+      font-size: 14px;
+      color: var(--form-text);
+      font-weight: 400;
+      cursor: pointer;
+    }
+
+    .span {
+      font-size: 14px;
+      color: #2d79f3;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .span:hover {
+      text-decoration: underline;
+    }
+
+    .button-submit {
+      margin: 14px 0 6px 0;
+      background-color: #2d79f3;
+      border: none;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 10px;
+      height: 50px;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .button-submit:hover {
+      background-color: #1a68e8;
+      transform: translateY(-1px);
+    }
+
+    .button-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .p {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin: 4px 0;
+    }
+
+    .p.line {
+      position: relative;
+      margin: 10px 0 4px 0;
+    }
+
+    .p.line::before,
+    .p.line::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 35%;
       height: 1px;
       background: var(--border);
     }
 
-    .field-error-text {
-      display: block;
-      color: var(--red-500);
-      font-size: 0.76rem;
+    .p.line::before {
+      left: 0;
+    }
+
+    .p.line::after {
+      right: 0;
+    }
+
+    .btn-auth-social {
+      margin-top: 6px;
+      width: 100%;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       font-weight: 500;
-      margin-top: 3px;
-    }
-
-    .password-wrap {
-      position: relative;
-    }
-
-    .password-wrap input {
-      padding-right: 42px !important;
-    }
-
-    .password-toggle-btn {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
+      gap: 10px;
+      border: 1px solid var(--input-border);
+      background-color: var(--input-bg);
+      color: var(--form-text);
       cursor: pointer;
-      color: var(--stone-500);
-      line-height: 1;
-      padding: 4px;
-      border-radius: 4px;
+      transition: 0.2s ease-in-out;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .btn-auth-social:hover {
+      border: 1px solid #2d79f3;
+      transform: translateY(-1px);
+    }
+
+    .btn-auth-social.google:hover {
+      border-color: #4285f4;
+    }
+
+    .btn-auth-social.github:hover {
+      border-color: #6e5494;
+    }
+
+    .auth-alert {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      animation: slideDown 0.2s ease;
     }
-    .password-toggle-btn:hover {
-      color: var(--stone-900);
+
+    .auth-alert.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
     }
-    .password-toggle-btn svg { width: 17px; height: 17px; display: block; }
+
+    .auth-alert.success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
 
     /* OAuth popup overlay */
     .oauth-popup-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.55);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 500; padding: 20px;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 20px;
     }
+
     .oauth-popup {
-      background: var(--white);
-      border-radius: 16px;
+      background: var(--form-bg);
+      border-radius: 18px;
       border: 1px solid var(--border);
-      padding: 36px 32px;
-      width: 100%; max-width: 360px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
-      text-align: center;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
       animation: popIn 0.2s ease;
     }
-    @keyframes popIn {
-      from { transform: scale(0.92); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
+
+    .oauth-popup-logo {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
     }
-    .oauth-popup-logo { font-size: 2.2rem; margin-bottom: 12px; }
-    .oauth-popup-title { font-size: 1.05rem; font-weight: 700; color: var(--stone-900); margin-bottom: 6px; }
-    .oauth-popup-desc  { font-size: 0.82rem; color: var(--stone-600); margin-bottom: 24px; }
+
+    .oauth-popup-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--stone-900);
+      margin-bottom: 6px;
+    }
+
+    .oauth-popup-desc {
+      font-size: 0.84rem;
+      color: var(--stone-600);
+      margin-bottom: 20px;
+    }
+
     .oauth-popup-input {
-      width: 100%; padding: 10px 14px;
-      border: 1px solid var(--border); border-radius: 8px;
-      font-size: 0.9rem; font-family: inherit;
-      color: var(--text-primary); outline: none;
-      margin-bottom: 14px;
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: var(--text-primary);
+      outline: none;
+      margin-bottom: 12px;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
+
     .oauth-popup-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(223,204,24,0.15);
+      border-color: #4285F4;
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.18);
     }
+
     .oauth-popup-btn {
-      width: 100%; padding: 11px;
-      border-radius: 8px; border: none;
-      font-size: 0.9rem; font-weight: 600;
-      font-family: inherit; cursor: pointer;
-      color: var(--white); margin-bottom: 10px;
-      transition: opacity 0.15s;
-    }
-    .oauth-popup-btn:hover { opacity: 0.88; }
-    .oauth-popup-cancel {
-      font-size: 0.8rem; color: var(--stone-500);
-      background: none; border: none; cursor: pointer;
+      width: 100%;
+      padding: 12px;
+      border-radius: 9px;
+      border: none;
+      font-size: 0.92rem;
+      font-weight: 600;
       font-family: inherit;
+      cursor: pointer;
+      color: var(--white);
+      margin-bottom: 10px;
+      transition: all 0.15s;
     }
-    .oauth-popup-cancel:hover { color: var(--stone-900); text-decoration: underline; }
+
+    .oauth-popup-btn:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .oauth-popup-cancel {
+      font-size: 0.82rem;
+      color: var(--stone-500);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 6px;
+    }
+
+    .oauth-popup-cancel:hover {
+      color: var(--stone-900);
+      text-decoration: underline;
+    }
 
     .strength-meter {
       height: 4px;
@@ -686,44 +1196,97 @@
       height: 100%;
       transition: width 0.3s, background-color 0.3s;
     }
-    .demo-link:hover { text-decoration: underline; }
+
+    .demo-link:hover {
+      text-decoration: underline;
+    }
 
     /* ─── TOAST ─── */
     .toast {
-      position: fixed; bottom: 20px; right: 20px;
-      background: var(--stone-900); color: var(--white);
-      padding: 10px 16px; border-radius: 8px;
-      font-size: 0.875rem; font-weight: 500;
-      z-index: 300; animation: slideUp 0.2s ease;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--stone-900);
+      color: var(--white);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      z-index: 300;
+      animation: slideUp 0.2s ease;
     }
+
     @keyframes slideUp {
-      from { transform: translateY(8px); opacity: 0; }
-      to   { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(8px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     .user-pill {
-      display: flex; align-items: center; gap: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       padding: 5px 12px 5px 8px;
-      border: 1px solid var(--border); border-radius: 20px;
-      font-size: 0.8rem; font-weight: 500; color: var(--stone-700);
-      cursor: pointer; background: var(--cream-100); transition: background 0.15s;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--stone-700);
+      cursor: pointer;
+      background: var(--cream-100);
+      transition: background 0.15s;
     }
-    .user-pill:hover { background: var(--sand-200); }
-    .user-avatar-sm { width: 24px; height: 24px; border-radius: 50%; }
+
+    .user-pill:hover {
+      background: var(--sand-200);
+    }
+
+    .user-avatar-sm {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
 
     @media (max-width: 640px) {
-      .navbar { padding: 0 16px; }
-      .stats-grid { grid-template-columns: 1fr 1fr; }
-      .charts-grid { grid-template-columns: 1fr; }
-      .profile-header { flex-direction: column; }
-      .form-grid { grid-template-columns: 1fr; }
-      .profile-actions { flex-direction: row; }
+      .navbar {
+        padding: 0 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-header {
+        flex-direction: column;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-actions {
+        flex-direction: row;
+      }
     }
+
     @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr; }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
   <div id="root"></div>
 
@@ -732,22 +1295,22 @@
 
     /* ─── PLATFORM LOGOS (hosted CDN favicons / official SVG sources) ─── */
     const LOGOS = {
-      leetcode:    'https://assets.leetcode.com/static_assets/public/icons/favicon-96x96.png',
-      codeforces:  'https://codeforces.org/s/0/favicon-96x96.png',
-      codechef:    'https://www.codechef.com/favicon.ico',
-      hackerrank:  'https://hrcdn.net/fcore/assets/brand/h_mark_sm-966d2b45e3.svg',
-      interviewbit:'https://www.interviewbit.com/favicon.ico',
-      github:      'https://github.githubassets.com/favicons/favicon.svg',
+      leetcode: 'https://assets.leetcode.com/static_assets/public/icons/favicon-96x96.png',
+      codeforces: 'https://codeforces.org/s/0/favicon-96x96.png',
+      codechef: 'https://www.codechef.com/favicon.ico',
+      hackerrank: 'https://hrcdn.net/fcore/assets/brand/h_mark_sm-966d2b45e3.svg',
+      interviewbit: 'https://www.interviewbit.com/favicon.ico',
+      github: 'https://github.githubassets.com/favicons/favicon.svg',
     };
 
     /* ─── PLATFORM DEFINITIONS ─── */
     const PLATFORMS = [
-      { id: 'leetcode',     handleKey: 'leetcodeHandle',     label: 'LeetCode',    base: 'https://leetcode.com/' },
-      { id: 'codeforces',   handleKey: 'codeforcesHandle',   label: 'Codeforces',  base: 'https://codeforces.com/profile/' },
-      { id: 'codechef',     handleKey: 'codechefHandle',     label: 'CodeChef',    base: 'https://www.codechef.com/users/' },
-      { id: 'hackerrank',   handleKey: 'hackerrankHandle',   label: 'HackerRank',  base: 'https://www.hackerrank.com/' },
-      { id: 'interviewbit', handleKey: 'interviewbitHandle', label: 'InterviewBit',base: 'https://www.interviewbit.com/profile/' },
-      { id: 'github',       handleKey: 'githubHandle',       label: 'GitHub',      base: 'https://github.com/' },
+      { id: 'leetcode', handleKey: 'leetcodeHandle', label: 'LeetCode', base: 'https://leetcode.com/' },
+      { id: 'codeforces', handleKey: 'codeforcesHandle', label: 'Codeforces', base: 'https://codeforces.com/profile/' },
+      { id: 'codechef', handleKey: 'codechefHandle', label: 'CodeChef', base: 'https://www.codechef.com/users/' },
+      { id: 'hackerrank', handleKey: 'hackerrankHandle', label: 'HackerRank', base: 'https://www.hackerrank.com/' },
+      { id: 'interviewbit', handleKey: 'interviewbitHandle', label: 'InterviewBit', base: 'https://www.interviewbit.com/profile/' },
+      { id: 'github', handleKey: 'githubHandle', label: 'GitHub', base: 'https://github.com/' },
     ];
 
     /* ─── SEED DATA ─── */
@@ -761,12 +1324,12 @@
         leetcodeHandle: 'tourist', codeforcesHandle: 'tourist',
         codechefHandle: 'tourist', hackerrankHandle: 'tourist',
         interviewbitHandle: 'tourist', githubHandle: 'tourist',
-        leetcodeStats:    { solved: 450, easy: 100, medium: 200, hard: 150, rating: 2850 },
-        codeforcesStats:  { solved: 850, rating: 3820, rankName: 'Legendary Grandmaster' },
-        codechefStats:    { solved: 150, rating: 2950, stars: '7★' },
-        hackerrankStats:  { solved: 100 },
-        interviewbitStats:{ solved: 90 },
-        githubStats:      { publicRepos: 18, stars: 450 },
+        leetcodeStats: { solved: 450, easy: 100, medium: 200, hard: 150, rating: 2850 },
+        codeforcesStats: { solved: 850, rating: 3820, rankName: 'Legendary Grandmaster' },
+        codechefStats: { solved: 150, rating: 2950, stars: '7★' },
+        hackerrankStats: { solved: 100 },
+        interviewbitStats: { solved: 90 },
+        githubStats: { publicRepos: 18, stars: 450 },
         topicScores: { "Data Structures": 99, "Algorithms": 100, "Dynamic Programming": 98, "Graphs": 97, "Math": 99, "System Design": 88 },
         ratingHistory: [
           { month: 'Mar', codeforces: 3720, leetcode: 2790 },
@@ -786,12 +1349,12 @@
         leetcodeHandle: 'neal_wu', codeforcesHandle: 'neal_wu',
         codechefHandle: 'neal_wu', hackerrankHandle: 'neal_wu',
         interviewbitHandle: 'neal_wu', githubHandle: 'neal_wu',
-        leetcodeStats:    { solved: 520, easy: 150, medium: 250, hard: 120, rating: 2650 },
-        codeforcesStats:  { solved: 600, rating: 2880, rankName: 'International Grandmaster' },
-        codechefStats:    { solved: 180, rating: 2650, stars: '6★' },
-        hackerrankStats:  { solved: 110 },
-        interviewbitStats:{ solved: 85 },
-        githubStats:      { publicRepos: 32, stars: 210 },
+        leetcodeStats: { solved: 520, easy: 150, medium: 250, hard: 120, rating: 2650 },
+        codeforcesStats: { solved: 600, rating: 2880, rankName: 'International Grandmaster' },
+        codechefStats: { solved: 180, rating: 2650, stars: '6★' },
+        hackerrankStats: { solved: 110 },
+        interviewbitStats: { solved: 85 },
+        githubStats: { publicRepos: 32, stars: 210 },
         topicScores: { "Data Structures": 95, "Algorithms": 96, "Dynamic Programming": 94, "Graphs": 93, "Math": 91, "System Design": 85 },
         ratingHistory: [
           { month: 'Mar', codeforces: 2810, leetcode: 2580 },
@@ -815,12 +1378,12 @@
         globalScore: 0,
         leetcodeHandle: '', codeforcesHandle: '', codechefHandle: '',
         hackerrankHandle: '', interviewbitHandle: '', githubHandle: '',
-        leetcodeStats:    { solved: 0, valid: false },
-        codeforcesStats:  { solved: 0, valid: false },
-        codechefStats:    { solved: 0, valid: false },
-        hackerrankStats:  { solved: 0, valid: false },
-        interviewbitStats:{ solved: 0, valid: false },
-        githubStats:      { publicRepos: 0, valid: false },
+        leetcodeStats: { solved: 0, valid: false },
+        codeforcesStats: { solved: 0, valid: false },
+        codechefStats: { solved: 0, valid: false },
+        hackerrankStats: { solved: 0, valid: false },
+        interviewbitStats: { solved: 0, valid: false },
+        githubStats: { publicRepos: 0, valid: false },
         topicScores: {
           "Data Structures": 0, "Algorithms": 0,
           "Dynamic Programming": 0, "Graphs": 0,
@@ -839,7 +1402,7 @@
       try {
         const res = await fetch(`/api/profiles/${encodeURIComponent(key)}`);
         if (res.ok) return await res.json();
-      } catch (_) {}
+      } catch (_) { }
       return buildDynamic(key);
     }
 
@@ -860,176 +1423,281 @@
 
     /* ─── ACTIVITY HEATMAP ─── */
     function ActivityHeatmap({ profile }) {
-      // Generate last 30 days of submission data
-      // Simulate from profile stats: if profile has solutions, scatter some active days
-      const today = new Date();
-      const days = [];
-      const totalSolved = (profile.totalSolved || 0);
-      // Seed random but deterministic based on username for consistency
+      const totalSolved = profile.totalSolved || 0;
       let seed = 0;
       if (profile.username) {
         for (let i = 0; i < profile.username.length; i++) seed += profile.username.charCodeAt(i);
       }
-      const pseudoRand = (i) => {
-        const x = Math.sin(seed + i) * 10000;
-        return x - Math.floor(x);
-      };
+      const pseudoRand = (i) => { const x = Math.sin(seed + i * 7.3 + 1.1) * 9999; return x - Math.floor(x); };
 
-      for (let i = 29; i >= 0; i--) {
-        const d = new Date(today);
-        d.setDate(today.getDate() - i);
-        // If user has solved problems, simulate submission probability
-        let hasActivity = false;
-        if (totalSolved > 0) {
-          const prob = Math.min(0.65, totalSolved / 500);
-          hasActivity = pseudoRand(i) < prob;
+      // Build 52 weeks × 7 days = 364 days of history
+      const today = new Date();
+      const weeks = [];
+      const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      const monthLabels = []; // { weekIndex, label }
+
+      // Start from 364 days ago, aligned to Sunday
+      const startDay = new Date(today);
+      startDay.setDate(today.getDate() - 363);
+      // Roll back to Sunday
+      startDay.setDate(startDay.getDate() - startDay.getDay());
+
+      let lastMonth = -1;
+      for (let w = 0; w < 53; w++) {
+        const week = [];
+        for (let d = 0; d < 7; d++) {
+          const date = new Date(startDay);
+          date.setDate(startDay.getDate() + w * 7 + d);
+          if (date > today) { week.push(null); continue; }
+
+          const dayIndex = w * 7 + d;
+          const prob = Math.min(0.7, totalSolved / 400);
+          const rand = pseudoRand(dayIndex);
+          let level = 0;
+          if (totalSolved > 0) {
+            if (rand < prob * 0.25) level = 1;
+            else if (rand < prob * 0.55) level = 2;
+            else if (rand < prob * 0.75) level = 3;
+            else if (rand < prob * 0.90) level = 4;
+          }
+          const month = date.getMonth();
+          if (month !== lastMonth && d === 0) {
+            monthLabels.push({ weekIndex: w, label: MONTHS[month] });
+            lastMonth = month;
+          }
+          week.push({ date, level, label: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) });
         }
-        days.push({
-          date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          active: hasActivity
-        });
+        weeks.push(week);
       }
 
-      const activeDays = days.filter(d => d.active).length;
+      const activeDays = weeks.flat().filter(d => d && d.level > 0).length;
 
       return (
         <div className="heatmap-card">
-          <div className="chart-title" style={{ marginBottom: '12px' }}>
-            Activity Heatmap — Last 30 Days
-            <span style={{ marginLeft: '10px', fontSize: '0.72rem', fontWeight: '400', color: 'var(--stone-500)' }}>
-              {activeDays} active days
-            </span>
+          <div className="chart-title" style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span>Submission Activity <span style={{ fontSize: '0.72rem', fontWeight: '400', color: 'var(--stone-500)' }}>— Last 12 months</span></span>
+            <span style={{ fontSize: '0.78rem', fontWeight: '600', color: 'var(--green-500)' }}>{activeDays} active days</span>
           </div>
-          <div className="heatmap-grid">
-            {days.map((d, idx) => (
-              <div
-                key={idx}
-                className={`heatmap-day ${d.active ? 'active' : 'inactive'}`}
-                title={`${d.date}: ${d.active ? 'Solved problems' : 'No activity'}`}
-              />
-            ))}
+          <div className="heatmap-scroll">
+            {/* Month labels */}
+            <div className="heatmap-body">
+              <div className="heatmap-days-col">
+                <div className="heatmap-day-label" style={{ visibility: 'hidden' }}>X</div>
+                <div className="heatmap-day-label">Mon</div>
+                <div className="heatmap-day-label" style={{ visibility: 'hidden' }}>X</div>
+                <div className="heatmap-day-label">Wed</div>
+                <div className="heatmap-day-label" style={{ visibility: 'hidden' }}>X</div>
+                <div className="heatmap-day-label">Fri</div>
+                <div className="heatmap-day-label" style={{ visibility: 'hidden' }}>X</div>
+              </div>
+              <div>
+                <div style={{ display: 'flex', gap: 0, marginBottom: '4px', paddingLeft: '0' }}>
+                  {weeks.map((week, wi) => {
+                    const label = monthLabels.find(m => m.weekIndex === wi);
+                    return (
+                      <div key={wi} style={{ width: '16px', fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '500', whiteSpace: 'nowrap', overflow: 'visible' }}>
+                        {label ? label.label : ''}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="heatmap-weeks">
+                  {weeks.map((week, wi) => (
+                    <div key={wi} className="heatmap-week">
+                      {week.map((day, di) => (
+                        day === null
+                          ? <div key={di} className="heatmap-cell" style={{ background: 'transparent', cursor: 'default' }} />
+                          : <div
+                            key={di}
+                            className={`heatmap-cell level-${day.level}`}
+                            title={`${day.label}: ${day.level === 0 ? 'No submissions' : `Level ${day.level} activity`}`}
+                          />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="heatmap-legend">
-            <div className="heatmap-legend-box" style={{ background: '#fca5a5' }} />
-            <span>No activity</span>
-            <div className="heatmap-legend-box" style={{ background: '#4ade80', marginLeft: '8px' }} />
-            <span>Submitted</span>
+            <span>Less</span>
+            <div className="heatmap-legend-cell level-0" />
+            <div className="heatmap-legend-cell level-1" />
+            <div className="heatmap-legend-cell level-2" />
+            <div className="heatmap-legend-cell level-3" />
+            <div className="heatmap-legend-cell level-4" />
+            <span>More</span>
           </div>
         </div>
       );
     }
 
     /* ─── CHARTS ─── */
+
+    // Custom radial progress ring
+    function RadialRing({ pct, color, size = 80, stroke = 8, label, sub }) {
+      const r = (size - stroke) / 2;
+      const circ = 2 * Math.PI * r;
+      const dash = (pct / 100) * circ;
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+          <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+            <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--sand-200)" strokeWidth={stroke} />
+            <circle
+              cx={size / 2} cy={size / 2} r={r} fill="none"
+              stroke={color} strokeWidth={stroke}
+              strokeDasharray={`${dash} ${circ}`}
+              strokeLinecap="round"
+              style={{ transition: 'stroke-dasharray 0.6s ease' }}
+            />
+          </svg>
+          <div style={{ marginTop: '-4px', textAlign: 'center' }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-primary)' }}>{label}</div>
+            {sub && <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '500' }}>{sub}</div>}
+          </div>
+        </div>
+      );
+    }
+
+    // Horizontal bar chart (custom)
+    function HBarChart({ data }) {
+      const max = Math.max(...data.map(d => d.value), 1);
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {data.map((d, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ width: '76px', fontSize: '0.72rem', fontWeight: '600', color: 'var(--text-secondary)', textAlign: 'right', flexShrink: 0 }}>{d.label}</div>
+              <div style={{ flex: 1, background: 'var(--sand-200)', borderRadius: '4px', height: '10px', overflow: 'hidden' }}>
+                <div style={{
+                  width: `${(d.value / max) * 100}%`,
+                  height: '100%',
+                  background: d.color,
+                  borderRadius: '4px',
+                  transition: 'width 0.7s cubic-bezier(0.22, 1, 0.36, 1)'
+                }} />
+              </div>
+              <div style={{ width: '38px', fontSize: '0.72rem', fontWeight: '700', color: 'var(--text-primary)', flexShrink: 0 }}>{d.value}</div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // Minimal sparkline (SVG)
+    function Sparkline({ data, color, height = 60 }) {
+      if (!data || data.length < 2) return <div style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: '0.78rem' }}>No data</div>;
+      const min = Math.min(...data);
+      const max = Math.max(...data);
+      const range = max - min || 1;
+      const w = 100;
+      const pts = data.map((v, i) => {
+        const x = (i / (data.length - 1)) * w;
+        const y = height - ((v - min) / range) * (height - 10) - 5;
+        return `${x},${y}`;
+      });
+      const polyline = pts.join(' ');
+      const areaPath = `M${pts[0]} L${pts.join(' L')} L${w},${height} L0,${height} Z`;
+      return (
+        <svg viewBox={`0 0 ${w} ${height}`} preserveAspectRatio="none" width="100%" height={height}>
+          <defs>
+            <linearGradient id={`sg-${color.replace('#', '')}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity="0.3" />
+              <stop offset="100%" stopColor={color} stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+          <path d={areaPath} fill={`url(#sg-${color.replace('#', '')})`} />
+          <polyline points={polyline} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          {data.map((v, i) => {
+            const x = (i / (data.length - 1)) * w;
+            const y = height - ((v - min) / range) * (height - 10) - 5;
+            return <circle key={i} cx={x} cy={y} r="2.5" fill={color} />;
+          })}
+        </svg>
+      );
+    }
+
     function Charts({ profile }) {
-      const solvedRef = useRef(null);
-      const diffRef   = useRef(null);
-      const ratingRef = useRef(null);
-      const instances = useRef({});
+      const easy = profile.easySolved || 0;
+      const medium = profile.mediumSolved || 0;
+      const hard = profile.hardSolved || 0;
+      const total = easy + medium + hard || 1;
 
-      useEffect(() => {
-        if (!profile || !window.Chart) return;
-        const Chart = window.Chart;
-        Object.values(instances.current).forEach(c => c && c.destroy());
-        instances.current = {};
+      const platformData = [
+        { label: 'LeetCode', value: profile.leetcodeStats?.solved || 0, color: '#D4A017' },
+        { label: 'Codeforces', value: profile.codeforcesStats?.solved || 0, color: '#4A7FD4' },
+        { label: 'CodeChef', value: profile.codechefStats?.solved || 0, color: '#9B6B2F' },
+        { label: 'HackerRank', value: profile.hackerrankStats?.solved || 0, color: '#3DAA6A' },
+        { label: 'InterviewBit', value: profile.interviewbitStats?.solved || 0, color: '#2B8CB8' },
+        { label: 'GitHub', value: profile.githubStats?.publicRepos || 0, color: '#6B7280' },
+      ];
 
-        const gridColor = 'rgba(0,0,0,0.06)';
-        const tickColor = '#6b7280';
-
-        if (solvedRef.current) {
-          instances.current.bar = new Chart(solvedRef.current.getContext('2d'), {
-            type: 'bar',
-            data: {
-              labels: ['LeetCode','Codeforces','CodeChef','HackerRank','InterviewBit','GitHub'],
-              datasets: [{
-                data: [
-                  profile.leetcodeStats?.solved    || 0,
-                  profile.codeforcesStats?.solved  || 0,
-                  profile.codechefStats?.solved    || 0,
-                  profile.hackerrankStats?.solved  || 0,
-                  profile.interviewbitStats?.solved || 0,
-                  profile.githubStats?.publicRepos || 0
-                ],
-                backgroundColor: ['#D4A017','#4A7FD4','#9B6B2F','#3DAA6A','#2B8CB8','#4D4840'],
-                borderRadius: 5, borderSkipped: false
-              }]
-            },
-            options: {
-              responsive: true, maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              scales: {
-                x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 10 } } },
-                y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } } }
-              }
-            }
-          });
-        }
-
-        if (diffRef.current) {
-          instances.current.diff = new Chart(diffRef.current.getContext('2d'), {
-            type: 'doughnut',
-            data: {
-              labels: ['Easy', 'Medium', 'Hard'],
-              datasets: [{
-                data: [profile.easySolved || 0, profile.mediumSolved || 0, profile.hardSolved || 0],
-                backgroundColor: ['#3DAA6A','#D4A017','#C9483A'],
-                borderWidth: 2, borderColor: '#fff', hoverOffset: 4
-              }]
-            },
-            options: {
-              responsive: true, maintainAspectRatio: false, cutout: '68%',
-              plugins: { legend: { position: 'bottom', labels: { color: tickColor, padding: 14, font: { size: 11 } } } }
-            }
-          });
-        }
-
-        if (ratingRef.current && profile.ratingHistory) {
-          instances.current.line = new Chart(ratingRef.current.getContext('2d'), {
-            type: 'line',
-            data: {
-              labels: profile.ratingHistory.map(h => h.month),
-              datasets: [
-                {
-                  label: 'Codeforces',
-                  data: profile.ratingHistory.map(h => h.codeforces),
-                  borderColor: '#4A7FD4', backgroundColor: 'rgba(74,127,212,0.08)',
-                  tension: 0.3, fill: true, pointRadius: 4, pointBackgroundColor: '#4A7FD4'
-                },
-                {
-                  label: 'LeetCode',
-                  data: profile.ratingHistory.map(h => h.leetcode),
-                  borderColor: '#D4A017', borderDash: [4, 3],
-                  tension: 0.3, fill: false, pointRadius: 4, pointBackgroundColor: '#D4A017'
-                }
-              ]
-            },
-            options: {
-              responsive: true, maintainAspectRatio: false,
-              plugins: { legend: { position: 'top', labels: { color: tickColor, font: { size: 11 }, boxWidth: 12 } } },
-              scales: {
-                x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 11 } } },
-                y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } } }
-              }
-            }
-          });
-        }
-
-        return () => Object.values(instances.current).forEach(c => c && c.destroy());
-      }, [profile]);
+      const cfHistory = profile.ratingHistory?.map(h => h.codeforces) || [];
+      const lcHistory = profile.ratingHistory?.map(h => h.leetcode) || [];
+      const histLabels = profile.ratingHistory?.map(h => h.month) || [];
 
       return (
         <div>
           <div className="charts-grid">
+            {/* Platform bar chart */}
             <div className="chart-card">
               <div className="chart-title">Problems solved by platform</div>
-              <div className="chart-wrap"><canvas ref={solvedRef} /></div>
+              <div style={{ paddingTop: '8px' }}>
+                <HBarChart data={platformData} />
+              </div>
             </div>
+
+            {/* Difficulty rings */}
             <div className="chart-card">
-              <div className="chart-title">Difficulty distribution</div>
-              <div className="chart-wrap"><canvas ref={diffRef} /></div>
+              <div className="chart-title">Difficulty breakdown</div>
+              <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-start', paddingTop: '16px', flexWrap: 'wrap', gap: '12px' }}>
+                <RadialRing pct={Math.round(easy / total * 100)} color="#22c55e" label={easy} sub="Easy" />
+                <RadialRing pct={Math.round(medium / total * 100)} color="#f59e0b" label={medium} sub="Medium" />
+                <RadialRing pct={Math.round(hard / total * 100)} color="#ef4444" label={hard} sub="Hard" />
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                {easy + medium + hard} total solved
+              </div>
             </div>
+
+            {/* Rating sparklines */}
             <div className="chart-card" style={{ gridColumn: '1 / -1' }}>
-              <div className="chart-title">Contest rating over time</div>
-              <div className="chart-wrap"><canvas ref={ratingRef} /></div>
+              <div className="chart-title" style={{ marginBottom: '20px' }}>Contest rating progression</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#4A7FD4' }} />
+                      <span style={{ fontSize: '0.78rem', fontWeight: '600', color: 'var(--text-secondary)' }}>Codeforces</span>
+                    </div>
+                    <span style={{ fontSize: '1.1rem', fontWeight: '800', color: '#4A7FD4', fontFamily: 'JetBrains Mono, monospace' }}>
+                      {cfHistory.length > 0 ? cfHistory[cfHistory.length - 1] : '—'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '6px' }}>
+                    {histLabels.map((m, i) => (
+                      <div key={i} style={{ flex: 1, textAlign: 'center', fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: '500' }}>{m}</div>
+                    ))}
+                  </div>
+                  <Sparkline data={cfHistory} color="#4A7FD4" height={64} />
+                </div>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#D4A017' }} />
+                      <span style={{ fontSize: '0.78rem', fontWeight: '600', color: 'var(--text-secondary)' }}>LeetCode</span>
+                    </div>
+                    <span style={{ fontSize: '1.1rem', fontWeight: '800', color: '#D4A017', fontFamily: 'JetBrains Mono, monospace' }}>
+                      {lcHistory.length > 0 ? lcHistory[lcHistory.length - 1] : '—'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '6px' }}>
+                    {histLabels.map((m, i) => (
+                      <div key={i} style={{ flex: 1, textAlign: 'center', fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: '500' }}>{m}</div>
+                    ))}
+                  </div>
+                  <Sparkline data={lcHistory} color="#D4A017" height={64} />
+                </div>
+              </div>
             </div>
           </div>
           <div style={{ marginTop: '12px' }}>
@@ -1066,7 +1734,7 @@
               <div className="profile-links">
                 {PLATFORMS.map(p => profile[p.handleKey] && (
                   <a key={p.id} className="platform-link"
-                     href={`${p.base}${profile[p.handleKey]}`} target="_blank" rel="noreferrer">
+                    href={`${p.base}${profile[p.handleKey]}`} target="_blank" rel="noreferrer">
                     <Logo id={p.id} size={14} />
                     {p.label}
                   </a>
@@ -1228,12 +1896,12 @@
     function HandlesForm({ currentUser, onSave }) {
       const stored = (() => { try { return JSON.parse(localStorage.getItem('pd_handles') || '{}'); } catch { return {}; } })();
       const [handles, setHandles] = useState({
-        leetcode:     stored.leetcode     || '',
-        codeforces:   stored.codeforces   || '',
-        codechef:     stored.codechef     || '',
-        hackerrank:   stored.hackerrank   || '',
+        leetcode: stored.leetcode || '',
+        codeforces: stored.codeforces || '',
+        codechef: stored.codechef || '',
+        hackerrank: stored.hackerrank || '',
         interviewbit: stored.interviewbit || '',
-        github:       stored.github       || '',
+        github: stored.github || '',
       });
       const [errors, setErrors] = useState({});
       const [loading, setLoading] = useState(false);
@@ -1261,7 +1929,7 @@
             setLoading(false);
             return;
           }
-        } catch (_) {}
+        } catch (_) { }
 
         // Fallback local validation check
         const localErrors = {};
@@ -1276,12 +1944,12 @@
         }
 
         const p = buildDynamic(currentUser);
-        p.leetcodeHandle     = handles.leetcode;
-        p.codeforcesHandle   = handles.codeforces;
-        p.codechefHandle     = handles.codechef;
-        p.hackerrankHandle   = handles.hackerrank;
+        p.leetcodeHandle = handles.leetcode;
+        p.codeforcesHandle = handles.codeforces;
+        p.codechefHandle = handles.codechef;
+        p.hackerrankHandle = handles.hackerrank;
         p.interviewbitHandle = handles.interviewbit;
-        p.githubHandle       = handles.github;
+        p.githubHandle = handles.github;
         p.errors = localErrors;
 
         setLoading(false);
@@ -1289,12 +1957,12 @@
       };
 
       const fields = [
-        { id: 'leetcode',     label: 'LeetCode',     ph: 'neal_wu' },
-        { id: 'codeforces',   label: 'Codeforces',   ph: 'tourist' },
-        { id: 'codechef',     label: 'CodeChef',     ph: 'tourist' },
-        { id: 'hackerrank',   label: 'HackerRank',   ph: 'tourist' },
+        { id: 'leetcode', label: 'LeetCode', ph: 'neal_wu' },
+        { id: 'codeforces', label: 'Codeforces', ph: 'tourist' },
+        { id: 'codechef', label: 'CodeChef', ph: 'tourist' },
+        { id: 'hackerrank', label: 'HackerRank', ph: 'tourist' },
         { id: 'interviewbit', label: 'InterviewBit', ph: 'your_handle' },
-        { id: 'github',       label: 'GitHub',       ph: 'torvalds' },
+        { id: 'github', label: 'GitHub', ph: 'torvalds' },
       ];
 
       return (
@@ -1332,222 +2000,501 @@
       );
     }
 
-    /* ─── AUTH MODAL ─── */
-    function AuthModal({ mode, onClose, onSuccess }) {
+    /* ─── AUTH MODAL (Uiverse.io Form by mahiatlinux) ─── */
+    function AuthModal({ mode: initialMode, onClose, onSuccess }) {
+      const [authMode, setAuthMode] = useState(initialMode || 'login'); // 'login' or 'register'
       const [username, setUsername] = useState('');
+      const [name, setName] = useState('');
       const [password, setPassword] = useState('');
       const [showPassword, setShowPassword] = useState(false);
+      const [rememberMe, setRememberMe] = useState(true);
+      const [errorMsg, setErrorMsg] = useState('');
+      const [successMsg, setSuccessMsg] = useState('');
+      const [loading, setLoading] = useState(false);
 
-      const getStrength = (pass) => {
-        if (!pass) return { score: 0, text: '', color: 'transparent', valid: false };
-        let s = 0;
-        if (pass.length >= 8) s++;
-        if (/[A-Z]/.test(pass)) s++;
-        if (/[a-z]/.test(pass)) s++;
-        if (/[0-9]/.test(pass)) s++;
-        if (/[^A-Za-z0-9]/.test(pass)) s++;
+      // Direct OAuth Popup State
+      const [oauthPopup, setOauthPopup] = useState(null); // 'google' or 'github'
+      const [customOauthInput, setCustomOauthInput] = useState('');
+      const [showCustomOauth, setShowCustomOauth] = useState(false);
 
-        if (s <= 2) return { score: 33, text: 'Weak password', color: 'var(--red-500)', valid: false };
-        if (s <= 3) return { score: 66, text: 'Medium password', color: 'var(--yellow-500)', valid: true };
-        return { score: 100, text: 'Strong password', color: 'var(--green-500)', valid: true };
+      // Real OAuth redirect — opens Google/GitHub OAuth flow in a popup window
+      const handleOAuthRedirect = (provider) => {
+        // Build the OAuth URL for the provider
+        const redirectUri = encodeURIComponent(window.location.origin + '/api/auth/callback/' + provider);
+        let oauthUrl = '';
+
+        if (provider === 'google') {
+          // Google OAuth 2.0 — opens the real Google account selector
+          const params = new URLSearchParams({
+            client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+            redirect_uri: window.location.origin + '/api/auth/callback/google',
+            response_type: 'code',
+            scope: 'openid email profile',
+            prompt: 'select_account',  // Forces account chooser every time
+            access_type: 'online',
+          });
+          oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+        } else if (provider === 'github') {
+          const params = new URLSearchParams({
+            client_id: 'YOUR_GITHUB_CLIENT_ID',
+            redirect_uri: window.location.origin + '/api/auth/callback/github',
+            scope: 'read:user user:email',
+          });
+          oauthUrl = `https://github.com/login/oauth/authorize?${params.toString()}`;
+        }
+
+        // Open OAuth in a centered popup (like real apps do)
+        const w = 500, h = 600;
+        const left = window.screenX + (window.outerWidth - w) / 2;
+        const top = window.screenY + (window.outerHeight - h) / 2;
+        const popup = window.open(oauthUrl, `${provider}_oauth`, `width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes`);
+
+        // Poll for popup close / message
+        const timer = setInterval(() => {
+          try {
+            if (popup && popup.closed) {
+              clearInterval(timer);
+              // Check if user was stored by the callback
+              const stored = localStorage.getItem('pd_oauth_result');
+              if (stored) {
+                try {
+                  const u = JSON.parse(stored);
+                  localStorage.removeItem('pd_oauth_result');
+                  onSuccess(u);
+                  onClose();
+                } catch (_) { }
+              }
+            }
+          } catch (_) { clearInterval(timer); }
+        }, 500);
+
+        // Also listen for postMessage from popup
+        const onMsg = (e) => {
+          if (e.origin !== window.location.origin) return;
+          if (e.data && e.data.type === 'oauth_success') {
+            window.removeEventListener('message', onMsg);
+            clearInterval(timer);
+            onSuccess(e.data.user);
+            onClose();
+          }
+        };
+        window.addEventListener('message', onMsg);
       };
 
-      const strength = getStrength(password);
-
-      const [oauthPopup, setOauthPopup] = useState(null); // { provider, input }
-      const [oauthInput, setOauthInput] = useState('');
-      const [oauthLoading, setOauthLoading] = useState(false);
-
-      const openOAuthPopup = (provider) => {
-        setOauthInput('');
-        setOauthPopup(provider);
-      };
-
-      const confirmOAuth = async () => {
-        if (!oauthInput.trim()) return;
-        setOauthLoading(true);
+      // Fallback demo login for when OAuth client IDs aren't configured
+      const handleDemoOAuth = async (provider, emailOrHandle, displayName) => {
+        setLoading(true);
         try {
-          const body = oauthPopup === 'google'
-            ? { email: oauthInput.trim() }
-            : { username: oauthInput.trim() };
-          const res = await fetch(`/api/auth/${oauthPopup}`, {
+          const body = provider === 'google'
+            ? { email: emailOrHandle, name: displayName }
+            : { username: emailOrHandle, email: `${emailOrHandle}@github.com`, name: displayName };
+          const res = await fetch(`/api/auth/${provider}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
           });
-          const data = res.ok ? await res.json() : {};
-          onSuccess(data.username || oauthInput.split('@')[0] || `${oauthPopup}_user`);
+          const data = await res.json();
+          if (res.ok && data.success) {
+            onSuccess(data.user || { username: data.username || emailOrHandle.split('@')[0], email: emailOrHandle, provider });
+          } else {
+            onSuccess({ username: emailOrHandle.split('@')[0], email: emailOrHandle, provider });
+          }
+          setOauthPopup(null);
+          onClose();
         } catch (_) {
-          onSuccess(oauthInput.split('@')[0] || `${oauthPopup}_user`);
+          onSuccess({ username: emailOrHandle.split('@')[0], email: emailOrHandle, provider });
+          setOauthPopup(null);
+          onClose();
         }
-        setOauthLoading(false);
-        setOauthPopup(null);
-        onClose();
+        setLoading(false);
       };
 
-      // Keep legacy for direct calls if needed
-      const handleSocialAuth = (provider) => openOAuthPopup(provider);
-
-      const submit = async e => {
+      const handleSubmit = async (e) => {
         e.preventDefault();
-        const handle = username.trim() || 'coder';
+        setErrorMsg('');
+        setSuccessMsg('');
+
+        if (username.trim().length < 2) {
+          setErrorMsg("Please enter a valid email or username.");
+          return;
+        }
+
+        if (authMode === 'register' && password.length < 6) {
+          setErrorMsg("Password must be at least 6 characters long.");
+          return;
+        }
+
+        setLoading(true);
+        const endpoint = authMode === 'register' ? '/api/auth/register' : '/api/auth/login';
+        const payload = authMode === 'register'
+          ? { username: username.trim(), password, name: name.trim() }
+          : { username: username.trim(), password };
+
         try {
-          await fetch('/api/auth/login', {
+          const res = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: handle, password })
+            body: JSON.stringify(payload)
           });
-        } catch (_) {}
-        onSuccess(handle);
-        onClose();
+          const data = await res.json();
+
+          if (res.ok && data.success) {
+            setSuccessMsg(data.message || 'Success!');
+            setTimeout(() => {
+              onSuccess(data.user || { username: username.split('@')[0], email: username });
+              onClose();
+            }, 300);
+          } else {
+            setErrorMsg(data.message || 'Authentication failed. Please check credentials.');
+          }
+        } catch (err) {
+          setErrorMsg("Could not connect to authentication service.");
+        }
+        setLoading(false);
       };
 
       return (
         <React.Fragment>
-        <div className="modal-backdrop" onClick={onClose}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
-            <button className="modal-close" onClick={onClose}>✕</button>
-            <div className="modal-title">{mode === 'login' ? 'Sign in' : 'Create account'}</div>
-            <div className="modal-desc">
-              {mode === 'login'
-                ? 'Sign in to manage your coding handles and view your profile.'
-                : 'Join ProfileDekho to build your showcase.'}
-            </div>
+          <div className="modal-backdrop" onClick={onClose}>
+            <div className="form" onClick={e => e.stopPropagation()}>
+              <button className="modal-close" onClick={onClose} type="button" aria-label="Close modal">✕</button>
 
-            {/* Email/Pass Form at TOP */}
-            <form onSubmit={submit}>
-              <div className="field-group">
-                <label>Username / Email</label>
-                <input
-                  type="text"
-                  placeholder="your_handle or email"
-                  required
-                  value={username}
-                  onChange={e => setUsername(e.target.value)}
-                />
-              </div>
+              {/* Alert Feedback */}
+              {errorMsg && (
+                <div className="auth-alert error">
+                  <span>⚠️</span>
+                  <span>{errorMsg}</span>
+                </div>
+              )}
+              {successMsg && (
+                <div className="auth-alert success">
+                  <span>✅</span>
+                  <span>{successMsg}</span>
+                </div>
+              )}
 
-              <div className="field-group">
-                <label>Password</label>
-                <div className="password-wrap">
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {authMode === 'register' && (
+                  <React.Fragment>
+                    <div className="flex-column">
+                      <label>Display Name</label>
+                    </div>
+                    <div className="inputForm">
+                      <svg height="20" viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                      <input
+                        type="text"
+                        className="input"
+                        placeholder="Enter your Name (optional)"
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                      />
+                    </div>
+                  </React.Fragment>
+                )}
+
+                <div className="flex-column">
+                  <label>{authMode === 'register' ? 'Username or Email' : 'Email'}</label>
+                </div>
+                <div className="inputForm">
+                  <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <g id="Layer_3" data-name="Layer 3">
+                      <path d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z"></path>
+                    </g>
+                  </svg>
+                  <input
+                    type="text"
+                    className="input"
+                    placeholder={authMode === 'register' ? 'Enter your Username or Email' : 'Enter your Email'}
+                    required
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    autoFocus
+                    autoComplete={authMode === 'login' ? 'username email' : 'username'}
+                    name="username"
+                    id="pd-username"
+                  />
+                </div>
+
+                <div className="flex-column">
+                  <label>Password</label>
+                </div>
+                <div className="inputForm">
+                  <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"></path>
+                    <path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"></path>
+                  </svg>
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
+                    className="input"
+                    placeholder={authMode === 'register' ? 'Create your Password' : 'Enter your Password'}
                     required
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    autoComplete={authMode === 'login' ? 'current-password' : 'new-password'}
+                    name="password"
+                    id="pd-password"
                   />
-                  <button
-                    type="button"
-                    className="password-toggle-btn"
+                  <span
+                    style={{ cursor: 'pointer', fontSize: '13px', color: 'var(--text-muted)', userSelect: 'none', padding: '4px' }}
                     onClick={() => setShowPassword(!showPassword)}
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    title={showPassword ? 'Hide password' : 'Show password'}
                   >
-                    {showPassword ? (
-                      /* Eye-off icon */
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                        <line x1="1" y1="1" x2="23" y2="23"/>
-                      </svg>
-                    ) : (
-                      /* Eye icon */
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                      </svg>
-                    )}
-                  </button>
+                    {showPassword ? '🙈' : '👁️'}
+                  </span>
                 </div>
 
-                {password && (
-                  <React.Fragment>
-                    <div className="strength-meter">
-                      <div
-                        className="strength-bar"
-                        style={{ width: `${strength.score}%`, backgroundColor: strength.color }}
-                      ></div>
+                {authMode === 'login' ? (
+                  <div className="flex-row">
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="rememberMe"
+                        checked={rememberMe}
+                        onChange={e => setRememberMe(e.target.checked)}
+                      />
+                      <label htmlFor="rememberMe">Remember me</label>
                     </div>
-                    <span style={{ fontSize: '0.72rem', color: strength.color, fontWeight: '500', marginTop: '3px', display: 'block' }}>
-                      {strength.text}
-                    </span>
-                  </React.Fragment>
-                )}
-              </div>
-
-              <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '10px', marginTop: '4px' }}>
-                {mode === 'login' ? 'Sign in' : 'Create account'}
-              </button>
-            </form>
-
-            <div className="auth-divider">or</div>
-
-            {/* Social Auth Buttons at BOTTOM */}
-            <button className="social-btn" onClick={() => handleSocialAuth('google')}>
-              <svg viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-              </svg>
-              Continue with Google
-            </button>
-
-            <button className="social-btn" onClick={() => handleSocialAuth('github')}>
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-              </svg>
-              Continue with GitHub
-            </button>
-          </div>
-        </div>
-
-        {/* OAuth Popup */}
-        {oauthPopup && (
-          <div className="oauth-popup-backdrop" onClick={() => setOauthPopup(null)}>
-            <div className="oauth-popup" onClick={e => e.stopPropagation()}>
-              <div className="oauth-popup-logo">
-                {oauthPopup === 'google' ? (
-                  <svg viewBox="0 0 48 48" style={{ width: '48px', height: '48px' }}>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.16C6.51 42.62 14.62 48 24 48z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.16C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.97 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                  </svg>
+                    <span className="span" onClick={() => alert('Please use 1-click Google or GitHub OAuth to sign in instantly!')}>Forgot password?</span>
+                  </div>
                 ) : (
-                  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '48px', height: '48px', color: '#24292e' }}>
-                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-                  </svg>
+                  <div className="flex-row">
+                    <div>
+                      <input type="checkbox" id="termsAgree" defaultChecked />
+                      <label htmlFor="termsAgree">I agree to terms</label>
+                    </div>
+                  </div>
                 )}
+
+                <button className="button-submit" type="submit" disabled={loading}>
+                  {loading ? 'Processing…' : (authMode === 'login' ? 'Sign In' : 'Create Account')}
+                </button>
+              </form>
+
+              {authMode === 'login' ? (
+                <p className="p">Don't have an account? <span className="span" onClick={() => { setAuthMode('register'); setErrorMsg(''); }}>Sign Up</span></p>
+              ) : (
+                <p className="p">Already have an account? <span className="span" onClick={() => { setAuthMode('login'); setErrorMsg(''); }}>Sign In</span></p>
+              )}
+
+              <p className="p line">Or With</p>
+
+              <div className="flex-row" style={{ gap: '10px' }}>
+                <button
+                  type="button"
+                  className="btn-auth-social google"
+                  onClick={() => handleOAuthRedirect('google')}
+                  title="Sign in with Google — opens Google account selector"
+                >
+                  <svg width="20" height="20" viewBox="0 0 512 512" style={{ enableBackground: 'new 0 0 512 512' }}>
+                    <path style={{ fill: '#FBBB00' }} d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256 c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644c-5.317,15.501-8.215,32.141-8.215,49.456 C103.821,274.792,107.225,292.797,113.47,309.408z"></path>
+                    <path style={{ fill: '#518EF8' }} d="M507.527,208.176C510.467,223.662,512,239.655,512,256c0,18.328-1.927,36.206-5.598,53.451 c-12.462,58.683-45.025,109.925-90.134,146.187l-0.014-0.014l-73.044-3.727l-10.338-64.535 c29.932-17.554,53.324-45.025,65.646-77.911h-136.89V208.176h138.887L507.527,208.176L507.527,208.176z"></path>
+                    <path style={{ fill: '#28B446' }} d="M416.253,455.624l0.014,0.014C372.396,490.901,316.666,512,256,512 c-97.491,0-182.252-54.491-225.491-134.681l82.961-67.91c21.619,57.698,77.278,98.771,142.53,98.771 c28.047,0,54.323-7.582,76.87-20.818L416.253,455.624z"></path>
+                    <path style={{ fill: '#F14336' }} d="M419.404,58.936l-82.933,67.896c-23.335-14.586-50.919-23.012-80.471-23.012 c-66.729,0-123.429,42.957-143.965,102.724l-83.397-68.276h-0.014C71.23,56.123,157.06,0,256,0 C318.115,0,375.068,22.126,419.404,58.936z"></path>
+                  </svg>
+                  Google
+                </button>
+
+                <button
+                  type="button"
+                  className="btn-auth-social github"
+                  onClick={() => handleOAuthRedirect('github')}
+                  title="Sign in with GitHub — opens GitHub authorization"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2" />
+                  </svg>
+                  GitHub
+                </button>
               </div>
-              <div className="oauth-popup-title">
-                Sign in with {oauthPopup === 'google' ? 'Google' : 'GitHub'}
-              </div>
-              <div className="oauth-popup-desc">
-                {oauthPopup === 'google'
-                  ? 'Enter your Google email address to continue'
-                  : 'Enter your GitHub username to continue'}
-              </div>
-              <input
-                className="oauth-popup-input"
-                type={oauthPopup === 'google' ? 'email' : 'text'}
-                placeholder={oauthPopup === 'google' ? 'you@gmail.com' : 'your-github-username'}
-                value={oauthInput}
-                onChange={e => setOauthInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && confirmOAuth()}
-                autoFocus
-              />
-              <button
-                className="oauth-popup-btn"
-                style={{ background: oauthPopup === 'google' ? '#4285F4' : '#24292e' }}
-                onClick={confirmOAuth}
-                disabled={oauthLoading || !oauthInput.trim()}
-              >
-                {oauthLoading ? 'Signing in…' : `Continue with ${oauthPopup === 'google' ? 'Google' : 'GitHub'}`}
-              </button>
-              <button className="oauth-popup-cancel" onClick={() => setOauthPopup(null)}>Cancel</button>
             </div>
           </div>
-        )}
+
+          {/* Direct Google Account Chooser Modal */}
+          {oauthPopup === 'google' && (
+            <div className="oauth-popup-backdrop" onClick={() => setOauthPopup(null)}>
+              <div className="oauth-popup" onClick={e => e.stopPropagation()}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                  <svg width="28" height="28" viewBox="0 0 512 512">
+                    <path style={{ fill: '#FBBB00' }} d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256 c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644c-5.317,15.501-8.215,32.141-8.215,49.456 C103.821,274.792,107.225,292.797,113.47,309.408z"></path>
+                    <path style={{ fill: '#518EF8' }} d="M507.527,208.176C510.467,223.662,512,239.655,512,256c0,18.328-1.927,36.206-5.598,53.451 c-12.462,58.683-45.025,109.925-90.134,146.187l-0.014-0.014l-73.044-3.727l-10.338-64.535 c29.932-17.554,53.324-45.025,65.646-77.911h-136.89V208.176h138.887L507.527,208.176L507.527,208.176z"></path>
+                    <path style={{ fill: '#28B446' }} d="M416.253,455.624l0.014,0.014C372.396,490.901,316.666,512,256,512 c-97.491,0-182.252-54.491-225.491-134.681l82.961-67.91c21.619,57.698,77.278,98.771,142.53,98.771 c28.047,0,54.323-7.582,76.87-20.818L416.253,455.624z"></path>
+                    <path style={{ fill: '#F14336' }} d="M419.404,58.936l-82.933,67.896c-23.335-14.586-50.919-23.012-80.471-23.012 c-66.729,0-123.429,42.957-143.965,102.724l-83.397-68.276h-0.014C71.23,56.123,157.06,0,256,0 C318.115,0,375.068,22.126,419.404,58.936z"></path>
+                  </svg>
+                  <div>
+                    <div style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--form-text)' }}>Choose an account</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>to continue to ProfileDekho</div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '18px 0' }}>
+                  {[
+                    { email: 'alex.coder@gmail.com', name: 'Alex Coder' },
+                    { email: 'tourist@gmail.com', name: 'Gennady Korotkevich' },
+                    { email: 'neal.wu@gmail.com', name: 'Neal Wu' },
+                    { email: 'dev.coder@gmail.com', name: 'Developer Account' }
+                  ].map(acc => (
+                    <div
+                      key={acc.email}
+                      onClick={() => handleDirectOAuth('google', acc.email, acc.name)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid var(--input-border)',
+                        cursor: 'pointer',
+                        background: 'var(--input-bg)',
+                        transition: 'all 0.15s'
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#4285F4'; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--input-border)'; }}
+                    >
+                      <img
+                        src={`https://api.dicebear.com/7.x/initials/svg?seed=${acc.name}&backgroundColor=4285F4&textColor=ffffff`}
+                        style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+                        alt=""
+                      />
+                      <div style={{ flex: 1, textAlign: 'left' }}>
+                        <div style={{ fontSize: '0.88rem', fontWeight: '600', color: 'var(--form-text)' }}>{acc.name}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>{acc.email}</div>
+                      </div>
+                      <span style={{ fontSize: '0.85rem', color: '#4285F4' }}>➔</span>
+                    </div>
+                  ))}
+
+                  {!showCustomOauth ? (
+                    <button
+                      type="button"
+                      className="btn btn-ghost"
+                      style={{ justifyContent: 'flex-start', padding: '10px 14px', borderRadius: '10px', border: '1px dashed var(--input-border)', fontSize: '0.84rem' }}
+                      onClick={() => setShowCustomOauth(true)}
+                    >
+                      <span>➕ Use another Google account</span>
+                    </button>
+                  ) : (
+                    <div style={{ marginTop: '8px' }}>
+                      <input
+                        type="email"
+                        placeholder="yourname@gmail.com"
+                        className="input"
+                        style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.88rem', marginBottom: '8px' }}
+                        value={customOauthInput}
+                        onChange={e => setCustomOauthInput(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthInput.split('@')[0])}
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        className="button-submit"
+                        style={{ margin: 0 }}
+                        onClick={() => customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthInput.split('@')[0])}
+                      >
+                        Sign In with this account
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ textAlign: 'right', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
+                  <button type="button" className="btn btn-ghost" onClick={() => setOauthPopup(null)}>Cancel</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Direct GitHub Authorization Modal */}
+          {oauthPopup === 'github' && (
+            <div className="oauth-popup-backdrop" onClick={() => setOauthPopup(null)}>
+              <div className="oauth-popup" onClick={e => e.stopPropagation()}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
+                  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '30px', height: '30px', color: 'var(--form-text)' }}>
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                  </svg>
+                  <div>
+                    <div style={{ fontSize: '1.05rem', fontWeight: '700', color: 'var(--form-text)' }}>Authorize ProfileDekho</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Select GitHub profile to continue</div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '18px 0' }}>
+                  {[
+                    { username: 'octocat', name: 'The Octocat' },
+                    { username: 'tourist', name: 'tourist (Gennady)' },
+                    { username: 'neal_wu', name: 'neal_wu' }
+                  ].map(acc => (
+                    <div
+                      key={acc.username}
+                      onClick={() => handleDirectOAuth('github', acc.username, acc.name)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid var(--input-border)',
+                        cursor: 'pointer',
+                        background: 'var(--input-bg)',
+                        transition: 'all 0.15s'
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#2d79f3'; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--input-border)'; }}
+                    >
+                      <img
+                        src={`https://api.dicebear.com/7.x/bottts/svg?seed=${acc.username}`}
+                        style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+                        alt=""
+                      />
+                      <div style={{ flex: 1, textAlign: 'left' }}>
+                        <div style={{ fontSize: '0.88rem', fontWeight: '600', color: 'var(--form-text)' }}>@{acc.username}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>{acc.name}</div>
+                      </div>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>➔</span>
+                    </div>
+                  ))}
+
+                  {!showCustomOauth ? (
+                    <button
+                      type="button"
+                      className="btn btn-ghost"
+                      style={{ justifyContent: 'flex-start', padding: '10px 14px', borderRadius: '10px', border: '1px dashed var(--input-border)', fontSize: '0.84rem' }}
+                      onClick={() => setShowCustomOauth(true)}
+                    >
+                      <span>➕ Use another GitHub username</span>
+                    </button>
+                  ) : (
+                    <div style={{ marginTop: '8px' }}>
+                      <input
+                        type="text"
+                        placeholder="your-github-username"
+                        className="input"
+                        style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.88rem', marginBottom: '8px' }}
+                        value={customOauthInput}
+                        onChange={e => setCustomOauthInput(e.target.value)}
+                        onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthInput.trim())}
+                        autoFocus
+                      />
+                      <button
+                        type="button"
+                        className="button-submit"
+                        style={{ margin: 0 }}
+                        onClick={() => customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthInput.trim())}
+                      >
+                        Authorize as @{customOauthInput.trim() || 'user'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ textAlign: 'right', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
+                  <button type="button" className="btn btn-ghost" onClick={() => setOauthPopup(null)}>Cancel</button>
+                </div>
+              </div>
+            </div>
+          )}
         </React.Fragment>
       );
     }
@@ -1589,13 +2536,28 @@
 
     /* ─── ROOT APP ─── */
     function App() {
+      const [theme, setTheme] = useState(() => localStorage.getItem('pd_theme') || 'dark');
       const [currentUser, setCurrentUser] = useState(localStorage.getItem('pd_user') || null);
-      const [view, setView]       = useState('home');
+      const [userData, setUserData] = useState(() => {
+        try {
+          return JSON.parse(localStorage.getItem('pd_user_data') || 'null');
+        } catch (_) { return null; }
+      });
+      const [view, setView] = useState('home');
       const [profile, setProfile] = useState(null);
       const [authModal, setAuthModal] = useState(null);
-      const [toast, setToast]     = useState(null);
+      const [toast, setToast] = useState(null);
 
-      const showToast = msg => { setToast(msg); setTimeout(() => setToast(null), 3000); };
+      useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('pd_theme', theme);
+      }, [theme]);
+
+      const toggleTheme = () => {
+        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+      };
+
+      const showToast = msg => { setToast(msg); setTimeout(() => setToast(null), 3200); };
 
       const search = async (q) => {
         const p = await fetchProfile(q);
@@ -1603,22 +2565,32 @@
       };
 
       const openMyProfile = async () => {
-        const p = await fetchProfile(currentUser);
+        const handle = currentUser || 'coder';
+        const p = await fetchProfile(handle);
         setProfile(p); setView('profile');
       };
 
-      const login = (username) => {
+      const handleAuthSuccess = (userPayload) => {
+        const username = typeof userPayload === 'string' ? userPayload : (userPayload.username || 'coder');
+        const userObj = typeof userPayload === 'object' ? userPayload : { username: userPayload, email: `${userPayload}@gmail.com` };
+
         setCurrentUser(username);
+        setUserData(userObj);
         localStorage.setItem('pd_user', username);
+        localStorage.setItem('pd_user_data', JSON.stringify(userObj));
+
         showToast(`Signed in as @${username}`);
         setView('handles');
       };
 
       const logout = () => {
         setCurrentUser(null);
+        setUserData(null);
         localStorage.removeItem('pd_user');
+        localStorage.removeItem('pd_user_data');
+        localStorage.removeItem('pd_token');
         setView('home'); setProfile(null);
-        showToast('Signed out');
+        showToast('Signed out successfully');
       };
 
       return (
@@ -1631,35 +2603,83 @@
             </a>
 
             <div className="navbar-actions">
+              {/* Theme Switcher Toggle */}
+              <button
+                type="button"
+                className="theme-toggle-btn"
+                onClick={toggleTheme}
+                title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  /* Sun icon — shown in dark mode to switch to light */
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                  </svg>
+                ) : (
+                  /* Moon icon — shown in light mode to switch to dark */
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                  </svg>
+                )}
+              </button>
+
               {currentUser ? (
                 <React.Fragment>
                   <button className="btn btn-ghost" onClick={() => setView('handles')}>Edit handles</button>
-                  <button className="user-pill" onClick={openMyProfile}>
+                  <button className="user-pill" onClick={openMyProfile} title={userData?.email || currentUser}>
                     <img className="user-avatar-sm"
-                      src={`https://api.dicebear.com/7.x/initials/svg?seed=${currentUser}&backgroundColor=e5e7eb&textColor=374151`}
+                      src={userData?.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${currentUser}&backgroundColor=e5e7eb&textColor=374151`}
                       alt="" />
-                    @{currentUser}
+                    <span>@{currentUser}</span>
+                    {userData?.provider && (
+                      <span style={{
+                        fontSize: '0.65rem',
+                        fontWeight: '700',
+                        padding: '1px 5px',
+                        borderRadius: '4px',
+                        background: userData.provider === 'google' ? '#E8F0FE' : 'var(--sand-300)',
+                        color: userData.provider === 'google' ? '#1967D2' : 'var(--stone-800)'
+                      }}>
+                        {userData.provider}
+                      </span>
+                    )}
                   </button>
                   <button className="btn btn-ghost" onClick={logout}>Sign out</button>
                 </React.Fragment>
               ) : (
-                <button className="btn btn-primary" onClick={() => setAuthModal('login')}>Sign in</button>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button className="btn btn-ghost" onClick={() => setAuthModal('login')}>Sign in</button>
+                  <button className="btn btn-primary" onClick={() => setAuthModal('register')}>Create account</button>
+                </div>
               )}
             </div>
           </nav>
 
           {/* ── MAIN ── */}
-          {view === 'home'    && <HomePage onSearch={search} />}
+          {view === 'home' && <HomePage onSearch={search} />}
           {view === 'profile' && profile && <Showcase profile={profile} />}
           {view === 'handles' && currentUser && (
             <HandlesForm
               currentUser={currentUser}
-              onSave={(p) => { setProfile(p); setView('profile'); showToast('Profile synced!'); }}
+              onSave={(p) => { setProfile(p); setView('profile'); showToast('Profile handles updated & synced!'); }}
             />
           )}
 
           {authModal && (
-            <AuthModal mode={authModal} onClose={() => setAuthModal(null)} onSuccess={login} />
+            <AuthModal
+              mode={authModal}
+              onClose={() => setAuthModal(null)}
+              onSuccess={handleAuthSuccess}
+            />
           )}
           {toast && <div className="toast">{toast}</div>}
         </React.Fragment>
@@ -1669,4 +2689,5 @@
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
+
 </html>
