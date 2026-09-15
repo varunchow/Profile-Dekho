@@ -64,6 +64,23 @@ def verify_otp(email, otp):
     _otp_store.pop(email.lower(), None)
     return True, name
 
+# ─── Google OAuth2 Token Verification ─────────────────────────────────────────
+GOOGLE_CLIENT_ID = '959050331649-oct2bkt1cnmo468e8n6avfpofd41d5mk.apps.googleusercontent.com'
+
+def verify_google_token(credential):
+    """Verify a Google ID token via Google's tokeninfo endpoint."""
+    try:
+        url = f"https://oauth2.googleapis.com/tokeninfo?id_token={credential}"
+        req = urllib.request.Request(url)
+        resp = urllib.request.urlopen(req, timeout=5)
+        data = json.loads(resp.read().decode('utf-8'))
+        # Verify the token is for our app
+        if data.get('aud') != GOOGLE_CLIENT_ID:
+            return None
+        return data  # Contains: email, name, picture, sub, email_verified, etc.
+    except Exception as e:
+        print(f"[Google Auth] Token verification failed: {e}")
+        return None
 
 # ─── PostgreSQL Database Integration ──────────────────────────────────────────
 DB_HOST = os.environ.get('DB_HOST', 'localhost')
@@ -1035,6 +1052,85 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
             safe = {k: v for k, v in target.items() if k != "password_hash"}
             self.json({"success": True, "token": f"pd_jwt_{target['id']}_{int(time.time())}", "user": safe,
                        "message": f"Welcome back, {safe.get('name', safe.get('username'))}!"})
+
+        # ── GOOGLE REAL OAUTH2 SIGN-IN ────────────────────────────────────
+        elif path == '/api/auth/google/signin':
+            credential = payload.get("credential", "").strip()
+            if not credential:
+                self.json({"success": False, "message": "Google credential is required."}, 400)
+                return
+
+            google_data = verify_google_token(credential)
+            if not google_data:
+                self.json({"success": False, "message": "Invalid Google token. Please try again."}, 400)
+                return
+
+            email = google_data.get("email", "").lower()
+            name = google_data.get("name", "")
+            picture = google_data.get("picture", "")
+
+            if not email:
+                self.json({"success": False, "message": "Could not retrieve email from Google."}, 400)
+                return
+
+            raw_user_part = email.split("@")[0]
+            username = re.sub(r'[^a-z0-9_]', '_', raw_user_part.lower())
+            clean_display_name = name if name else raw_user_part.replace(".", " ").replace("_", " ").title()
+            avatar = picture if picture else f"https://ui-avatars.com/api/?name={urllib.parse.quote(clean_display_name)}&background=4285F4&color=fff&size=96"
+
+            users = load_users()
+            if username in users:
+                u = users[username]
+                u["lastLogin"] = now
+                u["provider"] = "google"
+                if clean_display_name and ("@" in u.get("name", "") or u.get("name") == username):
+                    u["name"] = clean_display_name
+                if picture:
+                    u["avatar"] = picture
+            else:
+                uid = f"usr_g_{int(time.time())}"
+                u = {
+                    "id": uid, "username": username, "email": email,
+                    "provider": "google",
+                    "name": clean_display_name,
+                    "avatar": avatar,
+                    "createdAt": now, "lastLogin": now
+                }
+                users[username] = u
+            save_users(users)
+
+            profiles = load_profiles()
+            if username not in profiles:
+                profiles[username] = {
+                    "username": username, "name": clean_display_name,
+                    "bio": "Competitive Programmer | ProfileDekho",
+                    "title": "Member", "totalSolved": 0,
+                    "easySolved": 0, "mediumSolved": 0, "hardSolved": 0,
+                    "totalContests": 0, "maxRating": 0, "currentRating": 0,
+                    "globalScore": 0, "errors": {},
+                    "leetcodeHandle": "", "codeforcesHandle": "", "codechefHandle": "",
+                    "interviewbitHandle": "", "githubHandle": "",
+                    "leetcodeStats": {"solved": 0, "valid": False},
+                    "codeforcesStats": {"solved": 0, "valid": False},
+                    "codechefStats": {"solved": 0, "valid": False},
+                    "interviewbitStats": {"solved": 0, "valid": False},
+                    "githubStats": {"publicRepos": 0, "valid": False},
+                    "topicScores": {}, "ratingHistory": []
+                }
+                save_profiles(profiles)
+            else:
+                if clean_display_name and ("@" in profiles[username].get("name", "") or profiles[username].get("name") == username):
+                    profiles[username]["name"] = clean_display_name
+                    save_profiles(profiles)
+
+            safe = {k: v for k, v in u.items() if k != "password_hash"}
+            self.json({
+                "success": True,
+                "provider": "google",
+                "token": f"pd_g_{u['id']}_{int(time.time())}",
+                "user": safe,
+                "message": f"Signed in with Google as {clean_display_name} (@{username})"
+            })
 
         # ── GOOGLE SEND OTP ────────────────────────────────────────────────
         elif path == '/api/auth/google/send-otp':
