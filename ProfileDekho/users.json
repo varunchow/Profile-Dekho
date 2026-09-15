@@ -1,1 +1,23 @@
-{}
+{
+  "mutthavarapuvarun": {
+    "id": "usr_g_1788020035",
+    "username": "mutthavarapuvarun",
+    "email": "mutthavarapuvarun@gmail.com",
+    "provider": "google",
+    "name": "mutthavarapuvarun",
+    "avatar": "https://ui-avatars.com/api/?name=mutthavarapuvarun&background=4285F4&color=fff&size=96",
+    "createdAt": "2026-08-29T16:13:55Z",
+    "lastLogin": "2026-08-29T16:13:55Z"
+  },
+  "abc": {
+    "id": "usr_1788020606",
+    "username": "abc",
+    "email": "abc@gmail.com",
+    "password_hash": "a440a36b7377c8c4d11138e5a9c4897c7e91dac8579383e9cefa73d234351332",
+    "provider": "local",
+    "name": "Varun Chow",
+    "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=abc&backgroundColor=4A7FD4&textColor=ffffff",
+    "createdAt": "2026-08-29T16:23:25Z",
+    "lastLogin": "2026-08-29T16:23:25Z"
+  }
+}

@@ -21,7 +21,6 @@
   --platform-leetcode: #ffa116;
   --platform-codeforces: #3182ce;
   --platform-codechef: #b87333;
-  --platform-hackerrank: #2ec866;
   --platform-gfg: #2f9d58;
   --platform-github: #f0f6fc;
 }
@@ -174,7 +173,6 @@ body {
 .platform-badge.leetcode { border-color: rgba(255, 161, 22, 0.4); color: var(--platform-leetcode); }
 .platform-badge.codeforces { border-color: rgba(49, 130, 206, 0.4); color: var(--platform-codeforces); }
 .platform-badge.codechef { border-color: rgba(184, 115, 51, 0.4); color: #e2e8f0; }
-.platform-badge.hackerrank { border-color: rgba(46, 200, 102, 0.4); color: var(--platform-hackerrank); }
 .platform-badge.gfg { border-color: rgba(47, 157, 88, 0.4); color: var(--platform-gfg); }
 .platform-badge.github { border-color: rgba(240, 246, 252, 0.4); color: var(--platform-github); }
 

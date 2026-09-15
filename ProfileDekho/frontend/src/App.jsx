@@ -30,13 +30,11 @@ export default function App() {
       leetcodeHandle: 'tourist',
       codeforcesHandle: 'tourist',
       codechefHandle: 'tourist',
-      hackerrankHandle: 'tourist',
       gfgHandle: 'tourist',
       githubHandle: 'tourist',
       leetcodeStats: { solved: 450, easy: 100, medium: 200, hard: 150, rating: 2850 },
       codeforcesStats: { solved: 850, easy: 100, medium: 350, hard: 400, rating: 3820, rankName: 'Legendary Grandmaster' },
       codechefStats: { solved: 150, rating: 2950, stars: '7★' },
-      hackerrankStats: { solved: 100, stars: 6 },
       gfgStats: { solved: 200, codingScore: 1400 },
       githubStats: { publicRepos: 18, stars: 450 },
       topicScores: {
@@ -72,13 +70,11 @@ export default function App() {
       leetcodeHandle: 'neal_wu',
       codeforcesHandle: 'neal_wu',
       codechefHandle: 'neal_wu',
-      hackerrankHandle: 'neal_wu',
       gfgHandle: 'neal_wu',
       githubHandle: 'neal_wu',
       leetcodeStats: { solved: 520, easy: 150, medium: 250, hard: 120, rating: 2650 },
       codeforcesStats: { solved: 600, easy: 200, medium: 270, hard: 130, rating: 2880, rankName: 'International Grandmaster' },
       codechefStats: { solved: 180, rating: 2650, stars: '6★' },
-      hackerrankStats: { solved: 110, stars: 6 },
       gfgStats: { solved: 160, codingScore: 1100 },
       githubStats: { publicRepos: 32, stars: 210 },
       topicScores: {
@@ -104,6 +100,41 @@ export default function App() {
     // Initial profile load
     setActiveProfile(defaultProfiles.neal_wu);
   }, []);
+
+  // Auto-fetch profile data when user is logged in and has stored handles
+  useEffect(() => {
+    if (currentUser) {
+      const storedHandles = localStorage.getItem(`pd_handles_${currentUser}`);
+      if (storedHandles) {
+        const handles = JSON.parse(storedHandles);
+        // Auto-fetch fresh data on page load/visit
+        const autoFetch = async () => {
+          try {
+            const queryParams = new URLSearchParams({
+              username: currentUser,
+              leetcode: handles.leetcode || currentUser,
+              codeforces: handles.codeforces || currentUser,
+              codechef: handles.codechef || currentUser,
+              gfg: handles.gfg || currentUser,
+              github: handles.github || currentUser
+            });
+            const res = await fetch(`/api/profiles/fetch?${queryParams.toString()}`);
+            if (res.ok) {
+              const profileData = await res.json();
+              setActiveProfile(profileData);
+              showAlert(`✅ Profile refreshed with latest stats from all platforms!`);
+            }
+          } catch (err) {
+            console.warn("Auto-fetch failed:", err);
+            // Silently fail - user can manually refresh
+          }
+        };
+        // Delay auto-fetch slightly to avoid conflicts with manual fetch
+        const timer = setTimeout(autoFetch, 500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [currentUser]);
 
   const handleSearch = async (username) => {
     const key = username.toLowerCase();
@@ -140,7 +171,6 @@ export default function App() {
         leetcodeHandle: username,
         codeforcesHandle: username,
         codechefHandle: username,
-        hackerrankHandle: username,
         gfgHandle: username,
         githubHandle: username,
         leetcodeStats: { solved: 320, easy: 140, medium: 140, hard: 40, rating: 1760 },
@@ -246,7 +276,7 @@ export default function App() {
             <strong>ProfileDekho</strong> • Built with Spring Boot (Java) & React
           </p>
           <p className="mb-0 text-muted">
-            Aggregating LeetCode, CodeChef, CodeForces, HackerRank, GeeksforGeeks & GitHub stats into recruiter-ready portfolios.
+            Aggregating LeetCode, CodeChef, Codeforces, GeeksforGeeks & GitHub stats into recruiter-ready portfolios.
           </p>
         </div>
       </footer>

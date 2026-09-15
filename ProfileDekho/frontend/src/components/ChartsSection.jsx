@@ -22,13 +22,12 @@ export default function ChartsSection({ profile }) {
     // 1. Solved Problems by Platform Chart
     if (solvedCanvasRef.current) {
       const ctx = solvedCanvasRef.current.getContext('2d');
-      const platformLabels = ['LeetCode', 'Codeforces', 'CodeChef', 'HackerRank', 'GeeksforGeeks'];
+      const platformLabels = ['LeetCode', 'Codeforces', 'CodeChef', 'InterviewBit'];
       const platformData = [
         profile.leetcodeStats?.solved || 380,
         profile.codeforcesStats?.solved || 460,
         profile.codechefStats?.solved || 210,
-        profile.hackerrankStats?.solved || 140,
-        profile.gfgStats?.solved || 230
+        profile.interviewbitStats?.solved || 180
       ];
 
       chartInstancesRef.current.solved = new Chart(ctx, {
@@ -42,8 +41,7 @@ export default function ChartsSection({ profile }) {
               '#ffa116',
               '#3182ce',
               '#b87333',
-              '#2ec866',
-              '#2f9d58'
+              '#8b5cf6'
             ],
             borderRadius: 8,
           }]
@@ -92,12 +90,13 @@ export default function ChartsSection({ profile }) {
       });
     }
 
-    // 3. Rating History Line Chart
+    // 3. Rating History Line Chart (LeetCode, Codeforces, CodeChef only)
     if (ratingCanvasRef.current && profile.ratingHistory) {
       const ctx = ratingCanvasRef.current.getContext('2d');
       const labels = profile.ratingHistory.map(h => h.month);
-      const cfData = profile.ratingHistory.map(h => h.codeforces);
-      const lcData = profile.ratingHistory.map(h => h.leetcode);
+      const cfData = profile.ratingHistory.map(h => h.codeforces || 0);
+      const ccData = profile.ratingHistory.map(h => h.codechef || 0);
+      const lcData = profile.ratingHistory.map(h => h.leetcode || 0);
 
       chartInstancesRef.current.rating = new Chart(ctx, {
         type: 'line',
@@ -105,15 +104,23 @@ export default function ChartsSection({ profile }) {
           labels: labels,
           datasets: [
             {
-              label: 'Codeforces Rating',
+              label: 'Codeforces',
               data: cfData,
-              borderColor: '#6366f1',
-              backgroundColor: 'rgba(99, 102, 241, 0.1)',
+              borderColor: '#4A7FD4',
+              backgroundColor: 'rgba(74, 127, 212, 0.1)',
               tension: 0.35,
-              fill: true
+              fill: false
             },
             {
-              label: 'LeetCode Rating',
+              label: 'CodeChef',
+              data: ccData,
+              borderColor: '#b87333',
+              backgroundColor: 'rgba(184, 115, 51, 0.1)',
+              tension: 0.35,
+              fill: false
+            },
+            {
+              label: 'LeetCode',
               data: lcData,
               borderColor: '#ffa116',
               backgroundColor: 'rgba(255, 161, 22, 0.05)',

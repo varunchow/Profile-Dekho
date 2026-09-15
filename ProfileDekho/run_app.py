@@ -29,12 +29,39 @@ def cache_set(key, data):
 def cache_clear(key):
     _profile_cache.pop(key.lower(), None)
 
-# ─── Auth helpers ───────────────────────────────────────────────────────────
+# ─── Auth & OTP helpers ───────────────────────────────────────────────────────
 def hash_password(password):
     return hashlib.sha256(password.encode('utf-8')).hexdigest()
 
 def get_default_users():
     return {}
+
+_otp_store = {}  # email.lower() -> { 'otp': '123456', 'expires': timestamp, 'name': '...' }
+
+def generate_otp(email, name=''):
+    import random
+    otp = f"{random.randint(100000, 999999)}"
+    _otp_store[email.lower()] = {
+        'otp': otp,
+        'expires': time.time() + 600,  # 10-minute validity
+        'name': name
+    }
+    print(f"[OTP] >>> Verification OTP generated for {email}: {otp} <<<")
+    return otp
+
+def verify_otp(email, otp):
+    entry = _otp_store.get(email.lower())
+    if not entry:
+        return False, "No OTP request found for this email. Please request a new OTP."
+    if time.time() > entry['expires']:
+        _otp_store.pop(email.lower(), None)
+        return False, "OTP has expired. Please request a new OTP code."
+    if entry['otp'] != otp.strip():
+        return False, "Invalid OTP code. Please enter the correct 6-digit code."
+    name = entry.get('name', '')
+    _otp_store.pop(email.lower(), None)
+    return True, name
+
 
 # ─── PostgreSQL Database Integration ──────────────────────────────────────────
 DB_HOST = os.environ.get('DB_HOST', 'localhost')
@@ -408,7 +435,7 @@ def fetch_codechef(handle):
     try:
         handle = handle.strip()
         html = _req(f"https://www.codechef.com/users/{handle}", timeout=7)
-        if "User Not Found" in html or "404" in html or "Could not find page" in html:
+        if "Could not find page" in html or ("User Not Found" in html and "profile" not in html.lower()):
             return None, "CodeChef user not found"
 
         # 1. Total Problems Solved
@@ -419,28 +446,8 @@ def fetch_codechef(handle):
         if m_solved:
             solved = int(m_solved.group(1))
 
-        # 2. Rating
+        # 2. Rating & Contest History from all_rating JSON
         rating = 0
-        m_rating = (re.search(r'class="rating-number"[^>]*>\s*(\d+)', html)
-                    or re.search(r'rating-number[^>]*>\s*(\d+)', html)
-                    or re.search(r'"currentRating":\s*(\d+)', html))
-        if m_rating:
-            rating = int(m_rating.group(1))
-
-        # 3. Stars
-        stars_count = 0
-        m_stars_div = re.search(r'class="rating-star"[^>]*>(.*?)</div>', html, re.S)
-        if m_stars_div:
-            raw_s = m_stars_div.group(1)
-            stars_count = raw_s.count('&#9733;') or raw_s.count('★') or raw_s.count('<span>')
-        if not stars_count:
-            m_s2 = re.search(r'([1-7])\s*★', html)
-            if m_s2:
-                stars_count = int(m_s2.group(1))
-
-        stars_str = f"{stars_count}★" if stars_count > 0 else ("1★" if rating > 0 else "Unrated")
-
-        # 4. Contest History & Total Contests from all_rating
         rating_history = []
         contest_count = 0
         m_all_rating = re.search(r'var\s+all_rating\s*=\s*(\[.*?\]);', html)
@@ -449,6 +456,10 @@ def fetch_codechef(handle):
                 contests_data = json.loads(m_all_rating.group(1))
                 if isinstance(contests_data, list):
                     contest_count = len(contests_data)
+                    if contests_data:
+                        last_c = contests_data[-1]
+                        if last_c.get("rating"):
+                            rating = int(last_c["rating"])
                     for c in contests_data[-6:]:
                         c_name = c.get("name") or c.get("code") or ""
                         c_month = c.get("getyear", "") + "-" + c.get("getmonth", "") if c.get("getmonth") else c_name[:6]
@@ -459,6 +470,29 @@ def fetch_codechef(handle):
                         })
             except Exception:
                 pass
+
+        # Fallback rating parsing if not in all_rating
+        if not rating:
+            m_rating = (re.search(r'class="rating-header[^"]*".*?(\d{3,4})', html, re.S)
+                        or re.search(r'class="rating-number"[^>]*>\s*(\d+)', html)
+                        or re.search(r'"currentRating":\s*(\d+)', html))
+            if m_rating:
+                rating = int(m_rating.group(1))
+
+        # 3. Stars Count
+        stars_count = 0
+        m_stars_div = re.search(r'class="rating-star"[^>]*>(.*?)</div>', html, re.S)
+        if m_stars_div:
+            raw_s = m_stars_div.group(1)
+            stars_count = raw_s.count('&#9733;') or raw_s.count('★') or raw_s.count('<span>')
+        if not stars_count:
+            stars_count = html.count('&#9733;')
+        if not stars_count:
+            m_s2 = re.search(r'([1-7])\s*★', html)
+            if m_s2:
+                stars_count = int(m_s2.group(1))
+
+        stars_str = f"{stars_count}★" if stars_count > 0 else ("1★" if rating > 0 else "Unrated")
 
         if not solved and rating:
             solved = max(10, rating // 6)
@@ -533,21 +567,59 @@ def fetch_github(handle):
 
         # Count total stars across top repositories
         total_stars = 0
+        repositories = []
         try:
             raw_repos = _req(f"https://api.github.com/users/{handle}/repos?per_page=60&sort=pushed",
                              headers={'Accept': 'application/vnd.github.v3+json'}, timeout=5)
             repos = json.loads(raw_repos)
             if isinstance(repos, list):
                 total_stars = sum(r.get("stargazers_count", 0) for r in repos if isinstance(r, dict))
+                repositories = [{
+                    "name": r.get("name"),
+                    "url": r.get("html_url"),
+                    "description": r.get("description"),
+                    "language": r.get("language"),
+                    "stars": r.get("stargazers_count", 0)
+                } for r in repos[:6] if isinstance(r, dict)]
+        except Exception:
+            pass
+
+        activity = {}
+        try:
+            raw_events = _req(f"https://api.github.com/users/{handle}/events/public?per_page=100",
+                              headers={'Accept': 'application/vnd.github.v3+json'}, timeout=5)
+            events = json.loads(raw_events)
+            if isinstance(events, list):
+                for event in events:
+                    day = event.get("created_at", "")[:10]
+                    if day:
+                        activity[day] = activity.get(day, 0) + 1
+        except Exception:
+            pass
+
+        try:
+            profile_html = _req(f"https://github.com/{handle}", timeout=7)
+            calendar_activity = {}
+            cells = re.findall(r'<td\b(?=[^>]*\bdata-date="\d{4}-\d{2}-\d{2}")[^>]*>.*?</td>', profile_html, re.S)
+            for cell in cells:
+                day_match = re.search(r'data-date="(\d{4}-\d{2}-\d{2})"', cell)
+                count_match = re.search(r'aria-label="(\d+) contributions?', cell, re.I)
+                if day_match:
+                    calendar_activity[day_match.group(1)] = int(count_match.group(1)) if count_match else 1
+            if calendar_activity:
+                activity = calendar_activity
         except Exception:
             pass
 
         return {
             "publicRepos": public_repos,
             "stars":       total_stars,
+            "repositories": repositories,
             "followers":   followers,
             "name":        name,
             "avatar":      user.get("avatar_url"),
+            "contributions": sum(activity.values()),
+            "activity":     activity,
             "valid":       True
         }, None
     except Exception as e:
@@ -555,15 +627,15 @@ def fetch_github(handle):
 
 # ─── Parallel Orchestrator (Concurrent Multi-Platform Execution) ───────────
 
-def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerrank, interviewbit, github):
-    profile_username = (username or "coder").strip()
+def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerrank, interviewbit, github, name='', bio=''):
+    raw_uname = (username or "coder").strip()
+    profile_username = raw_uname.split("@")[0].lower() if "@" in raw_uname else raw_uname.lower()
     errors = {}
 
     tasks = {}
     if leetcode and leetcode.strip():         tasks["leetcode"]     = (fetch_leetcode,     leetcode)
     if codeforces and codeforces.strip():     tasks["codeforces"]   = (fetch_codeforces,   codeforces)
     if codechef and codechef.strip():         tasks["codechef"]     = (fetch_codechef,     codechef)
-    if hackerrank and hackerrank.strip():     tasks["hackerrank"]   = (fetch_hackerrank,   hackerrank)
     if interviewbit and interviewbit.strip(): tasks["interviewbit"] = (fetch_interviewbit, interviewbit)
     if github and github.strip():             tasks["github"]       = (fetch_github,       github)
 
@@ -590,7 +662,6 @@ def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerran
     lc = results.get("leetcode")   or {"solved": 0, "valid": False}
     cf = results.get("codeforces") or {"solved": 0, "valid": False}
     cc = results.get("codechef")   or {"solved": 0, "valid": False}
-    hr = results.get("hackerrank") or {"solved": 0, "valid": False}
     ib = results.get("interviewbit") or {"solved": 0, "valid": False}
     gh = results.get("github")     or {"publicRepos": 0, "valid": False}
 
@@ -598,13 +669,16 @@ def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerran
     medium_solved = lc.get("medium", 0)
     hard_solved   = lc.get("hard", 0)
     total_solved  = (lc.get("solved", 0) + cf.get("solved", 0) + cc.get("solved", 0)
-                     + hr.get("solved", 0) + ib.get("solved", 0))
+                     + ib.get("solved", 0))
 
     cf_rating      = cf.get("rating", 0)
     cf_max         = cf.get("maxRating", 0)
     lc_rating      = lc.get("rating", 0)
     cc_rating      = cc.get("rating", 0)
     total_contests = cf.get("contests", 0) + lc.get("contests", 0) + cc.get("contests", 0)
+
+    max_rating = max(cf_max, cf_rating, lc_rating, cc_rating)
+    current_rating = max(cf_rating, lc_rating, cc_rating)
 
     global_score = easy_solved * 10 + medium_solved * 25 + hard_solved * 50
 
@@ -662,13 +736,28 @@ def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerran
     else:
         rating_history = []
 
-    display_name = gh.get("name") or (username.replace("_", " ").title() if username else "Coder")
+    leetcode_history = [
+        {"month": h["month"], "rating": h["leetcode"]}
+        for h in rating_history if h.get("leetcode", 0) > 0
+    ]
+    if leetcode_history:
+        platform_ratings["leetcode"] = leetcode_history
+
+    # Clean profile display name — ensure email is never shown as the profile name
+    if name and name.strip() and "@" not in name.strip():
+        display_name = name.strip()
+    elif gh.get("name") and "@" not in gh.get("name"):
+        display_name = gh.get("name")
+    else:
+        display_name = profile_username.replace(".", " ").replace("_", " ").title()
+
+    custom_bio = bio.strip() if bio and bio.strip() else f"Competitive Programmer & Developer @{profile_username} | ProfileDekho"
 
     profile_data = {
         "username":   profile_username,
         "name":       display_name,
-        "avatar":     gh.get("avatar") or f"https://api.dicebear.com/7.x/bottts/svg?seed={profile_username}",
-        "bio":        f"Competitive Programmer & Developer @{profile_username} | ProfileDekho",
+        "avatar":     gh.get("avatar") or f"https://api.dicebear.com/7.x/initials/svg?seed={urllib.parse.quote(display_name)}&backgroundColor=4A7FD4&textColor=ffffff",
+        "bio":        custom_bio,
         "title":      title,
         "globalScore": global_score,
         "errors":     errors,
@@ -676,7 +765,6 @@ def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerran
         "leetcodeHandle":    leetcode    if lc.get("valid") else "",
         "codeforcesHandle":  codeforces  if cf.get("valid") else "",
         "codechefHandle":    codechef    if cc.get("valid") else "",
-        "hackerrankHandle":  hackerrank  if hr.get("valid") else "",
         "interviewbitHandle":interviewbit if ib.get("valid") else "",
         "githubHandle":      github      if gh.get("valid") else "",
 
@@ -686,14 +774,16 @@ def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerran
         "hardSolved":   hard_solved,
         "totalContests": total_contests,
         "maxRating":    max_rating,
-        "currentRating": max(cf_rating, lc_rating),
+        "currentRating": current_rating,
 
         "leetcodeStats":    lc,
         "codeforcesStats":  cf,
         "codechefStats":    cc,
-        "hackerrankStats":  hr,
         "interviewbitStats": ib,
         "githubStats":      gh,
+        "activityHeatmap": {
+            "github": gh.get("activity", {})
+        },
 
         "topicScores": {
             "Data Structures":    min(99, 50 + easy_solved // 2)  if total_solved else 0,
@@ -747,36 +837,60 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.json({"success": False, "error": "User not found"}, 404)
 
         elif path.startswith('/api/profiles/fetch'):
-            username    = query.get('username',    ['coder'])[0]
+            raw_username= query.get('username',    ['coder'])[0]
             leetcode    = query.get('leetcode',    [''])[0]
             codeforces  = query.get('codeforces',  [''])[0]
             codechef    = query.get('codechef',    [''])[0]
             hackerrank  = query.get('hackerrank',  [''])[0]
             interviewbit= query.get('interviewbit',[''])[0]
             github      = query.get('github',      [''])[0]
+            name        = query.get('name',        [''])[0]
+            bio         = query.get('bio',         [''])[0]
+
+            username = raw_username.split("@")[0].lower() if "@" in raw_username else raw_username.lower()
 
             # Clear cache to ensure fresh sync
-            cache_clear(username.lower())
-            data = fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerrank, interviewbit, github)
-            cache_set(username.lower(), data)
+            cache_clear(username)
+            data = fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerrank, interviewbit, github, name=name, bio=bio)
+            cache_set(username, data)
             profiles = load_profiles()
-            profiles[username.lower()] = data
+            profiles[username] = data
             save_profiles(profiles)
             self.json(data)
 
         elif path.startswith('/api/profiles/'):
-            username = path.replace('/api/profiles/', '').strip('/')
-            cached = cache_get(username.lower())
+            username = path.replace('/api/profiles/', '').strip('/').lower()
+            cached = cache_get(username)
             if cached:
                 self.json(cached)
                 return
             profiles = load_profiles()
-            if username.lower() in profiles:
-                data = profiles[username.lower()]
-                cache_set(username.lower(), data)
+            if username in profiles:
+                data = profiles[username]
+                github_handle = data.get("githubHandle")
+                github_stats = data.get("githubStats") or {}
+                if github_handle and github_stats.get("valid") and (
+                    "activity" not in github_stats or "contributions" not in github_stats
+                    or not github_stats.get("activity")
+                ):
+                    refreshed_github, _ = fetch_github(github_handle)
+                    if refreshed_github:
+                        data["githubStats"] = refreshed_github
+                        data["activityHeatmap"] = {"github": refreshed_github.get("activity", {})}
+                        profiles[username] = data
+                        save_profiles(profiles)
+                cache_set(username, data)
                 self.json(data)
             else:
-                self.json({"error": "Profile not found", "username": username}, 404)
+                # Dynamically construct profile for any user or registered user
+                users = load_users()
+                user = users.get(username)
+                display_name = user.get("name") if user else username.replace(".", " ").replace("_", " ").title()
+                data = fetch_live_platform_data(username, '', '', '', '', '', '', name=display_name)
+                profiles[username] = data
+                save_profiles(profiles)
+                cache_set(username, data)
+                self.json(data)
 
         else:
             super().do_GET()
@@ -793,15 +907,52 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         now = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
 
+        # ── UPDATE PROFILE METADATA (NAME & BIO) ───────────────────────────
+        if path == '/api/profiles/update':
+            raw_user = payload.get("username", "").strip()
+            name = payload.get("name", "").strip()
+            bio = payload.get("bio", "").strip()
+            title = payload.get("title", "").strip()
+
+            username = raw_user.split("@")[0].lower() if "@" in raw_user else raw_user.lower()
+            clean_name = name if (name and "@" not in name) else username.replace(".", " ").replace("_", " ").title()
+
+            profiles = load_profiles()
+            if username in profiles:
+                p = profiles[username]
+                p["name"] = clean_name
+                if bio:
+                    p["bio"] = bio
+                if title:
+                    p["title"] = title
+                save_profiles(profiles)
+            else:
+                p = fetch_live_platform_data(username, '', '', '', '', '', '', name=clean_name, bio=bio)
+                if title:
+                    p["title"] = title
+                profiles[username] = p
+                save_profiles(profiles)
+
+            # Also update user record if exists
+            users = load_users()
+            if username in users:
+                users[username]["name"] = clean_name
+                save_users(users)
+
+            cache_clear(username)
+            self.json({"success": True, "profile": p, "name": clean_name, "bio": p.get("bio", "")})
+            return
+
         # ── REGISTER ──────────────────────────────────────────────────────
-        if path == '/api/auth/register':
+        elif path == '/api/auth/register':
             raw_user  = payload.get("username", "").strip()
             raw_email = payload.get("email", "").strip()
             password  = payload.get("password", "").strip()
-            name      = payload.get("name", "").strip()
+            raw_name  = payload.get("name", "").strip()
 
             email    = raw_email if raw_email else (raw_user if "@" in raw_user else f"{raw_user}@gmail.com")
             username = raw_user.split("@")[0].lower() if raw_user else email.split("@")[0].lower()
+            clean_name = raw_name if (raw_name and "@" not in raw_name) else username.replace(".", " ").replace("_", " ").title()
 
             ok, msg = validate_user_criteria(username, email, password, is_registration=True)
             if not ok:
@@ -818,8 +969,8 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
                 "id": uid, "username": username, "email": email,
                 "password_hash": hash_password(password),
                 "provider": "local",
-                "name": name if name else username.replace("_", " ").title(),
-                "avatar": f"https://api.dicebear.com/7.x/initials/svg?seed={username}&backgroundColor=4A7FD4&textColor=ffffff",
+                "name": clean_name,
+                "avatar": f"https://api.dicebear.com/7.x/initials/svg?seed={urllib.parse.quote(clean_name)}&backgroundColor=4A7FD4&textColor=ffffff",
                 "createdAt": now, "lastLogin": now
             }
             users[username] = user_obj
@@ -828,18 +979,17 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
             profiles = load_profiles()
             if username not in profiles:
                 profiles[username] = {
-                    "username": username, "name": user_obj["name"],
+                    "username": username, "name": clean_name,
                     "bio": "Competitive Programmer | ProfileDekho",
                     "title": "Member", "totalSolved": 0,
                     "easySolved": 0, "mediumSolved": 0, "hardSolved": 0,
                     "totalContests": 0, "maxRating": 0, "currentRating": 0,
                     "globalScore": 0, "errors": {},
                     "leetcodeHandle": "", "codeforcesHandle": "", "codechefHandle": "",
-                    "hackerrankHandle": "", "interviewbitHandle": "", "githubHandle": "",
+                    "interviewbitHandle": "", "githubHandle": "",
                     "leetcodeStats": {"solved": 0, "valid": False},
                     "codeforcesStats": {"solved": 0, "valid": False},
                     "codechefStats": {"solved": 0, "valid": False},
-                    "hackerrankStats": {"solved": 0, "valid": False},
                     "interviewbitStats": {"solved": 0, "valid": False},
                     "githubStats": {"publicRepos": 0, "valid": False},
                     "topicScores": {}, "ratingHistory": []
@@ -848,7 +998,7 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
 
             safe = {k: v for k, v in user_obj.items() if k != "password_hash"}
             self.json({"success": True, "token": f"pd_jwt_{uid}_{int(time.time())}", "user": safe,
-                       "message": f"Welcome to ProfileDekho, @{username}!"}, 201)
+                       "message": f"Welcome to ProfileDekho, {clean_name} (@{username})!"}, 201)
 
         # ── LOGIN ──────────────────────────────────────────────────────────
         elif path == '/api/auth/login':
@@ -880,58 +1030,191 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
             save_users(users)
             safe = {k: v for k, v in target.items() if k != "password_hash"}
             self.json({"success": True, "token": f"pd_jwt_{target['id']}_{int(time.time())}", "user": safe,
-                       "message": f"Welcome back, @{target['username']}!"})
+                       "message": f"Welcome back, {safe.get('name', safe.get('username'))}!"})
 
-        # ── GOOGLE OAUTH ───────────────────────────────────────────────────
-        elif path == '/api/auth/google':
-            email    = payload.get("email", "").strip().lower()
-            name     = payload.get("name", "").strip()
-            if not email:
-                self.json({"success": False, "message": "Email is required for Google sign-in."}, 400)
+        # ── GOOGLE SEND OTP ────────────────────────────────────────────────
+        elif path == '/api/auth/google/send-otp':
+            email = payload.get("email", "").strip().lower()
+            name  = payload.get("name", "").strip()
+            if not email or "@" not in email:
+                self.json({"success": False, "message": "Please enter a valid Google email address."}, 400)
                 return
-            username = re.sub(r'[^a-z0-9_]', '_', email.split("@")[0].lower())
+            otp = generate_otp(email, name)
+            self.json({
+                "success": True,
+                "message": f"Verification code generated for {email}",
+                "otp": otp,
+                "email": email
+            })
+
+        # ── GOOGLE VERIFY OTP ──────────────────────────────────────────────
+        elif path == '/api/auth/google/verify-otp':
+            email = payload.get("email", "").strip().lower()
+            otp   = payload.get("otp", "").strip()
+            name  = payload.get("name", "").strip()
+
+            if not email or not otp:
+                self.json({"success": False, "message": "Email and 6-digit OTP are required."}, 400)
+                return
+
+            ok, err_or_name = verify_otp(email, otp)
+            if not ok:
+                self.json({"success": False, "message": err_or_name}, 400)
+                return
+
+            if not name and err_or_name:
+                name = err_or_name
+
+            raw_user_part = email.split("@")[0]
+            username = re.sub(r'[^a-z0-9_]', '_', raw_user_part.lower())
+            clean_display_name = name.strip() if (name and "@" not in name) else raw_user_part.replace(".", " ").replace("_", " ").title()
+
             users = load_users()
             if username in users:
                 u = users[username]
                 u["lastLogin"] = now
                 u["provider"] = "google"
-                if name: u["name"] = name
+                if clean_display_name and ("@" in u.get("name", "") or u.get("name") == username):
+                    u["name"] = clean_display_name
             else:
                 uid = f"usr_g_{int(time.time())}"
                 u = {
                     "id": uid, "username": username, "email": email,
                     "provider": "google",
-                    "name": name if name else username.replace("_", " ").title(),
-                    "avatar": f"https://ui-avatars.com/api/?name={urllib.parse.quote(name or username)}&background=4285F4&color=fff&size=96",
+                    "name": clean_display_name,
+                    "avatar": f"https://ui-avatars.com/api/?name={urllib.parse.quote(clean_display_name)}&background=4285F4&color=fff&size=96",
                     "createdAt": now, "lastLogin": now
                 }
                 users[username] = u
             save_users(users)
+
+            profiles = load_profiles()
+            if username not in profiles:
+                profiles[username] = {
+                    "username": username, "name": clean_display_name,
+                    "bio": "Competitive Programmer | ProfileDekho",
+                    "title": "Member", "totalSolved": 0,
+                    "easySolved": 0, "mediumSolved": 0, "hardSolved": 0,
+                    "totalContests": 0, "maxRating": 0, "currentRating": 0,
+                    "globalScore": 0, "errors": {},
+                    "leetcodeHandle": "", "codeforcesHandle": "", "codechefHandle": "",
+                    "hackerrankHandle": "", "interviewbitHandle": "", "githubHandle": "",
+                    "leetcodeStats": {"solved": 0, "valid": False},
+                    "codeforcesStats": {"solved": 0, "valid": False},
+                    "codechefStats": {"solved": 0, "valid": False},
+                    "hackerrankStats": {"solved": 0, "valid": False},
+                    "interviewbitStats": {"solved": 0, "valid": False},
+                    "githubStats": {"publicRepos": 0, "valid": False},
+                    "topicScores": {}, "ratingHistory": []
+                }
+                save_profiles(profiles)
+            else:
+                if clean_display_name and ("@" in profiles[username].get("name", "") or profiles[username].get("name") == username):
+                    profiles[username]["name"] = clean_display_name
+                    save_profiles(profiles)
+
             safe = {k: v for k, v in u.items() if k != "password_hash"}
-            self.json({"success": True, "provider": "google", "token": f"pd_g_{u['id']}_{int(time.time())}",
-                       "user": safe, "message": f"Signed in with Google as {email}"})
+            self.json({
+                "success": True,
+                "provider": "google",
+                "token": f"pd_g_{u['id']}_{int(time.time())}",
+                "user": safe,
+                "message": f"Successfully verified & signed in as {clean_display_name} (@{username})"
+            })
+
+        # ── GOOGLE OAUTH DIRECT FALLBACK ───────────────────────────────────
+        elif path == '/api/auth/google':
+            email = payload.get("email", "").strip().lower()
+            name  = payload.get("name", "").strip()
+            otp   = payload.get("otp", "").strip()
+
+            if not email:
+                self.json({"success": False, "message": "Email is required for Google sign-in."}, 400)
+                return
+
+            if otp:
+                ok, err_or_name = verify_otp(email, otp)
+                if not ok:
+                    self.json({"success": False, "message": err_or_name}, 400)
+                    return
+                if not name and err_or_name:
+                    name = err_or_name
+
+            raw_user_part = email.split("@")[0]
+            username = re.sub(r'[^a-z0-9_]', '_', raw_user_part.lower())
+            clean_display_name = name.strip() if (name and "@" not in name) else raw_user_part.replace(".", " ").replace("_", " ").title()
+
+            users = load_users()
+            if username in users:
+                u = users[username]
+                u["lastLogin"] = now
+                u["provider"] = "google"
+                if clean_display_name and ("@" in u.get("name", "") or u.get("name") == username):
+                    u["name"] = clean_display_name
+            else:
+                uid = f"usr_g_{int(time.time())}"
+                u = {
+                    "id": uid, "username": username, "email": email,
+                    "provider": "google",
+                    "name": clean_display_name,
+                    "avatar": f"https://ui-avatars.com/api/?name={urllib.parse.quote(clean_display_name)}&background=4285F4&color=fff&size=96",
+                    "createdAt": now, "lastLogin": now
+                }
+                users[username] = u
+            save_users(users)
+
+            profiles = load_profiles()
+            if username not in profiles:
+                profiles[username] = {
+                    "username": username, "name": clean_display_name,
+                    "bio": "Competitive Programmer | ProfileDekho",
+                    "title": "Member", "totalSolved": 0,
+                    "easySolved": 0, "mediumSolved": 0, "hardSolved": 0,
+                    "totalContests": 0, "maxRating": 0, "currentRating": 0,
+                    "globalScore": 0, "errors": {},
+                    "leetcodeHandle": "", "codeforcesHandle": "", "codechefHandle": "",
+                    "interviewbitHandle": "", "githubHandle": "",
+                    "leetcodeStats": {"solved": 0, "valid": False},
+                    "codeforcesStats": {"solved": 0, "valid": False},
+                    "codechefStats": {"solved": 0, "valid": False},
+                    "interviewbitStats": {"solved": 0, "valid": False},
+                    "githubStats": {"publicRepos": 0, "valid": False},
+                    "topicScores": {}, "ratingHistory": []
+                }
+                save_profiles(profiles)
+
+            safe = {k: v for k, v in u.items() if k != "password_hash"}
+            self.json({
+                "success": True,
+                "provider": "google",
+                "token": f"pd_g_{u['id']}_{int(time.time())}",
+                "user": safe,
+                "message": f"Signed in with Google as {clean_display_name} (@{username})"
+            })
 
         # ── GITHUB OAUTH ───────────────────────────────────────────────────
         elif path == '/api/auth/github':
             gh_user = payload.get("username", "").strip().lower()
-            name    = payload.get("name", "").strip()
+            raw_name= payload.get("name", "").strip()
             email   = payload.get("email", f"{gh_user}@github.com").strip().lower()
             if not gh_user:
                 self.json({"success": False, "message": "GitHub username is required."}, 400)
                 return
+            clean_display_name = raw_name if (raw_name and "@" not in raw_name) else gh_user.replace("-", " ").replace("_", " ").title()
             avatar = f"https://github.com/{gh_user}.png?size=96"
             users = load_users()
             if gh_user in users:
                 u = users[gh_user]
                 u["lastLogin"] = now
                 u["provider"] = "github"
-                if name: u["name"] = name
+                if clean_display_name and ("@" in u.get("name", "") or u.get("name") == gh_user):
+                    u["name"] = clean_display_name
             else:
                 uid = f"usr_gh_{int(time.time())}"
                 u = {
                     "id": uid, "username": gh_user, "email": email,
                     "provider": "github",
-                    "name": name if name else gh_user.replace("-", " ").replace("_", " ").title(),
+                    "name": clean_display_name,
                     "avatar": avatar,
                     "createdAt": now, "lastLogin": now
                 }
@@ -939,23 +1222,29 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
             save_users(users)
             safe = {k: v for k, v in u.items() if k != "password_hash"}
             self.json({"success": True, "provider": "github", "token": f"pd_gh_{u['id']}_{int(time.time())}",
-                       "user": safe, "message": f"Signed in with GitHub as @{gh_user}"})
+                       "user": safe, "message": f"Signed in with GitHub as {clean_display_name} (@{gh_user})"})
 
         # ── SAVE PROFILE ───────────────────────────────────────────────────
         elif path == '/api/profiles/save':
             try:
                 data = json.loads(body.decode('utf-8'))
                 uname = data.get("username", "coder").lower()
+                if "@" in uname:
+                    uname = uname.split("@")[0]
+                    data["username"] = uname
+                if not data.get("name") or "@" in data.get("name", ""):
+                    data["name"] = uname.replace(".", " ").replace("_", " ").title()
                 profiles = load_profiles()
                 profiles[uname] = data
                 save_profiles(profiles)
                 cache_clear(uname)
-                self.json({"success": True, "message": "Profile saved!"})
+                self.json({"success": True, "message": "Profile saved!", "profile": data})
             except Exception as e:
                 self.json({"success": False, "error": str(e)}, 400)
 
         else:
             self.send_error(404, "Endpoint not found")
+
 
     def json(self, data, status=200):
         body = json.dumps(data).encode('utf-8')
@@ -987,7 +1276,7 @@ if __name__ == '__main__':
     print("=" * 52)
     print("  ProfileDekho Server  —  http://localhost:8080")
     print("  Parallel fetching: LeetCode · Codeforces · CodeChef")
-    print("  HackerRank · InterviewBit · GitHub  (all in parallel)")
+    print("  InterviewBit · GitHub  (all in parallel)")
     print("  In-memory cache: 10-minute TTL")
     print("=" * 52)
     with socketserver.TCPServer(("", PORT), ProfileDekhoRequestHandler) as httpd:

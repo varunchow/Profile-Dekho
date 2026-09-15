@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import ChartsSection from './ChartsSection';
 
-export default function ShowcaseView({ profile }) {
+export default function ShowcaseView({ profile, currentUser, onProfileUpdate }) {
   const [copied, setCopied] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editBio, setEditBio] = useState('');
+  const [editTitle, setEditTitle] = useState('');
+  const [saving, setSaving] = useState(false);
 
   if (!profile) return null;
 
   const shareUrl = `${window.location.origin}/#profile?u=${profile.username}`;
+
+  const displayName = (profile.name && !profile.name.includes('@')) 
+    ? profile.name 
+    : (profile.username ? profile.username.replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Developer');
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
@@ -24,6 +33,52 @@ export default function ShowcaseView({ profile }) {
     downloadAnchor.remove();
   };
 
+  const openEditModal = () => {
+    setEditName(displayName);
+    setEditBio(profile.bio || '');
+    setEditTitle(profile.title || 'Master');
+    setShowEditModal(true);
+  };
+
+  const handleSaveProfile = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    const cleanName = (editName && !editName.includes('@')) ? editName.trim() : displayName;
+    const cleanBio = editBio.trim() || 'Competitive Programmer | ProfileDekho member';
+    const cleanTitle = editTitle.trim() || profile.title || 'Master';
+
+    try {
+      const res = await fetch('/api/profiles/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: profile.username,
+          name: cleanName,
+          bio: cleanBio,
+          title: cleanTitle
+        })
+      });
+      const updatedProfile = {
+        ...profile,
+        name: cleanName,
+        bio: cleanBio,
+        title: cleanTitle
+      };
+      if (onProfileUpdate) onProfileUpdate(updatedProfile);
+      setShowEditModal(false);
+    } catch (_) {
+      const updatedProfile = {
+        ...profile,
+        name: cleanName,
+        bio: cleanBio,
+        title: cleanTitle
+      };
+      if (onProfileUpdate) onProfileUpdate(updatedProfile);
+      setShowEditModal(false);
+    }
+    setSaving(false);
+  };
+
   return (
     <div className="container py-4" style={{ maxWidth: '1100px' }}>
       {/* Profile Header Glass Banner */}
@@ -35,7 +90,7 @@ export default function ShowcaseView({ profile }) {
         <div className="row align-items-center g-4">
           <div className="col-md-auto text-center text-md-start">
             <img 
-              src={profile.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${profile.username}`}
+              src={profile.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(displayName)}&backgroundColor=4A7FD4&textColor=ffffff`}
               alt={profile.username}
               className="rounded-circle p-1"
               style={{ width: '110px', height: '110px', background: 'linear-gradient(135deg, #6366f1, #a855f7)' }}
@@ -44,7 +99,7 @@ export default function ShowcaseView({ profile }) {
 
           <div className="col-md text-center text-md-start">
             <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-2 mb-2">
-              <h2 className="fw-bold text-white mb-0">{profile.name}</h2>
+              <h2 className="fw-bold text-white mb-0">{displayName}</h2>
               <span className="badge bg-indigo-500 px-3 py-2 text-uppercase font-monospace" 
                     style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)', fontSize: '0.8rem', borderRadius: '12px' }}>
                 🏆 {profile.title || 'Master'}
@@ -69,9 +124,9 @@ export default function ShowcaseView({ profile }) {
                   🟤 CodeChef: @{profile.codechefHandle}
                 </a>
               )}
-              {profile.hackerrankHandle && (
-                <a href={`https://www.hackerrank.com/${profile.hackerrankHandle}`} target="_blank" rel="noreferrer" className="platform-badge hackerrank text-decoration-none">
-                  🟢 HackerRank: @{profile.hackerrankHandle}
+              {profile.interviewbitHandle && (
+                <a href={`https://www.interviewbit.com/profile/${profile.interviewbitHandle}`} target="_blank" rel="noreferrer" className="platform-badge interviewbit text-decoration-none">
+                  🟣 InterviewBit: @{profile.interviewbitHandle}
                 </a>
               )}
               {profile.githubHandle && (
@@ -84,16 +139,80 @@ export default function ShowcaseView({ profile }) {
 
           <div className="col-md-auto text-center text-md-end">
             <div className="d-flex flex-column gap-2">
-              <button className="btn-neon py-2 px-4 fs-7" onClick={handleCopyLink}>
+              {(!currentUser || currentUser.toLowerCase() === profile.username.toLowerCase()) && (
+                <button className="btn-neon py-2 px-4 fs-7" onClick={openEditModal}>
+                  ✏️ Edit Profile
+                </button>
+              )}
+              <button className="btn-outline-neon py-2 px-4 fs-7" onClick={handleCopyLink}>
                 {copied ? '✅ Link Copied!' : '🔗 Share Showcase'}
               </button>
-              <button className="btn-outline-neon py-2 px-4 fs-7" onClick={handleExportJson}>
+              <button className="btn btn-link text-secondary text-decoration-none fs-8 p-0" onClick={handleExportJson}>
                 📥 Download JSON
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {showEditModal && (
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" 
+             style={{ background: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(8px)', zIndex: 2000 }}>
+          <div className="glass-card p-4 p-sm-5 text-start position-relative w-100 mx-3" style={{ maxWidth: '440px' }}>
+            <button 
+              className="position-absolute top-0 end-0 m-3 border-0 bg-transparent text-secondary fs-4"
+              onClick={() => setShowEditModal(false)}
+            >
+              ✕
+            </button>
+            <h4 className="fw-bold text-white mb-2">Edit Profile</h4>
+            <p className="text-secondary fs-8 mb-4">Update your profile display name, headline bio, and badge title.</p>
+
+            <form onSubmit={handleSaveProfile}>
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-semibold text-secondary">👤 Profile Display Name *</label>
+                <input 
+                  type="text" 
+                  className="form-input-neon" 
+                  placeholder="e.g. Varun Chow" 
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  required
+                  autoFocus
+                />
+                <span className="fs-8 text-secondary">Displayed on navbar and profile instead of username/email</span>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label fs-7 fw-semibold text-secondary">💬 Bio / Tagline</label>
+                <input 
+                  type="text" 
+                  className="form-input-neon" 
+                  placeholder="e.g. Competitive Programmer | Full-Stack Dev" 
+                  value={editBio}
+                  onChange={(e) => setEditBio(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="form-label fs-7 fw-semibold text-secondary">🏆 Title / Badge</label>
+                <input 
+                  type="text" 
+                  className="form-input-neon" 
+                  placeholder="e.g. Grandmaster, Master, Candidate Master" 
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                />
+              </div>
+
+              <button type="submit" className="btn-neon w-100 py-2 justify-content-center" disabled={saving}>
+                {saving ? 'Saving Changes...' : 'Save Profile Changes'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Summary KPI Stat Widgets Grid */}
       <div className="row g-3 mb-4">

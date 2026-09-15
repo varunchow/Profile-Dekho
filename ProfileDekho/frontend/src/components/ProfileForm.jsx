@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function ProfileForm({ currentUser, initialData, onSyncSuccess }) {
-  const [leetcode, setLeetcode] = useState(initialData?.leetcodeHandle || currentUser || 'neal_wu');
-  const [codeforces, setCodeforces] = useState(initialData?.codeforcesHandle || currentUser || 'tourist');
-  const [codechef, setCodechef] = useState(initialData?.codechefHandle || currentUser || 'tourist');
-  const [hackerrank, setHackerrank] = useState(initialData?.hackerrankHandle || currentUser || 'tourist');
-  const [gfg, setGfg] = useState(initialData?.gfgHandle || currentUser || 'tourist');
-  const [github, setGithub] = useState(initialData?.githubHandle || currentUser || 'torvalds');
+  // Load stored handles or use initial data or defaults
+  const stored = localStorage.getItem(`pd_handles_${currentUser}`) 
+    ? JSON.parse(localStorage.getItem(`pd_handles_${currentUser}`)) 
+    : null;
+
+  const [leetcode, setLeetcode] = useState(stored?.leetcode || initialData?.leetcodeHandle || currentUser || 'neal_wu');
+  const [codeforces, setCodeforces] = useState(stored?.codeforces || initialData?.codeforcesHandle || currentUser || 'tourist');
+  const [codechef, setCodechef] = useState(stored?.codechef || initialData?.codechefHandle || currentUser || 'tourist');
+  const [interviewbit, setInterviewbit] = useState(stored?.interviewbit || initialData?.interviewbitHandle || currentUser || 'tourist');
+  const [github, setGithub] = useState(stored?.github || initialData?.githubHandle || currentUser || 'torvalds');
 
   const [loading, setLoading] = useState(false);
+  const [hasStoredHandles, setHasStoredHandles] = useState(!!stored);
+
+  useEffect(() => {
+    setHasStoredHandles(!!stored);
+  }, [currentUser]);
 
   const handleSync = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // Store handles for future visits
+    localStorage.setItem(`pd_handles_${currentUser}`, JSON.stringify({
+      leetcode, codeforces, codechef, interviewbit, github
+    }));
 
     try {
       const queryParams = new URLSearchParams({
@@ -20,8 +34,7 @@ export default function ProfileForm({ currentUser, initialData, onSyncSuccess })
         leetcode,
         codeforces,
         codechef,
-        hackerrank,
-        gfg,
+        interviewbit,
         github
       });
 
@@ -29,6 +42,7 @@ export default function ProfileForm({ currentUser, initialData, onSyncSuccess })
       if (!res.ok) throw new Error("Failed to fetch profiles");
       const profileData = await res.json();
       setLoading(false);
+      setHasStoredHandles(true);
       onSyncSuccess(profileData);
     } catch (err) {
       console.warn("Backend fetch fallback:", err);
@@ -36,7 +50,8 @@ export default function ProfileForm({ currentUser, initialData, onSyncSuccess })
       // Fallback mock profile generation if server offline
       const mockProfile = {
         username: currentUser || 'demo_user',
-        name: currentUser ? currentUser.toUpperCase() : 'DEMO USER',
+        name: currentUser ? currentUser.replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Coder',
+        bio: 'Competitive Programmer | ProfileDekho',
         title: 'Master',
         totalSolved: 840,
         easySolved: 320,
@@ -49,14 +64,12 @@ export default function ProfileForm({ currentUser, initialData, onSyncSuccess })
         leetcodeHandle: leetcode,
         codeforcesHandle: codeforces,
         codechefHandle: codechef,
-        hackerrankHandle: hackerrank,
-        gfgHandle: gfg,
+        interviewbitHandle: interviewbit,
         githubHandle: github,
         leetcodeStats: { solved: 380, easy: 160, medium: 170, hard: 50, rating: 1890 },
         codeforcesStats: { solved: 460, easy: 160, medium: 240, hard: 60, rating: 1780, rankName: 'Expert' },
         codechefStats: { solved: 210, rating: 1820, stars: '4★' },
-        hackerrankStats: { solved: 140, stars: 5 },
-        gfgStats: { solved: 230, codingScore: 820 },
+        interviewbitStats: { solved: 180, contests: 8, ranking: 2500 },
         githubStats: { publicRepos: 24, stars: 112 },
         topicScores: {
           "Data Structures": 88,
@@ -82,9 +95,9 @@ export default function ProfileForm({ currentUser, initialData, onSyncSuccess })
   return (
     <div className="container py-4" style={{ maxWidth: '800px' }}>
       <div className="glass-card p-4 p-md-5">
-        <h3 className="fw-bold text-white mb-2">⚡ Manage Your Coding Profiles</h3>
+        <h3 className="fw-bold text-white mb-2">⚡ Your Coding Handles</h3>
         <p className="text-secondary mb-4">
-          Enter your usernames across competitive coding platforms. ProfileDekho will aggregate your live stats, contest performance, and difficulty progression.
+          Link your accounts across competitive coding platforms. ProfileDekho aggregates your live contest ratings and solved problems into a unified showcase.
         </p>
 
         <form onSubmit={handleSync}>
@@ -135,31 +148,16 @@ export default function ProfileForm({ currentUser, initialData, onSyncSuccess })
             </div>
 
             <div className="col-md-6">
-              <div className="p-3 rounded-3" style={{ background: 'rgba(46, 200, 102, 0.05)', border: '1px solid rgba(46, 200, 102, 0.2)' }}>
-                <label className="form-label fw-bold text-success d-flex align-items-center gap-2">
-                  🟢 HackerRank Username
+              <div className="p-3 rounded-3" style={{ background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+                <label className="form-label fw-bold text-light d-flex align-items-center gap-2">
+                  🟣 InterviewBit Handle
                 </label>
                 <input 
                   type="text" 
                   className="form-input-neon" 
-                  placeholder="e.g. tourist" 
-                  value={hackerrank}
-                  onChange={(e) => setHackerrank(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="col-md-6">
-              <div className="p-3 rounded-3" style={{ background: 'rgba(47, 157, 88, 0.05)', border: '1px solid rgba(47, 157, 88, 0.2)' }}>
-                <label className="form-label fw-bold text-success d-flex align-items-center gap-2">
-                  🟩 GeeksforGeeks Handle
-                </label>
-                <input 
-                  type="text" 
-                  className="form-input-neon" 
-                  placeholder="e.g. gfg_coder" 
-                  value={gfg}
-                  onChange={(e) => setGfg(e.target.value)}
+                  placeholder="e.g. interview_pro" 
+                  value={interviewbit}
+                  onChange={(e) => setInterviewbit(e.target.value)}
                 />
               </div>
             </div>

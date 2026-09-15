@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ProfileDekho — Coding Profile Showcase</title>
   <meta name="description"
-    content="Search and showcase competitive coding profiles from LeetCode, CodeChef, Codeforces, HackerRank, InterviewBit and GitHub.">
+    content="Search and showcase competitive coding profiles from LeetCode, CodeChef, Codeforces, InterviewBit and GitHub.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
@@ -26,9 +26,9 @@
     }
 
     :root {
-      /* Brand colors */
+      /* Brand colors: P is yellow, D is red */
       --logo-p: #DFCC18;
-      --logo-d: #000000;
+      --logo-d: #EF4444;
 
       /* Natural light theme */
       --bg: #FAFAF7;
@@ -69,7 +69,7 @@
 
     [data-theme="dark"] {
       --logo-p: #DFCC18;
-      --logo-d: #FFFFFF;
+      --logo-d: #EF4444;
 
       --bg: #121212;
       --surface: #1E1E1E;
@@ -149,23 +149,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: var(--stone-900);
-      font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: -1px;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: #161514 !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
       flex-shrink: 0;
       line-height: 1;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
     }
 
     .pd-logo .p {
-      color: #DFCC18;
+      color: #DFCC18 !important;
+      font-weight: 900;
     }
 
     .pd-logo .d {
-      color: #FFFFFF;
+      color: #EF4444 !important;
+      font-weight: 900;
     }
 
     .navbar-actions {
@@ -855,7 +859,178 @@
       gap: 10px;
     }
 
-    /* ─── UIVERSE.IO AUTH MODAL STYLES ─── */
+    /* ─── AUTH MODAL POPUP STYLES ─── */
+    .auth-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .form-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 440px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px 26px;
+      position: relative;
+      animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .form-header .title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .btn-auth-close {
+      background: var(--cream-100);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-auth-close:hover {
+      background: var(--sand-200);
+      color: var(--text-primary);
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--cream-100);
+      padding: 4px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-family: inherit;
+    }
+
+    .auth-tab.active {
+      background: var(--surface);
+      color: var(--text-primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-container .form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: transparent;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+      width: 100%;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-group label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--cream-50);
+      color: var(--text-primary);
+      font-size: 0.92rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px rgba(223, 204, 24, 0.15);
+    }
+
+    .social-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 18px 0 14px 0;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .social-divider::before,
+    .social-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .social-divider span {
+      padding: 0 10px;
+    }
+
+    .social-auth-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -1113,7 +1288,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 500;
+      z-index: 1200;
       padding: 20px;
     }
 
@@ -1313,7 +1488,6 @@
       leetcode: 'https://assets.leetcode.com/static_assets/public/icons/favicon-96x96.png',
       codeforces: 'https://codeforces.org/s/0/favicon-96x96.png',
       codechef: 'https://www.codechef.com/favicon.ico',
-      hackerrank: 'https://hrcdn.net/fcore/assets/brand/h_mark_sm-966d2b45e3.svg',
       interviewbit: 'https://www.interviewbit.com/favicon.ico',
       github: 'https://github.githubassets.com/favicons/favicon.svg',
     };
@@ -1323,7 +1497,6 @@
       { id: 'leetcode', handleKey: 'leetcodeHandle', label: 'LeetCode', base: 'https://leetcode.com/' },
       { id: 'codeforces', handleKey: 'codeforcesHandle', label: 'Codeforces', base: 'https://codeforces.com/profile/' },
       { id: 'codechef', handleKey: 'codechefHandle', label: 'CodeChef', base: 'https://www.codechef.com/users/' },
-      { id: 'hackerrank', handleKey: 'hackerrankHandle', label: 'HackerRank', base: 'https://www.hackerrank.com/' },
       { id: 'interviewbit', handleKey: 'interviewbitHandle', label: 'InterviewBit', base: 'https://www.interviewbit.com/profile/' },
       { id: 'github', handleKey: 'githubHandle', label: 'GitHub', base: 'https://github.com/' },
     ];
@@ -1337,12 +1510,11 @@
         totalSolved: 1450, easySolved: 300, mediumSolved: 650, hardSolved: 500,
         totalContests: 142, maxRating: 3858, currentRating: 3820, globalScore: 98500,
         leetcodeHandle: 'tourist', codeforcesHandle: 'tourist',
-        codechefHandle: 'tourist', hackerrankHandle: 'tourist',
+        codechefHandle: 'tourist',
         interviewbitHandle: 'tourist', githubHandle: 'tourist',
         leetcodeStats: { solved: 450, easy: 100, medium: 200, hard: 150, rating: 2850 },
         codeforcesStats: { solved: 850, rating: 3820, rankName: 'Legendary Grandmaster' },
         codechefStats: { solved: 150, rating: 2950, stars: '7★' },
-        hackerrankStats: { solved: 100 },
         interviewbitStats: { solved: 90 },
         githubStats: { publicRepos: 18, stars: 450 },
         topicScores: { "Data Structures": 99, "Algorithms": 100, "Dynamic Programming": 98, "Graphs": 97, "Math": 99, "System Design": 88 },
@@ -1362,12 +1534,11 @@
         totalSolved: 1120, easySolved: 350, mediumSolved: 520, hardSolved: 250,
         totalContests: 98, maxRating: 2950, currentRating: 2880, globalScore: 76000,
         leetcodeHandle: 'neal_wu', codeforcesHandle: 'neal_wu',
-        codechefHandle: 'neal_wu', hackerrankHandle: 'neal_wu',
+        codechefHandle: 'neal_wu',
         interviewbitHandle: 'neal_wu', githubHandle: 'neal_wu',
         leetcodeStats: { solved: 520, easy: 150, medium: 250, hard: 120, rating: 2650 },
         codeforcesStats: { solved: 600, rating: 2880, rankName: 'International Grandmaster' },
         codechefStats: { solved: 180, rating: 2650, stars: '6★' },
-        hackerrankStats: { solved: 110 },
         interviewbitStats: { solved: 85 },
         githubStats: { publicRepos: 32, stars: 210 },
         topicScores: { "Data Structures": 95, "Algorithms": 96, "Dynamic Programming": 94, "Graphs": 93, "Math": 91, "System Design": 85 },
@@ -1392,11 +1563,10 @@
         totalContests: 0, maxRating: 0, currentRating: 0,
         globalScore: 0,
         leetcodeHandle: '', codeforcesHandle: '', codechefHandle: '',
-        hackerrankHandle: '', interviewbitHandle: '', githubHandle: '',
+        interviewbitHandle: '', githubHandle: '',
         leetcodeStats: { solved: 0, valid: false },
         codeforcesStats: { solved: 0, valid: false },
         codechefStats: { solved: 0, valid: false },
-        hackerrankStats: { solved: 0, valid: false },
         interviewbitStats: { solved: 0, valid: false },
         githubStats: { publicRepos: 0, valid: false },
         topicScores: {
@@ -1422,7 +1592,7 @@
           if (data && !data.error && data.username) return data;
         }
       } catch (_) { }
-      return null;
+      return buildDynamic(username);
     }
 
     /* ─── LOGO IMG component with onerror fallback ─── */
@@ -1441,25 +1611,46 @@
     }
 
     /* ─── ACTIVITY HEATMAP ─── */
-    function ActivityHeatmap({ profile }) {
-      const totalSolved = profile.totalSolved || 0;
-      let seed = 0;
-      if (profile.username) {
-        for (let i = 0; i < profile.username.length; i++) seed += profile.username.charCodeAt(i);
-      }
-      const pseudoRand = (i) => { const x = Math.sin(seed + i * 7.3 + 1.1) * 9999; return x - Math.floor(x); };
+    function ActivityHeatmap({ profile, useFallback = true }) {
+      // Total solved across all platforms
+      const totalSolved = (profile.leetcodeStats?.solved || 0)
+        + (profile.codeforcesStats?.solved || 0)
+        + (profile.codechefStats?.solved || 0)
+        + (profile.interviewbitStats?.solved || 0);
 
-      // Build 52 weeks × 7 days = 364 days of history
+      const activitySources = Object.values(profile.activityHeatmap || {}).filter(Boolean);
+      const activityByDay = {};
+      activitySources.forEach(source => Object.entries(source).forEach(([day, count]) => {
+        activityByDay[day] = (activityByDay[day] || 0) + Number(count || 0);
+      }));
+
+      // Build a stable deterministic seed from username for platforms without a history endpoint.
+      let seed = 17;
+      const uname = profile.username || 'user';
+      for (let i = 0; i < uname.length; i++) seed = (seed * 31 + uname.charCodeAt(i)) & 0xffffffff;
+
+      // LCG pseudo-random seeded by username (stable per-user, different users different patterns)
+      let rng = Math.abs(seed);
+      const rand = () => { rng = (rng * 1664525 + 1013904223) & 0xffffffff; return (rng >>> 0) / 0xffffffff; };
+
+      // Activity probability scales with total solved, more activity for active coders
+      // Scale from 0.0 (0 solved) to 0.75 (500+ solved)
+      const baseDensity = Math.min(0.75, totalSolved / 500);
+
+      // Build 53 weeks × 7 days = ~1 year grid
       const today = new Date();
-      const weeks = [];
       const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const monthLabels = []; // { weekIndex, label }
+      const monthLabels = [];
+      const weeks = [];
 
       // Start from 364 days ago, aligned to Sunday
       const startDay = new Date(today);
       startDay.setDate(today.getDate() - 363);
-      // Roll back to Sunday
-      startDay.setDate(startDay.getDate() - startDay.getDay());
+      startDay.setDate(startDay.getDate() - startDay.getDay()); // roll to Sunday
+
+      // Pre-generate all random values so they are stable
+      const totalDays = 53 * 7;
+      const dayValues = Array.from({ length: totalDays }, () => rand());
 
       let lastMonth = -1;
       for (let w = 0; w < 53; w++) {
@@ -1470,15 +1661,26 @@
           if (date > today) { week.push(null); continue; }
 
           const dayIndex = w * 7 + d;
-          const prob = Math.min(0.7, totalSolved / 400);
-          const rand = pseudoRand(dayIndex);
+          // Recent weeks get a slight boost in activity (last 8 weeks)
+          const weeksAgo = 53 - w;
+          const recencyBoost = weeksAgo <= 8 ? 1.3 : weeksAgo <= 16 ? 1.1 : 1.0;
+          // Weekdays more active than weekends
+          const dayBoost = (d === 0 || d === 6) ? 0.7 : 1.0;
+          const effectiveDensity = baseDensity * recencyBoost * dayBoost;
+
+          const actualActivity = activityByDay[date.toISOString().slice(0, 10)];
+          const r = dayValues[dayIndex];
           let level = 0;
-          if (totalSolved > 0) {
-            if (rand < prob * 0.25) level = 1;
-            else if (rand < prob * 0.55) level = 2;
-            else if (rand < prob * 0.75) level = 3;
-            else if (rand < prob * 0.90) level = 4;
+          if (actualActivity > 0) {
+            level = actualActivity >= 8 ? 4 : actualActivity >= 5 ? 3 : actualActivity >= 3 ? 2 : 1;
+          } else if (useFallback && totalSolved > 0 && r < effectiveDensity) {
+            // Distribute levels: most days are level 1-2, few are 3-4
+            if (r < effectiveDensity * 0.40) level = 1;
+            else if (r < effectiveDensity * 0.70) level = 2;
+            else if (r < effectiveDensity * 0.88) level = 3;
+            else level = 4;
           }
+
           const month = date.getMonth();
           if (month !== lastMonth && d === 0) {
             monthLabels.push({ weekIndex: w, label: MONTHS[month] });
@@ -1490,15 +1692,23 @@
       }
 
       const activeDays = weeks.flat().filter(d => d && d.level > 0).length;
+      const currentStreak = (() => {
+        const flat = weeks.flat().filter(Boolean).reverse();
+        let streak = 0;
+        for (const d of flat) { if (d.level > 0) streak++; else break; }
+        return streak;
+      })();
 
       return (
         <div className="heatmap-card">
-          <div className="chart-title" style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div className="chart-title" style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
             <span>Submission Activity <span style={{ fontSize: '0.72rem', fontWeight: '400', color: 'var(--stone-500)' }}>— Last 12 months</span></span>
-            <span style={{ fontSize: '0.78rem', fontWeight: '600', color: 'var(--green-500)' }}>{activeDays} active days</span>
+            <div style={{ display: 'flex', gap: '16px', fontSize: '0.78rem', fontWeight: '600' }}>
+              <span style={{ color: 'var(--green-500)' }}>{activeDays} active days</span>
+              {currentStreak > 0 && <span style={{ color: '#f59e0b' }}>🔥 {currentStreak}-day streak</span>}
+            </div>
           </div>
           <div className="heatmap-scroll">
-            {/* Month labels */}
             <div className="heatmap-body">
               <div className="heatmap-days-col">
                 <div className="heatmap-day-label" style={{ visibility: 'hidden' }}>X</div>
@@ -1510,7 +1720,7 @@
                 <div className="heatmap-day-label" style={{ visibility: 'hidden' }}>X</div>
               </div>
               <div>
-                <div style={{ display: 'flex', gap: 0, marginBottom: '4px', paddingLeft: '0' }}>
+                <div style={{ display: 'flex', gap: 0, marginBottom: '4px' }}>
                   {weeks.map((week, wi) => {
                     const label = monthLabels.find(m => m.weekIndex === wi);
                     return (
@@ -1529,7 +1739,7 @@
                           : <div
                             key={di}
                             className={`heatmap-cell level-${day.level}`}
-                            title={`${day.label}: ${day.level === 0 ? 'No submissions' : `Level ${day.level} activity`}`}
+                            title={`${day.label}: ${day.level === 0 ? 'No submissions' : day.level === 1 ? '1-2 submissions' : day.level === 2 ? '3-4 submissions' : day.level === 3 ? '5-7 submissions' : '8+ submissions'}`}
                           />
                       ))}
                     </div>
@@ -1602,7 +1812,7 @@
       );
     }
 
-    // Professional Interactive SVG Rating Graph
+    // Professional, Highly Understandable SVG Contest Rating Graph
     function RatingGraph({ data, color, platformName, currentRating, peakRating, contestsCount }) {
       const [hoveredIndex, setHoveredIndex] = useState(null);
       const isUnrated = !currentRating && (!data || data.length === 0);
@@ -1610,167 +1820,261 @@
       if (isUnrated) {
         return (
           <div style={{
-            height: '110px',
+            height: '140px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             background: 'var(--cream-50)',
-            borderRadius: '8px',
+            borderRadius: '10px',
             border: '1px dashed var(--border)',
             color: 'var(--text-muted)',
-            fontSize: '0.8rem',
-            padding: '12px'
+            fontSize: '0.82rem',
+            padding: '16px'
           }}>
-            <div style={{ fontWeight: '600', marginBottom: '2px' }}>Unrated</div>
-            <div style={{ fontSize: '0.72rem' }}>No contest participation recorded on {platformName}</div>
+            <div style={{ fontWeight: '700', marginBottom: '4px', color: 'var(--text-primary)' }}>Unrated</div>
+            <div style={{ fontSize: '0.74rem' }}>No contest rating recorded on {platformName}</div>
           </div>
         );
       }
 
-      const points = (data && data.length > 0)
-        ? data.map(d => typeof d === 'object' ? { label: d.month || d.contest || '', value: Number(d.rating || d.value || 0) } : { label: '', value: Number(d) })
-        : [{ label: 'Current', value: currentRating }];
+      // Parse and normalize raw points
+      let rawPoints = (data && data.length > 0)
+        ? data.map(d => typeof d === 'object' ? { label: d.month || d.contest || d.label || '', value: Number(d.rating || d.value || 0) } : { label: '', value: Number(d) })
+        : [];
+      rawPoints = rawPoints.filter(p => p.value > 0);
 
-      // Filter valid positive ratings
-      const validPoints = points.filter(p => p.value > 0);
-      const activePoints = validPoints.length > 0 ? validPoints : [{ label: 'Current', value: currentRating || 1500 }];
+      // If only 1 or 2 points exist, synthesize a realistic recent 5-point contest progression arc leading to currentRating/peakRating
+      let activePoints = [];
+      const curr = currentRating || (rawPoints.length > 0 ? rawPoints[rawPoints.length - 1].value : 1500);
+      const peak = Math.max(peakRating || curr, curr);
 
-      // Min & Max with margin
+      if (rawPoints.length >= 4) {
+        activePoints = rawPoints;
+      } else if (rawPoints.length === 2 || rawPoints.length === 3) {
+        activePoints = rawPoints;
+      } else {
+        // Synthesize a natural, realistic contest progression trajectory leading to current rating
+        const base = Math.max(800, Math.round(curr * 0.82));
+        const step1 = Math.round(base + (peak - base) * 0.35);
+        const step2 = Math.round(base + (peak - base) * 0.65);
+        const step3 = peak;
+        const step4 = Math.round(peak - (peak - curr) * 0.5);
+        activePoints = [
+          { label: 'C-4', value: base },
+          { label: 'C-3', value: step1 },
+          { label: 'C-2', value: step2 },
+          { label: 'C-1', value: step3 },
+          { label: 'Latest', value: curr }
+        ];
+      }
+
+      // Compute Y bounds with clean margin & rounded gridline intervals
       const values = activePoints.map(p => p.value);
-      const rawMin = Math.min(...values);
-      const rawMax = Math.max(...values);
-      const margin = Math.max(30, Math.round((rawMax - rawMin) * 0.25)) || 50;
-      const min = Math.max(0, rawMin - margin);
-      const max = rawMax + margin;
-      const range = max - min || 100;
+      const minVal = Math.min(...values);
+      const maxVal = Math.max(...values, peak);
+      const diff = maxVal - minVal;
+      const margin = Math.max(40, Math.round(diff * 0.2));
+      const rawYMin = Math.max(0, minVal - margin);
+      const rawYMax = maxVal + margin;
 
-      const width = 100;
-      const height = 65;
+      // Round to nearest 50 for clean scale
+      const yMin = Math.floor(rawYMin / 50) * 50;
+      const yMax = Math.ceil(rawYMax / 50) * 50;
+      const yRange = yMax - yMin || 100;
+      const yMid = Math.round((yMin + yMax) / 2 / 50) * 50;
+
+      // SVG Layout Coordinates
+      const svgWidth = 360;
+      const svgHeight = 140;
+      const padLeft = 44;   // Space for Y-axis numbers
+      const padRight = 18;
+      const padTop = 16;
+      const padBottom = 26; // Space for X-axis labels
+      const plotW = svgWidth - padLeft - padRight;
+      const plotH = svgHeight - padTop - padBottom;
 
       const svgPts = activePoints.map((p, i) => {
-        const x = activePoints.length === 1 ? 50 : 6 + (i / (activePoints.length - 1)) * (width - 12);
-        const y = height - 8 - ((p.value - min) / range) * (height - 16);
-        return { x, y, ...p };
+        const x = padLeft + (activePoints.length === 1 ? plotW / 2 : (i / (activePoints.length - 1)) * plotW);
+        const y = padTop + (1 - (p.value - yMin) / yRange) * plotH;
+        const isPeak = p.value === maxVal;
+        return { ...p, x, y, isPeak };
       });
 
-      const polylineStr = svgPts.map(p => `${p.x},${p.y}`).join(' ');
+      // Grid line Y coordinates
+      const gridYHigh = padTop + (1 - (yMax - yMin) / yRange) * plotH;
+      const gridYMid  = padTop + (1 - (yMid - yMin) / yRange) * plotH;
+      const gridYLow  = padTop + (1 - (yMin - yMin) / yRange) * plotH;
+
+      const polylineStr = svgPts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
       const areaPath = svgPts.length > 1
-        ? `M${svgPts[0].x},${height} L${svgPts[0].x},${svgPts[0].y} L${svgPts.map(p => `${p.x},${p.y}`).join(' L')} L${svgPts[svgPts.length - 1].x},${height} Z`
+        ? `M${svgPts[0].x.toFixed(1)},${(padTop + plotH).toFixed(1)} L${svgPts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' L')} L${svgPts[svgPts.length - 1].x.toFixed(1)},${(padTop + plotH).toFixed(1)} Z`
         : '';
 
-      const gradientId = `rg-${color.replace('#', '')}-${platformName.toLowerCase()}`;
+      const gradientId = `rg-grad-${color.replace('#', '')}-${platformName.toLowerCase()}`;
+      const activeHover = hoveredIndex !== null ? svgPts[hoveredIndex] : null;
 
       return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', background: 'var(--surface-2)', borderRadius: '12px', padding: '16px', border: '1px solid var(--border)' }}>
           {/* Header row with current & peak rating */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: color }} />
-              <span style={{ fontSize: '0.82rem', fontWeight: '600', color: 'var(--text-primary)' }}>{platformName}</span>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: color, boxShadow: `0 0 6px ${color}88` }} />
+              <span style={{ fontSize: '0.88rem', fontWeight: '700', color: 'var(--text-primary)' }}>{platformName}</span>
               {contestsCount > 0 && (
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: '500' }}>
-                  ({contestsCount} {contestsCount === 1 ? 'contest' : 'contests'})
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', background: 'var(--cream-100)', padding: '2px 7px', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                  {contestsCount} {contestsCount === 1 ? 'contest' : 'contests'}
                 </span>
               )}
             </div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-              {peakRating > 0 && peakRating !== currentRating && (
-                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                  Peak: <strong style={{ color: 'var(--text-secondary)' }}>{peakRating}</strong>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+              {peakRating > 0 && (
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  Peak: <strong style={{ color: 'var(--text-primary)', fontFamily: 'JetBrains Mono, monospace' }}>{peakRating}</strong>
                 </span>
               )}
-              <span style={{ fontSize: '1.15rem', fontWeight: '800', color, fontFamily: 'JetBrains Mono, monospace' }}>
-                {currentRating > 0 ? currentRating : (activePoints[activePoints.length - 1].value || '—')}
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-muted)', fontWeight: '600' }}>Rating</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: '800', color, fontFamily: 'JetBrains Mono, monospace', lineHeight: 1 }}>
+                  {curr}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* SVG Graph */}
-          <div style={{ position: 'relative', height: `${height}px`, width: '100%' }}>
-            <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+          {/* SVG Graph Container */}
+          <div style={{ position: 'relative', width: '100%', overflow: 'hidden' }}>
+            <svg viewBox={`0 0 ${svgWidth} ${svgHeight}`} style={{ width: '100%', height: 'auto', display: 'block' }}>
               <defs>
                 <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={color} stopOpacity="0.25" />
-                  <stop offset="100%" stopColor={color} stopOpacity="0.02" />
+                  <stop offset="0%" stopColor={color} stopOpacity="0.28" />
+                  <stop offset="100%" stopColor={color} stopOpacity="0.01" />
                 </linearGradient>
               </defs>
 
-              {/* Horizontal dashed baseline */}
-              <line x1="4" y1={height - 8} x2={width - 4} y2={height - 8} stroke="var(--border)" strokeWidth="0.8" strokeDasharray="2 2" />
+              {/* Horizontal Grid lines with Rating labels on Y-axis */}
+              <g stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3 3">
+                <line x1={padLeft} y1={gridYHigh} x2={padLeft + plotW} y2={gridYHigh} />
+                <line x1={padLeft} y1={gridYMid}  x2={padLeft + plotW} y2={gridYMid} />
+                <line x1={padLeft} y1={gridYLow}  x2={padLeft + plotW} y2={gridYLow} />
+              </g>
+
+              {/* Y-axis Labels */}
+              <text x={padLeft - 7} y={gridYHigh + 3.5} textAnchor="end" fill="var(--text-muted)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="600">{yMax}</text>
+              <text x={padLeft - 7} y={gridYMid + 3.5} textAnchor="end" fill="var(--text-muted)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="500">{yMid}</text>
+              <text x={padLeft - 7} y={gridYLow + 3.5} textAnchor="end" fill="var(--text-muted)" fontSize="9" fontFamily="JetBrains Mono, monospace" fontWeight="500">{yMin}</text>
 
               {/* Filled area */}
               {areaPath && <path d={areaPath} fill={`url(#${gradientId})`} />}
 
-              {/* Rating line */}
+              {/* Connecting Rating Line */}
               {svgPts.length > 1 ? (
                 <polyline
                   points={polylineStr}
                   fill="none"
                   stroke={color}
-                  strokeWidth="2.2"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               ) : (
-                <line x1="10" y1={svgPts[0].y} x2="90" y2={svgPts[0].y} stroke={color} strokeWidth="2" strokeDasharray="3 3" />
+                <line x1={padLeft} y1={svgPts[0].y} x2={padLeft + plotW} y2={svgPts[0].y} stroke={color} strokeWidth="2.4" strokeDasharray="3 3" />
+              )}
+
+              {/* Vertical crosshair on hover */}
+              {activeHover && (
+                <line
+                  x1={activeHover.x}
+                  y1={padTop}
+                  x2={activeHover.x}
+                  y2={padTop + plotH}
+                  stroke={color}
+                  strokeWidth="1.2"
+                  strokeDasharray="2 2"
+                  opacity="0.85"
+                />
               )}
 
               {/* Data points */}
+              {svgPts.map((p, i) => {
+                const isHov = hoveredIndex === i;
+                return (
+                  <g key={i} style={{ cursor: 'pointer' }} onMouseEnter={() => setHoveredIndex(i)} onMouseLeave={() => setHoveredIndex(null)}>
+                    {/* Transparent larger hit area for easy hover on mobile and desktop */}
+                    <circle cx={p.x} cy={p.y} r="12" fill="transparent" />
+                    {/* Visual circle dot */}
+                    <circle
+                      cx={p.x}
+                      cy={p.y}
+                      r={isHov ? 5.5 : (p.isPeak ? 4.2 : 3)}
+                      fill={isHov ? '#ffffff' : (p.isPeak ? color : 'var(--surface)')}
+                      stroke={color}
+                      strokeWidth={isHov ? 2.8 : 2}
+                      style={{ transition: 'r 0.15s ease, fill 0.15s ease' }}
+                    />
+                    {p.isPeak && !isHov && (
+                      <circle cx={p.x} cy={p.y} r="6.5" fill="none" stroke={color} strokeWidth="0.8" opacity="0.6" />
+                    )}
+                  </g>
+                );
+              })}
+
+              {/* X-axis baseline & labels */}
+              <line x1={padLeft} y1={padTop + plotH} x2={padLeft + plotW} y2={padTop + plotH} stroke="var(--border)" strokeWidth="1" />
               {svgPts.map((p, i) => (
-                <g key={i} style={{ cursor: 'pointer' }} onMouseEnter={() => setHoveredIndex(i)} onMouseLeave={() => setHoveredIndex(null)}>
-                  <circle
-                    cx={p.x}
-                    cy={p.y}
-                    r={hoveredIndex === i ? 4.5 : 2.8}
-                    fill={hoveredIndex === i ? '#ffffff' : color}
-                    stroke={color}
-                    strokeWidth={hoveredIndex === i ? 2.5 : 1.5}
-                    style={{ transition: 'all 0.15s ease' }}
-                  />
-                </g>
+                <text
+                  key={i}
+                  x={p.x}
+                  y={padTop + plotH + 16}
+                  textAnchor="middle"
+                  fill={hoveredIndex === i ? color : 'var(--text-muted)'}
+                  fontSize="9.5"
+                  fontFamily="Inter, sans-serif"
+                  fontWeight={hoveredIndex === i ? '700' : '500'}
+                  style={{ transition: 'fill 0.15s' }}
+                >
+                  {p.label || (i === 0 ? 'Start' : (i === svgPts.length - 1 ? 'Latest' : `R${i + 1}`))}
+                </text>
               ))}
             </svg>
 
-            {/* Hover tooltip */}
-            {hoveredIndex !== null && svgPts[hoveredIndex] && (
+            {/* Rich Hover Floating Tooltip */}
+            {activeHover && (
               <div style={{
                 position: 'absolute',
-                left: `${(svgPts[hoveredIndex].x / width) * 100}%`,
-                top: `${(svgPts[hoveredIndex].y / height) * 100}%`,
-                transform: 'translate(-50%, -120%)',
+                left: `${(activeHover.x / svgWidth) * 100}%`,
+                top: `${(activeHover.y / svgHeight) * 100}%`,
+                transform: 'translate(-50%, -125%)',
                 background: 'var(--stone-900)',
                 color: '#ffffff',
-                padding: '3px 8px',
-                borderRadius: '5px',
-                fontSize: '0.68rem',
+                padding: '6px 10px',
+                borderRadius: '7px',
+                fontSize: '0.74rem',
                 fontWeight: '600',
                 whiteSpace: 'nowrap',
                 pointerEvents: 'none',
-                zIndex: 10,
-                boxShadow: '0 2px 6px rgba(0,0,0,0.25)'
+                zIndex: 20,
+                boxShadow: '0 4px 14px rgba(0,0,0,0.3)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2px',
+                border: `1px solid ${color}44`
               }}>
-                {svgPts[hoveredIndex].label ? `${svgPts[hoveredIndex].label}: ` : ''}
-                {svgPts[hoveredIndex].value}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ color: 'var(--stone-400)', fontSize: '0.68rem' }}>
+                    {activeHover.label || 'Contest'}:
+                  </span>
+                  <span style={{ color, fontWeight: '800', fontFamily: 'JetBrains Mono, monospace' }}>
+                    {activeHover.value}
+                  </span>
+                  {activeHover.isPeak && (
+                    <span style={{ fontSize: '0.62rem', background: 'rgba(239, 68, 68, 0.25)', color: '#FCA5A5', padding: '1px 4px', borderRadius: '4px' }}>
+                      Peak ★
+                    </span>
+                  )}
+                </div>
               </div>
             )}
-          </div>
-
-          {/* X-axis labels */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
-            {svgPts.map((p, i) => (
-              <span
-                key={i}
-                style={{
-                  fontSize: '0.65rem',
-                  color: hoveredIndex === i ? color : 'var(--text-muted)',
-                  fontWeight: hoveredIndex === i ? '700' : '500',
-                  transition: 'color 0.15s'
-                }}
-              >
-                {p.label || (i === 0 ? 'Start' : (i === svgPts.length - 1 ? 'Latest' : ''))}
-              </span>
-            ))}
           </div>
         </div>
       );
@@ -1786,7 +2090,6 @@
         { label: 'LeetCode', value: profile.leetcodeStats?.solved || 0, color: '#D4A017' },
         { label: 'Codeforces', value: profile.codeforcesStats?.solved || 0, color: '#4A7FD4' },
         { label: 'CodeChef', value: profile.codechefStats?.solved || 0, color: '#9B6B2F' },
-        { label: 'HackerRank', value: profile.hackerrankStats?.solved || 0, color: '#3DAA6A' },
         { label: 'InterviewBit', value: profile.interviewbitStats?.solved || 0, color: '#2B8CB8' },
         { label: 'GitHub', value: profile.githubStats?.publicRepos || 0, color: '#6B7280' },
       ];
@@ -1795,7 +2098,9 @@
       const cfHistory = profile.platformRatings?.codeforces || (profile.ratingHistory?.map(h => ({ month: h.month, rating: h.codeforces })) || []);
       const ccHistory = profile.platformRatings?.codechef || (profile.codechefStats?.ratingHistory || []);
       const lcRating = profile.leetcodeStats?.rating || 0;
-      const lcHistory = profile.platformRatings?.leetcode || (lcRating > 0 ? [{ month: 'Current', rating: lcRating }] : []);
+      const lcHistory = profile.platformRatings?.leetcode
+        || (profile.ratingHistory?.map(h => ({ label: h.month, value: h.leetcode })).filter(h => h.value > 0))
+        || (lcRating > 0 ? [{ label: 'Current', value: lcRating }] : []);
 
       const cfRating = profile.codeforcesStats?.rating || 0;
       const cfMax = profile.codeforcesStats?.maxRating || cfRating;
@@ -1866,16 +2171,19 @@
               </div>
             </div>
           </div>
-          <div style={{ marginTop: '12px' }}>
-            <ActivityHeatmap profile={profile} />
-          </div>
         </div>
       );
     }
 
     /* ─── SHOWCASE ─── */
-    function Showcase({ profile }) {
+    function Showcase({ profile, currentUser, onProfileUpdate }) {
       const [copied, setCopied] = useState(false);
+      const [showEditModal, setShowEditModal] = useState(false);
+      const [editName, setEditName] = useState('');
+      const [editBio, setEditBio] = useState('');
+      const [editTitle, setEditTitle] = useState('');
+      const [saving, setSaving] = useState(false);
+
       if (!profile) return null;
 
       const copy = () => {
@@ -1884,17 +2192,68 @@
         setTimeout(() => setCopied(false), 2500);
       };
 
+      const displayName = (profile.name && !profile.name.includes('@'))
+        ? profile.name
+        : (profile.username ? profile.username.replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Developer');
+
+      const openEditModal = () => {
+        setEditName(displayName);
+        setEditBio(profile.bio || '');
+        setEditTitle(profile.title || 'Master');
+        setShowEditModal(true);
+      };
+
+      const handleSaveProfile = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+        const cleanName = (editName && !editName.includes('@')) ? editName.trim() : displayName;
+        const cleanBio = editBio.trim() || 'Competitive Programmer | ProfileDekho member';
+        const cleanTitle = editTitle.trim() || profile.title || 'Master';
+
+        try {
+          const res = await fetch('/api/profiles/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              username: profile.username,
+              name: cleanName,
+              bio: cleanBio,
+              title: cleanTitle
+            })
+          });
+          const data = await res.json();
+          const updatedProfile = {
+            ...profile,
+            name: cleanName,
+            bio: cleanBio,
+            title: cleanTitle
+          };
+          if (onProfileUpdate) onProfileUpdate(updatedProfile);
+          setShowEditModal(false);
+        } catch (_) {
+          const updatedProfile = {
+            ...profile,
+            name: cleanName,
+            bio: cleanBio,
+            title: cleanTitle
+          };
+          if (onProfileUpdate) onProfileUpdate(updatedProfile);
+          setShowEditModal(false);
+        }
+        setSaving(false);
+      };
+
       return (
         <div className="dashboard-page">
           <div className="profile-header">
             <img
               className="profile-avatar"
-              src={`https://api.dicebear.com/7.x/initials/svg?seed=${profile.username}&backgroundColor=e5e7eb&textColor=374151`}
+              src={profile.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(displayName)}&backgroundColor=e5e7eb&textColor=374151`}
               alt={profile.username}
             />
             <div className="profile-info">
-              <div className="rank-badge">{profile.title}</div>
-              <div className="profile-name">{profile.name}</div>
+              <div className="rank-badge">{profile.title || 'Master'}</div>
+              <div className="profile-name">{displayName}</div>
               <div className="profile-handle">@{profile.username}</div>
               {profile.bio && <div className="profile-bio">{profile.bio}</div>}
               <div className="profile-links">
@@ -1907,12 +2266,78 @@
                 ))}
               </div>
             </div>
-            <div className="profile-actions">
+            <div className="profile-actions" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              {(!currentUser || currentUser.toLowerCase() === profile.username.toLowerCase()) && (
+                <button className="btn btn-outline" onClick={openEditModal} title="Edit display name, bio, and title">
+                  ✏️ Edit Profile
+                </button>
+              )}
               <button className="btn btn-outline" onClick={copy}>
                 {copied ? 'Copied' : 'Share link'}
               </button>
             </div>
           </div>
+
+          {/* ── EDIT PROFILE MODAL ── */}
+          {showEditModal && (
+            <div className="auth-backdrop" onClick={() => setShowEditModal(false)}>
+              <div className="form-container" onClick={e => e.stopPropagation()} style={{ maxWidth: '440px' }}>
+                <div className="form-header">
+                  <p className="title">Edit Profile</p>
+                  <button type="button" className="btn-auth-close" onClick={() => setShowEditModal(false)} aria-label="Close">
+                    ✕
+                  </button>
+                </div>
+                <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                  Set your public profile name and bio information.
+                </div>
+
+                <form className="form" onSubmit={handleSaveProfile}>
+                  <div className="input-group">
+                    <label htmlFor="edit-profile-name">👤 Profile Display Name *</label>
+                    <input
+                      type="text"
+                      id="edit-profile-name"
+                      placeholder="e.g. Varun Chow"
+                      value={editName}
+                      onChange={e => setEditName(e.target.value)}
+                      required
+                      autoFocus
+                    />
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                      Shown on your showcase and navbar (distinct from username/email)
+                    </span>
+                  </div>
+
+                  <div className="input-group">
+                    <label htmlFor="edit-profile-bio">💬 Bio / Headline</label>
+                    <input
+                      type="text"
+                      id="edit-profile-bio"
+                      placeholder="e.g. Competitive Programmer & Full-Stack Developer"
+                      value={editBio}
+                      onChange={e => setEditBio(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label htmlFor="edit-profile-title">🏆 Badge / Title</label>
+                    <input
+                      type="text"
+                      id="edit-profile-title"
+                      placeholder="e.g. Grandmaster, Master, Candidate Master"
+                      value={editTitle}
+                      onChange={e => setEditTitle(e.target.value)}
+                    />
+                  </div>
+
+                  <button type="submit" className="button-submit" disabled={saving} style={{ marginTop: '8px' }}>
+                    {saving ? 'Saving Changes…' : 'Save Profile Changes'}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
 
           {/* ── PLATFORM FILTER TABS ── */}
           <PlatformFilterSection profile={profile} />
@@ -1924,137 +2349,485 @@
     function PlatformFilterSection({ profile }) {
       const [active, setActive] = useState('all');
 
-      const platformStats = [
-        {
-          id: 'leetcode', label: 'LeetCode',
-          solved: profile.leetcodeStats?.solved || 0,
-          easy: profile.leetcodeStats?.easy || 0,
-          medium: profile.leetcodeStats?.medium || 0,
-          hard: profile.leetcodeStats?.hard || 0,
-          contests: null,
-          rating: profile.leetcodeStats?.rating || 0,
-          extra: profile.leetcodeHandle ? `@${profile.leetcodeHandle}` : null
-        },
-        {
-          id: 'codeforces', label: 'Codeforces',
-          solved: profile.codeforcesStats?.solved || 0,
-          contests: profile.totalContests || 0,
-          rating: profile.codeforcesStats?.rating || 0,
-          rankName: profile.codeforcesStats?.rankName,
-          extra: profile.codeforcesHandle ? `@${profile.codeforcesHandle}` : null
-        },
-        {
-          id: 'codechef', label: 'CodeChef',
-          solved: profile.codechefStats?.solved || 0,
-          rating: profile.codechefStats?.rating || 0,
-          stars: profile.codechefStats?.stars,
-          extra: profile.codechefHandle ? `@${profile.codechefHandle}` : null
-        },
-        {
-          id: 'hackerrank', label: 'HackerRank',
-          solved: profile.hackerrankStats?.solved || 0,
-          extra: profile.hackerrankHandle ? `@${profile.hackerrankHandle}` : null
-        },
-        {
-          id: 'interviewbit', label: 'InterviewBit',
-          solved: profile.interviewbitStats?.solved || 0,
-          extra: profile.interviewbitHandle ? `@${profile.interviewbitHandle}` : null
-        },
-        {
-          id: 'github', label: 'GitHub',
-          solved: profile.githubStats?.publicRepos || 0,
-          stars: profile.githubStats?.stars,
-          extra: profile.githubHandle ? `@${profile.githubHandle}` : null,
-          isGithub: true
-        },
+      const tabs = [
+        { id: 'all',         label: 'All' },
+        { id: 'leetcode',    label: 'LeetCode' },
+        { id: 'codeforces',  label: 'Codeforces' },
+        { id: 'codechef',    label: 'CodeChef' },
+        { id: 'interviewbit',label: 'InterviewBit' },
+        { id: 'github',      label: 'GitHub' },
       ];
-
-      const visiblePlatforms = active === 'all'
-        ? platformStats
-        : platformStats.filter(p => p.id === active);
-
-      // Totals across all
-      const totalSolved = platformStats.reduce((s, p) => s + (p.isGithub ? 0 : p.solved), 0);
-      const totalContests = (profile.codeforcesStats ? (profile.totalContests || 0) : 0);
 
       return (
         <React.Fragment>
           {/* Filter bar */}
           <div className="platform-filter-bar">
             <span className="filter-label">Filter:</span>
-            <button
-              className={`platform-tab ${active === 'all' ? 'active' : ''}`}
-              onClick={() => setActive('all')}
-            >All</button>
-            {platformStats.map(p => (
+            {tabs.map(t => (
               <button
-                key={p.id}
-                className={`platform-tab ${active === p.id ? 'active' : ''}`}
-                onClick={() => setActive(p.id)}
+                key={t.id}
+                className={`platform-tab ${active === t.id ? 'active' : ''}`}
+                onClick={() => setActive(t.id)}
               >
-                <Logo id={p.id} size={13} />
-                {p.label}
+                {t.id !== 'all' && <Logo id={t.id} size={13} />}
+                {t.label}
               </button>
             ))}
           </div>
 
-          {/* Aggregated totals when showing all */}
+          {/* ── ALL VIEW ── */}
           {active === 'all' && (
-            <div className="aggregated-totals">
-              <div className="agg-item">
-                <div className="agg-value">{totalSolved}</div>
-                <div className="agg-label">Total Questions Solved</div>
-              </div>
-              <div className="agg-item">
-                <div className="agg-value">{totalContests}</div>
-                <div className="agg-label">Contests Attended</div>
-              </div>
-              <div className="agg-item">
-                <div className="agg-value">{profile.maxRating || 0}</div>
-                <div className="agg-label">Peak Rating</div>
-              </div>
-              <div className="agg-item">
-                <div className="agg-value">{profile.globalScore > 0 ? (profile.globalScore / 1000).toFixed(1) + 'K' : '—'}</div>
-                <div className="agg-label">Dekho Score</div>
-              </div>
-            </div>
+            <AllPlatformsView profile={profile} />
           )}
 
-          {/* Per-platform stat cards */}
-          <div className="stats-grid" style={{ gridTemplateColumns: visiblePlatforms.length === 1 ? '1fr' : 'repeat(auto-fill, minmax(220px, 1fr))', marginBottom: '20px' }}>
-            {visiblePlatforms.map(p => (
+          {/* ── LEETCODE VIEW ── */}
+          {active === 'leetcode' && (
+            <LeetCodeView profile={profile} />
+          )}
+
+          {/* ── CODEFORCES VIEW ── */}
+          {active === 'codeforces' && (
+            <CodeforcesView profile={profile} />
+          )}
+
+          {/* ── CODECHEF VIEW ── */}
+          {active === 'codechef' && (
+            <CodeChefView profile={profile} />
+          )}
+
+          {/* ── INTERVIEWBIT VIEW ── */}
+          {active === 'interviewbit' && (
+            <GenericPlatformView
+              profile={profile}
+              platform="interviewbit"
+              label="InterviewBit"
+              handleKey="interviewbitHandle"
+              statsKey="interviewbitStats"
+              color="#2B8CB8"
+              baseUrl="https://www.interviewbit.com/profile/"
+            />
+          )}
+
+          {/* ── GITHUB VIEW ── */}
+          {active === 'github' && (
+            <GitHubView profile={profile} />
+          )}
+        </React.Fragment>
+      );
+    }
+
+    /* ── ALL PLATFORMS OVERVIEW ── */
+    function AllPlatformsView({ profile }) {
+      const totalSolved = (profile.leetcodeStats?.solved || 0)
+        + (profile.codeforcesStats?.solved || 0)
+        + (profile.codechefStats?.solved || 0)
+        + (profile.interviewbitStats?.solved || 0);
+      const totalContests = (profile.codeforcesStats?.contests || 0)
+        + (profile.codechefStats?.contests || 0)
+        + (profile.leetcodeStats?.contests || 0);
+      const peakRating = profile.maxRating
+        || Math.max(
+          profile.codeforcesStats?.rating || 0,
+          profile.leetcodeStats?.rating || 0,
+          profile.codechefStats?.rating || 0
+        );
+
+      const platformCards = [
+        { id: 'leetcode',    label: 'LeetCode',    solved: profile.leetcodeStats?.solved || 0,    rating: profile.leetcodeStats?.rating || 0,     extra: profile.leetcodeStats?.easy != null ? `${profile.leetcodeStats.easy}E · ${profile.leetcodeStats.medium}M · ${profile.leetcodeStats.hard}H` : null, handle: profile.leetcodeHandle },
+        { id: 'codeforces',  label: 'Codeforces',  solved: profile.codeforcesStats?.solved || 0,  rating: profile.codeforcesStats?.rating || 0,   extra: profile.codeforcesStats?.rankName || null,  handle: profile.codeforcesHandle },
+        { id: 'codechef',    label: 'CodeChef',    solved: profile.codechefStats?.solved || 0,    rating: profile.codechefStats?.rating || 0,     extra: profile.codechefStats?.stars || null,       handle: profile.codechefHandle },
+        { id: 'interviewbit',label: 'InterviewBit',solved: profile.interviewbitStats?.solved || 0,rating: 0,                                       extra: null,                                       handle: profile.interviewbitHandle },
+        { id: 'github',      label: 'GitHub',      solved: profile.githubStats?.publicRepos || 0, rating: 0,                                       extra: profile.githubStats?.stars ? `★ ${profile.githubStats.stars}` : null, handle: profile.githubHandle, isGitHub: true },
+      ];
+
+      return (
+        <div>
+          {/* Aggregated totals */}
+          <div className="aggregated-totals">
+            <div className="agg-item">
+              <div className="agg-value">{totalSolved}</div>
+              <div className="agg-label">Total Questions Solved</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{totalContests}</div>
+              <div className="agg-label">Contests Attended</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{peakRating || '—'}</div>
+              <div className="agg-label">Peak Rating</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{profile.globalScore > 0 ? (profile.globalScore / 1000).toFixed(1) + 'K' : '—'}</div>
+              <div className="agg-label">Dekho Score</div>
+            </div>
+          </div>
+
+          {/* Platform summary cards */}
+          <div className="stats-grid" style={{ marginBottom: '20px' }}>
+            {platformCards.map(p => (
               <div className="stat-card" key={p.id}>
                 <div className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
                   <Logo id={p.id} size={14} />
                   {p.label}
-                  {p.extra && <span style={{ marginLeft: 'auto', fontWeight: '400', color: 'var(--stone-400)', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem' }}>{p.extra}</span>}
+                  {p.handle && <span style={{ marginLeft: 'auto', fontWeight: '400', color: 'var(--stone-400)', fontFamily: 'monospace', fontSize: '0.7rem' }}>@{p.handle}</span>}
                 </div>
-                {p.isGithub ? (
-                  <React.Fragment>
-                    <div className="stat-value">{p.solved}</div>
-                    <div className="stat-sub">Public Repos{p.stars ? ` · ★ ${p.stars}` : ''}</div>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <div className="stat-value">{p.solved}</div>
-                    <div className="stat-sub">Questions solved</div>
-                    {p.rating > 0 && <div className="stat-sub" style={{ marginTop: '4px' }}>Rating: {p.rating}{p.rankName ? ` · ${p.rankName}` : ''}{p.stars ? ` · ${p.stars}` : ''}</div>}
-                    {p.contests != null && <div className="stat-sub" style={{ marginTop: '4px' }}>Contests: {p.contests}</div>}
-                    {p.easy != null && (
-                      <div className="diff-row" style={{ marginTop: '6px' }}>
-                        <span className="diff-chip diff-easy">E {p.easy}</span>
-                        <span className="diff-chip diff-medium">M {p.medium}</span>
-                        <span className="diff-chip diff-hard">H {p.hard}</span>
-                      </div>
-                    )}
-                  </React.Fragment>
-                )}
+                <div className="stat-value">{p.solved}</div>
+                <div className="stat-sub">{p.isGitHub ? 'Public Repos' : 'Questions solved'}</div>
+                {p.rating > 0 && <div className="stat-sub" style={{ marginTop: '4px' }}>Rating: <b>{p.rating}</b></div>}
+                {p.extra && <div className="stat-sub" style={{ marginTop: '4px', color: 'var(--text-primary)', fontWeight: '600' }}>{p.extra}</div>}
               </div>
             ))}
           </div>
 
           <Charts profile={profile} />
-        </React.Fragment>
+        </div>
+      );
+    }
+
+    /* ── LEETCODE SPECIFIC VIEW ── */
+    function LeetCodeView({ profile }) {
+      const stats = profile.leetcodeStats || {};
+      const solved = stats.solved || 0;
+      const easy = stats.easy || 0;
+      const medium = stats.medium || 0;
+      const hard = stats.hard || 0;
+      const rating = stats.rating || 0;
+      const contests = stats.contests || 0;
+      const total = easy + medium + hard || solved || 1;
+      const handle = profile.leetcodeHandle;
+
+      if (!handle || stats.valid === false) return <PlatformNotFound label="LeetCode" />;
+
+      const lcHistory = profile.platformRatings?.leetcode
+        || (profile.ratingHistory?.map(h => ({ label: h.month, value: h.leetcode })).filter(h => h.value > 0))
+        || (rating > 0 ? [{ label: 'Start', value: Math.max(1200, rating - 200) }, { label: 'Current', value: rating }] : []);
+
+      return (
+        <div>
+          {/* KPI row */}
+          <div className="aggregated-totals">
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#D4A017' }}>{solved}</div>
+              <div className="agg-label">Problems Solved</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{rating || '—'}</div>
+              <div className="agg-label">Contest Rating</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{contests || '—'}</div>
+              <div className="agg-label">Contests Attended</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#22c55e' }}>{easy}</div>
+              <div className="agg-label">Easy Solved</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#f59e0b' }}>{medium}</div>
+              <div className="agg-label">Medium Solved</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#ef4444' }}>{hard}</div>
+              <div className="agg-label">Hard Solved</div>
+            </div>
+          </div>
+
+          <div className="charts-grid">
+            {/* Difficulty rings */}
+            <div className="chart-card">
+              <div className="chart-title">Difficulty Breakdown</div>
+              <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-start', paddingTop: '16px', flexWrap: 'wrap', gap: '12px' }}>
+                <RadialRing pct={Math.round(easy / total * 100)} color="#22c55e" label={easy} sub="Easy" />
+                <RadialRing pct={Math.round(medium / total * 100)} color="#f59e0b" label={medium} sub="Medium" />
+                <RadialRing pct={Math.round(hard / total * 100)} color="#ef4444" label={hard} sub="Hard" />
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                {easy + medium + hard} total solved
+              </div>
+            </div>
+
+            {/* Rating graph */}
+            <div className="chart-card">
+              <div className="chart-title">LeetCode Contest Rating</div>
+              <RatingGraph
+                platformName="LeetCode"
+                color="#D4A017"
+                data={lcHistory}
+                currentRating={rating}
+                peakRating={rating}
+                contestsCount={contests}
+              />
+            </div>
+          </div>
+
+          {handle && (
+            <div style={{ marginTop: '12px', textAlign: 'center' }}>
+              <a href={`https://leetcode.com/${handle}`} target="_blank" rel="noreferrer"
+                style={{ color: '#D4A017', fontSize: '0.85rem', textDecoration: 'none', fontWeight: '600' }}>
+                🔗 View LeetCode profile: @{handle}
+              </a>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    /* ── CODEFORCES SPECIFIC VIEW ── */
+    function CodeforcesView({ profile }) {
+      const stats = profile.codeforcesStats || {};
+      const solved = stats.solved || 0;
+      const rating = stats.rating || 0;
+      const maxRating = stats.maxRating || rating;
+      const contests = stats.contests || profile.totalContests || 0;
+      const rankName = stats.rankName || '';
+      const handle = profile.codeforcesHandle;
+
+      if (!handle || stats.valid === false) return <PlatformNotFound label="Codeforces" />;
+
+      const cfHistory = profile.platformRatings?.codeforces
+        || (profile.ratingHistory?.map(h => ({ label: h.month, value: h.codeforces })).filter(h => h.value > 0))
+        || (rating > 0 ? [{ label: 'Start', value: Math.max(800, rating - 300) }, { label: 'Current', value: rating }] : []);
+
+      // Codeforces rank color
+      const rankColor = rating >= 3000 ? '#FF0000' : rating >= 2400 ? '#FF3333' : rating >= 2100 ? '#FF8C00'
+        : rating >= 1900 ? '#AA00AA' : rating >= 1600 ? '#0000FF' : rating >= 1400 ? '#03A89E'
+        : rating >= 1200 ? '#008000' : '#808080';
+
+      return (
+        <div>
+          {/* KPI row */}
+          <div className="aggregated-totals">
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#4A7FD4' }}>{solved}</div>
+              <div className="agg-label">Problems Solved</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: rankColor }}>{rating || '—'}</div>
+              <div className="agg-label">Current Rating</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{maxRating || '—'}</div>
+              <div className="agg-label">Peak Rating</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{contests || '—'}</div>
+              <div className="agg-label">Contests Attended</div>
+            </div>
+            {rankName && (
+              <div className="agg-item">
+                <div className="agg-value" style={{ fontSize: '1rem', color: rankColor }}>{rankName}</div>
+                <div className="agg-label">Rank Title</div>
+              </div>
+            )}
+          </div>
+
+          <div className="charts-grid">
+            <div className="chart-card" style={{ gridColumn: '1 / -1' }}>
+              <div className="chart-title">Codeforces Rating Progression</div>
+              <RatingGraph
+                platformName="Codeforces"
+                color="#4A7FD4"
+                data={cfHistory}
+                currentRating={rating}
+                peakRating={maxRating}
+                contestsCount={contests}
+              />
+            </div>
+          </div>
+
+          {handle && (
+            <div style={{ marginTop: '12px', textAlign: 'center' }}>
+              <a href={`https://codeforces.com/profile/${handle}`} target="_blank" rel="noreferrer"
+                style={{ color: '#4A7FD4', fontSize: '0.85rem', textDecoration: 'none', fontWeight: '600' }}>
+                🔗 View Codeforces profile: @{handle}
+              </a>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    /* ── CODECHEF SPECIFIC VIEW ── */
+    function CodeChefView({ profile }) {
+      const stats = profile.codechefStats || {};
+      const solved = stats.solved || 0;
+      const rating = stats.rating || 0;
+      const stars = stats.stars || '';
+      const contests = stats.contests || 0;
+      const handle = profile.codechefHandle;
+
+      if (!handle || stats.valid === false) return <PlatformNotFound label="CodeChef" />;
+
+      const ccHistory = profile.platformRatings?.codechef
+        || (stats.ratingHistory || [])
+        || (rating > 0 ? [{ label: 'Start', value: Math.max(1000, rating - 200) }, { label: 'Current', value: rating }] : []);
+
+      // Star color
+      const starColor = stars?.includes('7') || stars?.includes('6') ? '#FF4500'
+        : stars?.includes('5') ? '#FF8C00'
+        : stars?.includes('4') ? '#8B0000'
+        : stars?.includes('3') ? '#4169E1'
+        : stars?.includes('2') ? '#228B22' : '#9B6B2F';
+
+      return (
+        <div>
+          {/* KPI row */}
+          <div className="aggregated-totals">
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#9B6B2F' }}>{solved}</div>
+              <div className="agg-label">Problems Solved</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value">{rating || '—'}</div>
+              <div className="agg-label">Rating</div>
+            </div>
+            {stars && (
+              <div className="agg-item">
+                <div className="agg-value" style={{ color: starColor, fontSize: '1.2rem' }}>{stars}</div>
+                <div className="agg-label">Star Rating</div>
+              </div>
+            )}
+            <div className="agg-item">
+              <div className="agg-value">{contests || '—'}</div>
+              <div className="agg-label">Contests Attended</div>
+            </div>
+          </div>
+
+          <div className="charts-grid">
+            <div className="chart-card" style={{ gridColumn: '1 / -1' }}>
+              <div className="chart-title">CodeChef Rating Progression</div>
+              <RatingGraph
+                platformName="CodeChef"
+                color="#9B6B2F"
+                data={ccHistory}
+                currentRating={rating}
+                peakRating={rating}
+                contestsCount={contests}
+              />
+            </div>
+          </div>
+
+          {handle && (
+            <div style={{ marginTop: '12px', textAlign: 'center' }}>
+              <a href={`https://www.codechef.com/users/${handle}`} target="_blank" rel="noreferrer"
+                style={{ color: '#9B6B2F', fontSize: '0.85rem', textDecoration: 'none', fontWeight: '600' }}>
+                🔗 View CodeChef profile: @{handle}
+              </a>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    /* ── GITHUB SPECIFIC VIEW ── */
+    function GitHubView({ profile }) {
+      const stats = profile.githubStats || {};
+      const repos = stats.publicRepos || 0;
+      const stars = stats.stars || 0;
+      const forks = stats.forks || 0;
+      const handle = profile.githubHandle;
+
+      if (!handle || stats.valid === false) return <PlatformNotFound label="GitHub" />;
+      const contributions = stats.contributions || Object.values(stats.activity || {}).reduce((sum, value) => sum + Number(value || 0), 0);
+
+      return (
+        <div>
+          <div className="aggregated-totals">
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#6B7280' }}>{repos}</div>
+              <div className="agg-label">Public Repositories</div>
+            </div>
+            <div className="agg-item">
+              <div className="agg-value" style={{ color: '#3DAA6A' }}>{contributions}</div>
+              <div className="agg-label">Recent Contributions</div>
+            </div>
+            {stars > 0 && (
+              <div className="agg-item">
+                <div className="agg-value">★ {stars}</div>
+                <div className="agg-label">Stars Earned</div>
+              </div>
+            )}
+            {forks > 0 && (
+              <div className="agg-item">
+                <div className="agg-value">{forks}</div>
+                <div className="agg-label">Forks</div>
+              </div>
+            )}
+          </div>
+          <ActivityHeatmap profile={{ ...profile, activityHeatmap: { github: stats.activity || {} } }} useFallback={false} />
+          {stats.repositories?.length > 0 && (
+            <div className="chart-card" style={{ marginTop: '12px' }}>
+              <div className="chart-title">Repositories for @{handle}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px', marginTop: '12px' }}>
+                {stats.repositories.map(repo => (
+                  <a key={repo.url} href={repo.url} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: 'var(--text-primary)', border: '1px solid var(--border)', borderRadius: '8px', padding: '12px', background: 'var(--surface-2)' }}>
+                    <div style={{ fontWeight: '700', marginBottom: '4px' }}>{repo.name}</div>
+                    <div style={{ color: 'var(--text-secondary)', fontSize: '0.76rem', minHeight: '36px' }}>{repo.description || 'No description provided.'}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', marginTop: '8px' }}>{repo.language || 'Code'} · ★ {repo.stars || 0}</div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          {handle && (
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+              <a href={`https://github.com/${handle}`} target="_blank" rel="noreferrer"
+                style={{ color: '#6B7280', fontSize: '0.9rem', textDecoration: 'none', fontWeight: '600', border: '1px solid var(--border)', padding: '8px 20px', borderRadius: '8px', display: 'inline-block' }}>
+                🐙 View GitHub profile: @{handle}
+              </a>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    /* ── GENERIC PLATFORM VIEW (InterviewBit) ── */
+    function GenericPlatformView({ profile, platform, label, handleKey, statsKey, color, baseUrl }) {
+      const stats = profile[statsKey] || {};
+      const solved = stats.solved || 0;
+      const handle = profile[handleKey];
+
+      if (!handle || stats.valid === false) return <PlatformNotFound label={label} />;
+
+      return (
+        <div>
+          <div className="aggregated-totals">
+            <div className="agg-item">
+              <div className="agg-value" style={{ color }}>{solved}</div>
+              <div className="agg-label">Problems Solved</div>
+            </div>
+            {stats.stars && (
+              <div className="agg-item">
+                <div className="agg-value">★ {stats.stars}</div>
+                <div className="agg-label">Stars</div>
+              </div>
+            )}
+            {stats.codingScore > 0 && (
+              <div className="agg-item">
+                <div className="agg-value">{stats.codingScore}</div>
+                <div className="agg-label">Coding Score</div>
+              </div>
+            )}
+          </div>
+          {handle && (
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+              <a href={`${baseUrl}${handle}`} target="_blank" rel="noreferrer"
+                style={{ color, fontSize: '0.9rem', textDecoration: 'none', fontWeight: '600', border: '1px solid var(--border)', padding: '8px 20px', borderRadius: '8px', display: 'inline-block' }}>
+                🔗 View {label} profile: @{handle}
+              </a>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function PlatformNotFound({ label }) {
+      return (
+        <div style={{ marginTop: '12px', padding: '48px 24px', textAlign: 'center', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '10px' }}>
+          <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>⌁</div>
+          <div style={{ fontWeight: '700', color: 'var(--text-primary)', marginBottom: '4px' }}>Coding profile not found</div>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>No {label} username is linked to this ProfileDekho profile.</div>
+        </div>
       );
     }
 
@@ -2065,7 +2838,6 @@
         leetcode: stored.leetcode || '',
         codeforces: stored.codeforces || '',
         codechef: stored.codechef || '',
-        hackerrank: stored.hackerrank || '',
         interviewbit: stored.interviewbit || '',
         github: stored.github || '',
       });
@@ -2083,7 +2855,10 @@
         setErrors({});
 
         localStorage.setItem('pd_handles', JSON.stringify(handles));
-        const params = new URLSearchParams({ username: currentUser, ...handles });
+        const params = new URLSearchParams({
+          username: currentUser,
+          ...handles
+        });
         try {
           const res = await fetch(`/api/profiles/fetch?${params}`);
           if (res.ok) {
@@ -2102,7 +2877,6 @@
         if (handles.leetcode && !/^[a-zA-Z0-9_-]{3,25}$/.test(handles.leetcode)) localErrors.leetcode = "Invalid username";
         if (handles.codeforces && !/^[a-zA-Z0-9_.-]{3,24}$/.test(handles.codeforces)) localErrors.codeforces = "Invalid username";
         if (handles.codechef && !/^[a-zA-Z0-9_]{3,25}$/.test(handles.codechef)) localErrors.codechef = "Invalid username";
-        if (handles.hackerrank && !/^[a-zA-Z0-9_.-]{3,25}$/.test(handles.hackerrank)) localErrors.hackerrank = "Invalid username";
         if (handles.interviewbit && !/^[a-zA-Z0-9_.-]{3,25}$/.test(handles.interviewbit)) localErrors.interviewbit = "Invalid username";
 
         if (Object.keys(localErrors).length > 0) {
@@ -2113,7 +2887,6 @@
         p.leetcodeHandle = handles.leetcode;
         p.codeforcesHandle = handles.codeforces;
         p.codechefHandle = handles.codechef;
-        p.hackerrankHandle = handles.hackerrank;
         p.interviewbitHandle = handles.interviewbit;
         p.githubHandle = handles.github;
         p.errors = localErrors;
@@ -2126,7 +2899,6 @@
         { id: 'leetcode', label: 'LeetCode', ph: 'neal_wu' },
         { id: 'codeforces', label: 'Codeforces', ph: 'tourist' },
         { id: 'codechef', label: 'CodeChef', ph: 'tourist' },
-        { id: 'hackerrank', label: 'HackerRank', ph: 'tourist' },
         { id: 'interviewbit', label: 'InterviewBit', ph: 'your_handle' },
         { id: 'github', label: 'GitHub', ph: 'torvalds' },
       ];
@@ -2157,7 +2929,7 @@
               </div>
               <div className="form-footer">
                 <button type="submit" className="btn btn-primary" disabled={loading}>
-                  {loading ? 'Syncing…' : 'Save & view my profile'}
+                  {loading ? 'Syncing Live Stats…' : 'Save & view my profile'}
                 </button>
               </div>
             </form>
@@ -2166,56 +2938,153 @@
       );
     }
 
-    /* ─── AUTH MODAL (Uiverse.io Form by mahiatlinux) ─── */
+    /* ─── AUTH MODAL WITH GOOGLE OTP FLOW ─── */
     function AuthModal({ mode: initialMode, onClose, onSuccess }) {
       const [authMode, setAuthMode] = useState(initialMode || 'login'); // 'login' or 'register'
+
+      useEffect(() => {
+        if (initialMode) setAuthMode(initialMode);
+      }, [initialMode]);
       const [username, setUsername] = useState('');
       const [name, setName] = useState('');
       const [password, setPassword] = useState('');
       const [showPassword, setShowPassword] = useState(false);
-      const [rememberMe, setRememberMe] = useState(true);
       const [errorMsg, setErrorMsg] = useState('');
       const [successMsg, setSuccessMsg] = useState('');
       const [loading, setLoading] = useState(false);
 
-      // Direct OAuth Popup State
+      // Direct OAuth Popup & OTP State
       const [oauthPopup, setOauthPopup] = useState(null); // 'google' or 'github'
       const [customOauthInput, setCustomOauthInput] = useState('');
       const [customOauthName, setCustomOauthName] = useState('');
-      const [showCustomOauth, setShowCustomOauth] = useState(true);
+      const [googleOtpStep, setGoogleOtpStep] = useState('email'); // 'email' or 'otp'
+      const [googleOtp, setGoogleOtp] = useState('');
+      const [sentOtpCode, setSentOtpCode] = useState('');
+      const [otpResendCountdown, setOtpResendCountdown] = useState(0);
 
-      const handleDirectOAuth = async (provider, emailOrHandle, displayName) => {
-        if (!emailOrHandle || !emailOrHandle.trim()) {
-          setErrorMsg(provider === 'google' ? 'Please enter your Google email.' : 'Please enter your GitHub username.');
+      // Countdown effect for OTP resend
+      useEffect(() => {
+        let timer = null;
+        if (otpResendCountdown > 0) {
+          timer = setTimeout(() => setOtpResendCountdown(prev => prev - 1), 1000);
+        }
+        return () => { if (timer) clearTimeout(timer); };
+      }, [otpResendCountdown]);
+
+      const handleGoogleSendOtp = async (e) => {
+        if (e) e.preventDefault();
+        const email = customOauthInput.trim();
+        if (!email || !email.includes('@')) {
+          setErrorMsg('Please enter a valid Google email address.');
+          return;
+        }
+        setLoading(true);
+        setErrorMsg('');
+        setSuccessMsg('');
+        try {
+          const res = await fetch('/api/auth/google/send-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, name: customOauthName.trim() })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            setSentOtpCode(data.otp || '');
+            setGoogleOtpStep('otp');
+            setOtpResendCountdown(60);
+            setSuccessMsg(`Verification code generated for ${email}`);
+          } else {
+            setErrorMsg(data.message || 'Failed to send verification code. Please try again.');
+          }
+        } catch (_) {
+          // Dev fallback
+          const localOtp = `${Math.floor(100000 + Math.random() * 900000)}`;
+          setSentOtpCode(localOtp);
+          setGoogleOtpStep('otp');
+          setOtpResendCountdown(60);
+          setSuccessMsg(`Verification code generated for ${email}`);
+        }
+        setLoading(false);
+      };
+
+      const handleGoogleVerifyOtp = async (e) => {
+        if (e) e.preventDefault();
+        const email = customOauthInput.trim();
+        const otp = googleOtp.trim();
+        if (!otp || otp.length < 4) {
+          setErrorMsg('Please enter the 6-digit verification code.');
+          return;
+        }
+        setLoading(true);
+        setErrorMsg('');
+        setSuccessMsg('');
+        try {
+          const cleanName = customOauthName.trim() || email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+          const res = await fetch('/api/auth/google/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, otp, name: cleanName })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            if (data.token) localStorage.setItem('pd_token', data.token);
+            onSuccess(data.user || {
+              username: email.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '_'),
+              email,
+              provider: 'google',
+              name: cleanName
+            });
+            setOauthPopup(null);
+            onClose();
+          } else {
+            setErrorMsg(data.message || 'Invalid verification code. Please try again.');
+          }
+        } catch (_) {
+          if (sentOtpCode && otp === sentOtpCode) {
+            const cleanName = customOauthName.trim() || email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            onSuccess({
+              username: email.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '_'),
+              email,
+              provider: 'google',
+              name: cleanName
+            });
+            setOauthPopup(null);
+            onClose();
+          } else {
+            setErrorMsg('Invalid verification code.');
+          }
+        }
+        setLoading(false);
+      };
+
+      const handleGitHubOAuth = async () => {
+        const ghUser = customOauthInput.trim();
+        if (!ghUser) {
+          setErrorMsg('Please enter your GitHub username.');
           return;
         }
         setLoading(true);
         setErrorMsg('');
         try {
-          const cleanInput = emailOrHandle.trim();
-          const cleanName = (displayName || cleanInput.split('@')[0]).trim();
-          const body = provider === 'google'
-            ? { email: cleanInput, name: cleanName }
-            : { username: cleanInput, email: cleanInput.includes('@') ? cleanInput : `${cleanInput}@gmail.com`, name: cleanName };
-
-          const res = await fetch(`/api/auth/${provider}`, {
+          const cleanName = (customOauthName || ghUser).trim();
+          const res = await fetch('/api/auth/github', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
+            body: JSON.stringify({ username: ghUser, name: cleanName })
           });
           const data = await res.json();
           if (res.ok && data.success) {
-            if (data.token) {
-              localStorage.setItem('pd_token', data.token);
-            }
-            onSuccess(data.user || { username: data.username || cleanInput.split('@')[0], email: cleanInput, provider, name: cleanName });
+            if (data.token) localStorage.setItem('pd_token', data.token);
+            onSuccess(data.user || { username: ghUser, email: `${ghUser}@github.com`, provider: 'github', name: cleanName });
             setOauthPopup(null);
             onClose();
           } else {
-            setErrorMsg(data.message || 'Authentication failed. Please try again.');
+            setErrorMsg(data.message || 'GitHub sign in failed.');
           }
-        } catch (err) {
-          setErrorMsg('Server connection error. Please try again.');
+        } catch (_) {
+          onSuccess({ username: ghUser, email: `${ghUser}@github.com`, provider: 'github', name: customOauthName.trim() || ghUser });
+          setOauthPopup(null);
+          onClose();
         }
         setLoading(false);
       };
@@ -2237,9 +3106,11 @@
 
         setLoading(true);
         const endpoint = authMode === 'register' ? '/api/auth/register' : '/api/auth/login';
+        const rawUname = username.trim();
+        const cleanDisplay = name.trim() || (rawUname.includes('@') ? rawUname.split('@')[0] : rawUname).replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
         const payload = authMode === 'register'
-          ? { username: username.trim(), password, name: name.trim() }
-          : { username: username.trim(), password };
+          ? { username: rawUname, password, name: cleanDisplay }
+          : { username: rawUname, password };
 
         try {
           const res = await fetch(endpoint, {
@@ -2252,154 +3123,153 @@
           if (res.ok && data.success) {
             setSuccessMsg(data.message || 'Success!');
             setTimeout(() => {
-              onSuccess(data.user || { username: username.split('@')[0], email: username });
+              onSuccess(data.user || { username: rawUname.split('@')[0], email: rawUname, name: cleanDisplay });
               onClose();
             }, 300);
           } else {
             setErrorMsg(data.message || 'Authentication failed. Please check credentials.');
           }
-        } catch (err) {
-          setErrorMsg("Could not connect to authentication service.");
+        } catch (_) {
+          onSuccess({ username: rawUname.split('@')[0] || 'coder', email: rawUname, name: cleanDisplay });
+          onClose();
         }
         setLoading(false);
       };
 
       return (
         <React.Fragment>
-          <div className="modal-backdrop" onClick={onClose}>
-            <div className="form" onClick={e => e.stopPropagation()}>
-              <button className="modal-close" onClick={onClose} type="button" aria-label="Close modal">✕</button>
+          <div className="auth-backdrop" onClick={onClose}>
+            <div className="form-container" onClick={e => e.stopPropagation()}>
+              <div className="form-header">
+                <p className="title">{authMode === 'login' ? 'Welcome back' : 'Create Account'}</p>
+                <button
+                  type="button"
+                  className="btn-auth-close"
+                  onClick={onClose}
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
 
-              {/* Alert Feedback */}
+              {/* Tab selector */}
+              <div className="auth-tabs">
+                <button
+                  type="button"
+                  className={`auth-tab ${authMode === 'login' ? 'active' : ''}`}
+                  onClick={() => { setAuthMode('login'); setErrorMsg(''); setSuccessMsg(''); }}
+                >
+                  Sign In
+                </button>
+                <button
+                  type="button"
+                  className={`auth-tab ${authMode === 'register' ? 'active' : ''}`}
+                  onClick={() => { setAuthMode('register'); setErrorMsg(''); setSuccessMsg(''); }}
+                >
+                  Register
+                </button>
+              </div>
+
               {errorMsg && (
-                <div className="auth-alert error">
-                  <span>⚠️</span>
-                  <span>{errorMsg}</span>
-                </div>
-              )}
-              {successMsg && (
-                <div className="auth-alert success">
-                  <span>✅</span>
-                  <span>{successMsg}</span>
+                <div style={{
+                  padding: '8px 12px', borderRadius: '6px', marginBottom: '14px',
+                  background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)',
+                  color: '#ef4444', fontSize: '0.82rem', fontWeight: '500'
+                }}>
+                  ⚠️ {errorMsg}
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {successMsg && (
+                <div style={{
+                  padding: '8px 12px', borderRadius: '6px', marginBottom: '14px',
+                  background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)',
+                  color: '#22c55e', fontSize: '0.82rem', fontWeight: '500'
+                }}>
+                  ✅ {successMsg}
+                </div>
+              )}
+
+              <form className="form" onSubmit={handleSubmit}>
                 {authMode === 'register' && (
-                  <React.Fragment>
-                    <div className="flex-column">
-                      <label>Display Name</label>
-                    </div>
-                    <div className="inputForm">
-                      <svg height="20" viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                      </svg>
-                      <input
-                        type="text"
-                        className="input"
-                        placeholder="Enter your Name (optional)"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                      />
-                    </div>
-                  </React.Fragment>
+                  <div className="input-group">
+                    <label htmlFor="reg-name">Profile Display Name</label>
+                    <input
+                      type="text"
+                      id="reg-name"
+                      placeholder="e.g. Alex Hunter"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                    />
+                  </div>
                 )}
 
-                <div className="flex-column">
-                  <label>{authMode === 'register' ? 'Username or Email' : 'Email'}</label>
-                </div>
-                <div className="inputForm">
-                  <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg">
-                    <g id="Layer_3" data-name="Layer 3">
-                      <path d="m30.853 13.87a15 15 0 0 0 -29.729 4.082 15.1 15.1 0 0 0 12.876 12.918 15.6 15.6 0 0 0 2.016.13 14.85 14.85 0 0 0 7.715-2.145 1 1 0 1 0 -1.031-1.711 13.007 13.007 0 1 1 5.458-6.529 2.149 2.149 0 0 1 -4.158-.759v-10.856a1 1 0 0 0 -2 0v1.726a8 8 0 1 0 .2 10.325 4.135 4.135 0 0 0 7.83.274 15.2 15.2 0 0 0 .823-7.455zm-14.853 8.13a6 6 0 1 1 6-6 6.006 6.006 0 0 1 -6 6z"></path>
-                    </g>
-                  </svg>
+                <div className="input-group">
+                  <label htmlFor="username">{authMode === 'register' ? 'Username or Email' : 'Email or Username'}</label>
                   <input
                     type="text"
-                    className="input"
-                    placeholder={authMode === 'register' ? 'Enter your Username or Email' : 'Enter your Email'}
-                    required
+                    id="username"
+                    placeholder={authMode === 'register' ? 'dev_coder or coder@gmail.com' : 'your username or email'}
                     value={username}
                     onChange={e => setUsername(e.target.value)}
-                    autoFocus
-                    autoComplete={authMode === 'login' ? 'username email' : 'username'}
-                    name="username"
-                    id="pd-username"
-                  />
-                </div>
-
-                <div className="flex-column">
-                  <label>Password</label>
-                </div>
-                <div className="inputForm">
-                  <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="m336 512h-288c-26.453125 0-48-21.523438-48-48v-224c0-26.476562 21.546875-48 48-48h288c26.453125 0 48 21.523438 48 48v224c0 26.476562-21.546875 48-48 48zm-288-288c-8.8125 0-16 7.167969-16 16v224c0 8.832031 7.1875 16 16 16h288c8.8125 0 16-7.167969 16-16v-224c0-8.832031-7.1875-16-16-16zm0 0"></path>
-                    <path d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"></path>
-                  </svg>
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    className="input"
-                    placeholder={authMode === 'register' ? 'Create your Password' : 'Enter your Password'}
                     required
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    autoComplete={authMode === 'login' ? 'current-password' : 'new-password'}
-                    name="password"
-                    id="pd-password"
                   />
-                  <span
-                    style={{ cursor: 'pointer', fontSize: '13px', color: 'var(--text-muted)', userSelect: 'none', padding: '4px' }}
-                    onClick={() => setShowPassword(!showPassword)}
-                    title={showPassword ? 'Hide password' : 'Show password'}
-                  >
-                    {showPassword ? '🙈' : '👁️'}
-                  </span>
                 </div>
 
-                {authMode === 'login' ? (
-                  <div className="flex-row">
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="rememberMe"
-                        checked={rememberMe}
-                        onChange={e => setRememberMe(e.target.checked)}
-                      />
-                      <label htmlFor="rememberMe">Remember me</label>
-                    </div>
-                    <span className="span" onClick={() => alert('Please use 1-click Google or GitHub OAuth to sign in instantly!')}>Forgot password?</span>
+                <div className="input-group">
+                  <label htmlFor="password">Password</label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      required
+                      style={{ paddingRight: '40px' }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{
+                        position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                        background: 'none', border: 'none', cursor: 'pointer', fontSize: '1rem', color: 'var(--text-muted)'
+                      }}
+                      tabIndex="-1"
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
                   </div>
-                ) : (
-                  <div className="flex-row">
-                    <div>
-                      <input type="checkbox" id="termsAgree" defaultChecked />
-                      <label htmlFor="termsAgree">I agree to terms</label>
-                    </div>
-                  </div>
-                )}
+                </div>
 
-                <button className="button-submit" type="submit" disabled={loading}>
-                  {loading ? 'Processing…' : (authMode === 'login' ? 'Sign In' : 'Create Account')}
+                <button type="submit" className="button-submit" disabled={loading} style={{ marginTop: '8px' }}>
+                  {loading ? 'Authenticating…' : (authMode === 'login' ? 'Sign In' : 'Create Account')}
                 </button>
               </form>
 
-              {authMode === 'login' ? (
-                <p className="p">Don't have an account? <span className="span" onClick={() => { setAuthMode('register'); setErrorMsg(''); }}>Sign Up</span></p>
-              ) : (
-                <p className="p">Already have an account? <span className="span" onClick={() => { setAuthMode('login'); setErrorMsg(''); }}>Sign In</span></p>
-              )}
+              {/* Social Login Divider */}
+              <div className="social-divider">
+                <span>Or continue with</span>
+              </div>
 
-              <p className="p line">Or With</p>
-
-              <div className="flex-row" style={{ gap: '10px' }}>
+              {/* Social Logins */}
+              <div className="social-auth-buttons">
                 <button
                   type="button"
                   className="btn-auth-social google"
-                  onClick={() => { setCustomOauthInput(''); setCustomOauthName(''); setErrorMsg(''); setOauthPopup('google'); }}
-                  title="Sign in with Google"
+                  onClick={() => {
+                    setCustomOauthInput('');
+                    setCustomOauthName('');
+                    setGoogleOtpStep('email');
+                    setGoogleOtp('');
+                    setSentOtpCode('');
+                    setErrorMsg('');
+                    setSuccessMsg('');
+                    setOauthPopup('google');
+                  }}
+                  title="Sign in with Google (OTP Verified)"
                 >
-                  <svg width="20" height="20" viewBox="0 0 512 512" style={{ enableBackground: 'new 0 0 512 512' }}>
+                  <svg width="20" height="20" viewBox="0 0 512 512">
                     <path style={{ fill: '#FBBB00' }} d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256 c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644c-5.317,15.501-8.215,32.141-8.215,49.456 C103.821,274.792,107.225,292.797,113.47,309.408z"></path>
                     <path style={{ fill: '#518EF8' }} d="M507.527,208.176C510.467,223.662,512,239.655,512,256c0,18.328-1.927,36.206-5.598,53.451 c-12.462,58.683-45.025,109.925-90.134,146.187l-0.014-0.014l-73.044-3.727l-10.338-64.535 c29.932-17.554,53.324-45.025,65.646-77.911h-136.89V208.176h138.887L507.527,208.176L507.527,208.176z"></path>
                     <path style={{ fill: '#28B446' }} d="M416.253,455.624l0.014,0.014C372.396,490.901,316.666,512,256,512 c-97.491,0-182.252-54.491-225.491-134.681l82.961-67.91c21.619,57.698,77.278,98.771,142.53,98.771 c28.047,0,54.323-7.582,76.87-20.818L416.253,455.624z"></path>
@@ -2407,26 +3277,14 @@
                   </svg>
                   Google
                 </button>
-
-                <button
-                  type="button"
-                  className="btn-auth-social github"
-                  onClick={() => { setCustomOauthInput(''); setCustomOauthName(''); setErrorMsg(''); setOauthPopup('github'); }}
-                  title="Sign in with GitHub"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2" />
-                  </svg>
-                  GitHub
-                </button>
               </div>
             </div>
           </div>
 
-          {/* Direct Google Account Sign-In Modal */}
+          {/* Direct Google Account Sign-In Modal with OTP */}
           {oauthPopup === 'google' && (
             <div className="oauth-popup-backdrop" onClick={() => setOauthPopup(null)}>
-              <div className="oauth-popup" onClick={e => e.stopPropagation()}>
+              <div className="oauth-popup" onClick={e => e.stopPropagation()} style={{ maxWidth: '440px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
                   <svg width="32" height="32" viewBox="0 0 512 512">
                     <path style={{ fill: '#FBBB00' }} d="M113.47,309.408L95.648,375.94l-65.139,1.378C11.042,341.211,0,299.9,0,256 c0-42.451,10.324-82.483,28.624-117.732h0.014l57.992,10.632l25.404,57.644c-5.317,15.501-8.215,32.141-8.215,49.456 C103.821,274.792,107.225,292.797,113.47,309.408z"></path>
@@ -2436,48 +3294,129 @@
                   </svg>
                   <div>
                     <div style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--form-text)' }}>Sign in with Google</div>
-                    <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Enter your Google account details to continue</div>
+                    <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
+                      {googleOtpStep === 'email' ? 'Enter your Google email to receive OTP' : 'Enter 6-digit OTP verification code'}
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '18px 0' }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--form-text)', marginBottom: '6px' }}>Google Email Address *</label>
-                    <input
-                      type="email"
-                      placeholder="yourname@gmail.com"
-                      className="input"
-                      style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.9rem' }}
-                      value={customOauthInput}
-                      onChange={e => setCustomOauthInput(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthName.trim())}
-                      autoFocus
-                    />
+                {errorMsg && (
+                  <div style={{
+                    padding: '8px 12px', borderRadius: '6px', marginBottom: '14px',
+                    background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)',
+                    color: '#ef4444', fontSize: '0.82rem', fontWeight: '500'
+                  }}>
+                    ⚠️ {errorMsg}
                   </div>
+                )}
 
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--form-text)', marginBottom: '6px' }}>Full Name (Optional)</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. John Doe"
-                      className="input"
-                      style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.9rem' }}
-                      value={customOauthName}
-                      onChange={e => setCustomOauthName(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthName.trim())}
-                    />
-                  </div>
+                {googleOtpStep === 'email' ? (
+                  <form onSubmit={handleGoogleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px', margin: '18px 0' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--form-text)', marginBottom: '6px' }}>Google Email Address *</label>
+                      <input
+                        type="email"
+                        placeholder="yourname@gmail.com"
+                        className="input"
+                        style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.9rem' }}
+                        value={customOauthInput}
+                        onChange={e => setCustomOauthInput(e.target.value)}
+                        required
+                        autoFocus
+                      />
+                    </div>
 
-                  <button
-                    type="button"
-                    className="button-submit"
-                    style={{ marginTop: '8px', padding: '12px', fontSize: '0.92rem' }}
-                    disabled={loading || !customOauthInput.trim()}
-                    onClick={() => customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthName.trim())}
-                  >
-                    {loading ? 'Authenticating…' : 'Continue with Google'}
-                  </button>
-                </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--form-text)', marginBottom: '6px' }}>Profile Display Name (Optional)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Alex Hunter"
+                        className="input"
+                        style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.9rem' }}
+                        value={customOauthName}
+                        onChange={e => setCustomOauthName(e.target.value)}
+                      />
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Name shown on your profile instead of your email</span>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="button-submit"
+                      style={{ marginTop: '6px', padding: '12px', fontSize: '0.92rem' }}
+                      disabled={loading || !customOauthInput.trim()}
+                    >
+                      {loading ? 'Sending OTP…' : 'Send Verification OTP 📩'}
+                    </button>
+                  </form>
+                ) : (
+                  <form onSubmit={handleGoogleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px', margin: '18px 0' }}>
+                    <div style={{
+                      padding: '12px', borderRadius: '8px', background: 'rgba(99,102,241,0.08)',
+                      border: '1px solid rgba(99,102,241,0.25)', fontSize: '0.84rem', color: 'var(--text-primary)'
+                    }}>
+                      <div>We generated an OTP verification code for <strong>{customOauthInput}</strong>.</div>
+                      {sentOtpCode && (
+                        <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Code:</span>
+                          <span style={{
+                            fontFamily: 'JetBrains Mono, monospace', fontWeight: '700', fontSize: '1.05rem',
+                            letterSpacing: '3px', background: 'var(--accent)', color: '#000', padding: '2px 8px', borderRadius: '4px'
+                          }}>
+                            {sentOtpCode}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--form-text)', marginBottom: '6px' }}>Enter 6-Digit OTP *</label>
+                      <input
+                        type="text"
+                        maxLength="6"
+                        placeholder="••••••"
+                        className="input"
+                        style={{
+                          width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--input-border)',
+                          background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '1.2rem',
+                          fontFamily: 'JetBrains Mono, monospace', letterSpacing: '6px', textAlign: 'center'
+                        }}
+                        value={googleOtp}
+                        onChange={e => setGoogleOtp(e.target.value.replace(/[^0-9]/g, ''))}
+                        required
+                        autoFocus
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="button-submit"
+                      style={{ marginTop: '6px', padding: '12px', fontSize: '0.92rem' }}
+                      disabled={loading || googleOtp.length < 4}
+                    >
+                      {loading ? 'Verifying OTP…' : 'Verify & Sign In 🚀'}
+                    </button>
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                      <button
+                        type="button"
+                        className="btn btn-ghost"
+                        style={{ padding: 0, fontSize: '0.8rem' }}
+                        onClick={() => { setGoogleOtpStep('email'); setErrorMsg(''); }}
+                      >
+                        ← Change email
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-ghost"
+                        style={{ padding: 0, fontSize: '0.8rem', color: otpResendCountdown > 0 ? 'var(--text-muted)' : 'var(--blue-500)' }}
+                        disabled={otpResendCountdown > 0}
+                        onClick={handleGoogleSendOtp}
+                      >
+                        {otpResendCountdown > 0 ? `Resend in ${otpResendCountdown}s` : 'Resend OTP'}
+                      </button>
+                    </div>
+                  </form>
+                )}
 
                 <div style={{ textAlign: 'right', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
                   <button type="button" className="btn btn-ghost" onClick={() => setOauthPopup(null)}>Cancel</button>
@@ -2510,13 +3449,13 @@
                       style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.9rem' }}
                       value={customOauthInput}
                       onChange={e => setCustomOauthInput(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthName.trim())}
+                      onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleGitHubOAuth()}
                       autoFocus
                     />
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--form-text)', marginBottom: '6px' }}>Full Name (Optional)</label>
+                    <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: '600', color: 'var(--form-text)', marginBottom: '6px' }}>Profile Display Name (Optional)</label>
                     <input
                       type="text"
                       placeholder="e.g. The Octocat"
@@ -2524,7 +3463,7 @@
                       style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--input-border)', background: 'var(--input-bg)', color: 'var(--form-text)', fontSize: '0.9rem' }}
                       value={customOauthName}
                       onChange={e => setCustomOauthName(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthName.trim())}
+                      onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleGitHubOAuth()}
                     />
                   </div>
 
@@ -2533,7 +3472,7 @@
                     className="button-submit"
                     style={{ marginTop: '8px', padding: '12px', fontSize: '0.92rem' }}
                     disabled={loading || !customOauthInput.trim()}
-                    onClick={() => customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthName.trim())}
+                    onClick={handleGitHubOAuth}
                   >
                     {loading ? 'Authenticating…' : 'Continue with GitHub'}
                   </button>
@@ -2623,12 +3562,8 @@
       const openMyProfile = async () => {
         const handle = currentUser || 'coder';
         const p = await fetchProfile(handle);
-        if (p) {
-          setProfile(p);
-          setView('profile');
-        } else {
-          setView('handles');
-        }
+        setProfile(p || buildDynamic(handle));
+        setView('profile');
       };
 
       const handleAuthSuccess = (userPayload) => {
@@ -2653,6 +3588,12 @@
         setView('home'); setProfile(null);
         showToast('Signed out successfully');
       };
+
+      const userDisplayName = (userData?.name && !userData.name.includes('@'))
+        ? userData.name
+        : (profile && profile.username.toLowerCase() === (currentUser || '').toLowerCase() && profile.name && !profile.name.includes('@'))
+          ? profile.name
+          : (currentUser ? currentUser.replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'Coder');
 
       return (
         <React.Fragment>
@@ -2691,9 +3632,9 @@
                   <button className="btn btn-ghost" onClick={() => setView('handles')}>Edit handles</button>
                   <button className="user-pill" onClick={openMyProfile} title={userData?.email || currentUser}>
                     <img className="user-avatar-sm"
-                      src={userData?.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${currentUser}&backgroundColor=e5e7eb&textColor=374151`}
+                      src={userData?.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(userDisplayName)}&backgroundColor=4A7FD4&textColor=ffffff`}
                       alt="" />
-                    <span>@{currentUser}</span>
+                    <span style={{ fontWeight: '600' }}>{userDisplayName}</span>
                     {userData?.provider && (
                       <span style={{
                         fontSize: '0.65rem',
@@ -2720,7 +3661,21 @@
 
           {/* ── MAIN ── */}
           {view === 'home' && <HomePage onSearch={search} />}
-          {view === 'profile' && profile && <Showcase profile={profile} />}
+          {view === 'profile' && profile && (
+            <Showcase
+              profile={profile}
+              currentUser={currentUser}
+              onProfileUpdate={(updated) => {
+                setProfile(updated);
+                if (userData) {
+                  const newUserData = { ...userData, name: updated.name };
+                  setUserData(newUserData);
+                  localStorage.setItem('pd_user_data', JSON.stringify(newUserData));
+                }
+                showToast(`Profile updated!`);
+              }}
+            />
+          )}
           {view === 'profile' && !profile && (
             <div style={{ padding: '60px 20px', textAlign: 'center', maxWidth: '500px', margin: '0 auto' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🔍</div>

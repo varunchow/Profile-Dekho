@@ -27,7 +27,7 @@ export default function Hero({ onSearch, onDemoClick }) {
 
         <p className="lead text-secondary mb-4 mx-auto" style={{ maxWidth: '680px', fontSize: '1.1rem' }}>
           Aggregate your problems solved, contest ratings, streaks, and skill badges from 
-          <strong> LeetCode, CodeChef, CodeForces, HackerRank, GeeksforGeeks, and GitHub</strong> into one recruiter-ready dashboard.
+          <strong> LeetCode, CodeChef, CodeForces, GeeksforGeeks, and GitHub</strong> into one recruiter-ready dashboard.
         </p>
 
         <form onSubmit={handleSubmit} className="d-flex flex-column flex-sm-row justify-content-center gap-2 mb-4 mx-auto" style={{ maxWidth: '560px' }}>
@@ -62,7 +62,6 @@ export default function Hero({ onSearch, onDemoClick }) {
           <div className="platform-badge leetcode">🟡 LeetCode</div>
           <div className="platform-badge codeforces">🔷 Codeforces</div>
           <div className="platform-badge codechef">🟤 CodeChef</div>
-          <div className="platform-badge hackerrank">🟢 HackerRank</div>
           <div className="platform-badge gfg">🟩 GeeksforGeeks</div>
           <div className="platform-badge github">🐙 GitHub</div>
         </div>

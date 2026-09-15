@@ -1,1 +1,200 @@
-{}
+{
+  "abc": {
+    "username": "abc",
+    "name": "Varun",
+    "avatar": "https://avatars.githubusercontent.com/u/202153655?v=4",
+    "bio": "Competitive Programmer & Developer @abc | ProfileDekho",
+    "title": "Specialist",
+    "globalScore": 2140,
+    "errors": {
+      "codeforces": "Codeforces error: HTTP Error 400: Bad Request"
+    },
+    "leetcodeHandle": "Varun___22222",
+    "codeforcesHandle": "",
+    "codechefHandle": "contactv",
+    "interviewbitHandle": "",
+    "githubHandle": "varunchow",
+    "totalSolved": 217,
+    "easySolved": 84,
+    "mediumSolved": 50,
+    "hardSolved": 1,
+    "totalContests": 32,
+    "maxRating": 1515,
+    "currentRating": 1515,
+    "leetcodeStats": {
+      "solved": 135,
+      "easy": 84,
+      "medium": 50,
+      "hard": 1,
+      "rating": 1515,
+      "contests": 12,
+      "ranking": 1264928,
+      "valid": true
+    },
+    "codeforcesStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codechefStats": {
+      "solved": 82,
+      "rating": 1395,
+      "stars": "1\u2605",
+      "contests": 20,
+      "ratingHistory": [
+        {
+          "contest": "Starters 246 (Rated)",
+          "month": "START246D",
+          "rating": 1364
+        },
+        {
+          "contest": "Starters 247 (Rated)",
+          "month": "START247D",
+          "rating": 1382
+        },
+        {
+          "contest": "Starters 249 (Rated)",
+          "month": "START249D",
+          "rating": 1421
+        },
+        {
+          "contest": "Starters 250",
+          "month": "START250C",
+          "rating": 1410
+        },
+        {
+          "contest": "Starters 251 (Rated)",
+          "month": "START251C",
+          "rating": 1380
+        },
+        {
+          "contest": "Starters 252 (Rated)",
+          "month": "START252D",
+          "rating": 1395
+        }
+      ],
+      "valid": true
+    },
+    "interviewbitStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "githubStats": {
+      "publicRepos": 2,
+      "stars": 0,
+      "repositories": [
+        {
+          "name": "Profile-Dekho",
+          "url": "https://github.com/varunchow/Profile-Dekho",
+          "description": "This is the project which i am working on.if interested do some contribution which will help us",
+          "language": "HTML",
+          "stars": 0
+        },
+        {
+          "name": "Dwarak-Rst",
+          "url": "https://github.com/varunchow/Dwarak-Rst",
+          "description": null,
+          "language": "JavaScript",
+          "stars": 0
+        }
+      ],
+      "followers": 0,
+      "name": "Varun",
+      "avatar": "https://avatars.githubusercontent.com/u/202153655?v=4",
+      "contributions": 6,
+      "activity": {
+        "2026-08-21": 1,
+        "2026-08-16": 3,
+        "2026-08-13": 2
+      },
+      "valid": true
+    },
+    "topicScores": {
+      "Data Structures": 92,
+      "Algorithms": 61,
+      "Dynamic Programming": 40,
+      "Graphs & Trees": 52,
+      "Math & Bitmask": 35,
+      "System Design": 62
+    },
+    "ratingHistory": [
+      {
+        "month": "START246D",
+        "codeforces": 0,
+        "codechef": 1364,
+        "leetcode": 1515
+      },
+      {
+        "month": "START247D",
+        "codeforces": 0,
+        "codechef": 1382,
+        "leetcode": 1515
+      },
+      {
+        "month": "START249D",
+        "codeforces": 0,
+        "codechef": 1421,
+        "leetcode": 1515
+      },
+      {
+        "month": "START250C",
+        "codeforces": 0,
+        "codechef": 1410,
+        "leetcode": 1515
+      },
+      {
+        "month": "START251C",
+        "codeforces": 0,
+        "codechef": 1380,
+        "leetcode": 1515
+      },
+      {
+        "month": "START252D",
+        "codeforces": 0,
+        "codechef": 1395,
+        "leetcode": 1515
+      }
+    ],
+    "platformRatings": {
+      "codeforces": [],
+      "codechef": [
+        {
+          "month": "START246D",
+          "rating": 1364
+        },
+        {
+          "month": "START247D",
+          "rating": 1382
+        },
+        {
+          "month": "START249D",
+          "rating": 1421
+        },
+        {
+          "month": "START250C",
+          "rating": 1410
+        },
+        {
+          "month": "START251C",
+          "rating": 1380
+        },
+        {
+          "month": "START252D",
+          "rating": 1395
+        }
+      ],
+      "leetcode": [
+        {
+          "month": "Current",
+          "rating": 1515
+        }
+      ]
+    },
+    "activityHeatmap": {
+      "github": {
+        "2026-08-21": 1,
+        "2026-08-16": 3,
+        "2026-08-13": 2
+      }
+    }
+  }
+}

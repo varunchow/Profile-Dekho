@@ -109,6 +109,9 @@ public class UserProfile {
     @Convert(converter = JsonListConverter.class)
     private List<Map<String, Object>> ratingHistory;
 
+    @Column(name = "last_fetched_at", length = 100)
+    private String lastFetchedAt;
+
     public UserProfile() {}
 
     // Getters and Setters
@@ -192,4 +195,7 @@ public class UserProfile {
 
     public List<Map<String, Object>> getRatingHistory() { return ratingHistory; }
     public void setRatingHistory(List<Map<String, Object>> ratingHistory) { this.ratingHistory = ratingHistory; }
+
+    public String getLastFetchedAt() { return lastFetchedAt; }
+    public void setLastFetchedAt(String lastFetchedAt) { this.lastFetchedAt = lastFetchedAt; }
 }

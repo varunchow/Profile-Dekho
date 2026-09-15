@@ -77,7 +77,7 @@ export default function Navbar({ activeTab, setActiveTab, currentUser, onLogout,
         {currentUser ? (
           <div className="d-flex align-items-center gap-2">
             <span className="text-light fs-6 fw-semibold d-none d-sm-inline">
-              👋 {currentUser}
+              👤 {typeof currentUser === 'object' ? (currentUser.name || currentUser.username) : currentUser.replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
             </span>
             <button className="btn-outline-neon py-1 px-3 fs-7" onClick={onLogout}>
               Logout
