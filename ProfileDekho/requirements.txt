@@ -1,0 +1,3 @@
+# All core scrapers and web server use standard library (urllib, http.server, etc.)
+# Optional PostgreSQL driver if connecting to a cloud database:
+psycopg2-binary>=2.9.9

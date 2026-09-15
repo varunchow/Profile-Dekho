@@ -9,7 +9,7 @@ import hashlib
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-PORT = 8080
+PORT = int(os.environ.get('PORT', 8080))
 PROFILES_FILE = 'profiles.json'
 USERS_FILE    = 'users.json'
 
