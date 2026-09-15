@@ -10,8 +10,10 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 PORT = int(os.environ.get('PORT', 8080))
-PROFILES_FILE = 'profiles.json'
-USERS_FILE    = 'users.json'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROFILES_FILE = os.path.join(BASE_DIR, 'profiles.json')
+USERS_FILE    = os.path.join(BASE_DIR, 'users.json')
+STATIC_DIR    = os.path.join(BASE_DIR, 'src', 'main', 'resources', 'static')
 
 # ─── In-memory profile cache (10-minute TTL) for ultra-fast responses ──────
 _profile_cache = {}   # key -> (timestamp, data)
@@ -802,7 +804,7 @@ def fetch_live_platform_data(username, leetcode, codeforces, codechef, hackerran
 
 class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory="src/main/resources/static", **kwargs)
+        super().__init__(*args, directory=STATIC_DIR, **kwargs)
 
     def log_message(self, fmt, *args):
         # Clean logging for API queries
