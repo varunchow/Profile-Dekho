@@ -196,5 +196,63 @@
         "2026-08-13": 2
       }
     }
+  },
+  "xs": {
+    "username": "xs",
+    "name": "Xs",
+    "avatar": "https://api.dicebear.com/7.x/initials/svg?seed=Xs&backgroundColor=4A7FD4&textColor=ffffff",
+    "bio": "Competitive Programmer & Developer @xs | ProfileDekho",
+    "title": "Member",
+    "globalScore": 0,
+    "errors": {},
+    "leetcodeHandle": "",
+    "codeforcesHandle": "",
+    "codechefHandle": "",
+    "interviewbitHandle": "",
+    "githubHandle": "",
+    "totalSolved": 0,
+    "easySolved": 0,
+    "mediumSolved": 0,
+    "hardSolved": 0,
+    "totalContests": 0,
+    "maxRating": 0,
+    "currentRating": 0,
+    "leetcodeStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codeforcesStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "codechefStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "interviewbitStats": {
+      "solved": 0,
+      "valid": false
+    },
+    "githubStats": {
+      "publicRepos": 0,
+      "valid": false
+    },
+    "activityHeatmap": {
+      "github": {}
+    },
+    "topicScores": {
+      "Data Structures": 0,
+      "Algorithms": 0,
+      "Dynamic Programming": 0,
+      "Graphs & Trees": 0,
+      "Math & Bitmask": 0,
+      "System Design": 0
+    },
+    "ratingHistory": [],
+    "platformRatings": {
+      "codeforces": [],
+      "codechef": [],
+      "leetcode": []
+    }
   }
 }
