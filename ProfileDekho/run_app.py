@@ -884,15 +884,17 @@ class ProfileDekhoRequestHandler(http.server.SimpleHTTPRequestHandler):
                 cache_set(username, data)
                 self.json(data)
             else:
-                # Dynamically construct profile for any user or registered user
                 users = load_users()
-                user = users.get(username)
-                display_name = user.get("name") if user else username.replace(".", " ").replace("_", " ").title()
-                data = fetch_live_platform_data(username, '', '', '', '', '', '', name=display_name)
-                profiles[username] = data
-                save_profiles(profiles)
-                cache_set(username, data)
-                self.json(data)
+                if username in users:
+                    user = users[username]
+                    display_name = user.get("name") if user else username.replace(".", " ").replace("_", " ").title()
+                    data = fetch_live_platform_data(username, '', '', '', '', '', '', name=display_name)
+                    profiles[username] = data
+                    save_profiles(profiles)
+                    cache_set(username, data)
+                    self.json(data)
+                else:
+                    self.json({"error": "Profile not found", "message": f"User @{username} not found."}, 404)
 
         else:
             super().do_GET()

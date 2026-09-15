@@ -154,46 +154,8 @@ export default function App() {
         throw new Error("Profile not found");
       }
     } catch (e) {
-      // Generate fallback profile dynamically
-      const dynamicProfile = {
-        username: username,
-        name: username.toUpperCase(),
-        title: 'Candidate Master',
-        bio: `Competitive Coder @${username} | ProfileDekho`,
-        totalSolved: 720,
-        easySolved: 290,
-        mediumSolved: 340,
-        hardSolved: 90,
-        totalContests: 38,
-        maxRating: 1820,
-        currentRating: 1760,
-        globalScore: 29800,
-        leetcodeHandle: username,
-        codeforcesHandle: username,
-        codechefHandle: username,
-        gfgHandle: username,
-        githubHandle: username,
-        leetcodeStats: { solved: 320, easy: 140, medium: 140, hard: 40, rating: 1760 },
-        codeforcesStats: { solved: 400, easy: 150, medium: 200, hard: 50, rating: 1690, rankName: 'Expert' },
-        topicScores: {
-          "Data Structures": 84,
-          "Dynamic Programming": 79,
-          "Algorithms": 88,
-          "Graphs & Trees": 81,
-          "Math & Bitmask": 76,
-          "System Design": 70
-        },
-        ratingHistory: [
-          { month: 'Jan', codeforces: 1480, leetcode: 1550 },
-          { month: 'Feb', codeforces: 1540, leetcode: 1610 },
-          { month: 'Mar', codeforces: 1590, leetcode: 1660 },
-          { month: 'Apr', codeforces: 1630, leetcode: 1700 },
-          { month: 'May', codeforces: 1710, leetcode: 1730 },
-          { month: 'Jun', codeforces: 1690, leetcode: 1760 }
-        ]
-      };
-      setActiveProfile(dynamicProfile);
-      setActiveTab('showcase');
+      showAlert(`Profile not found: No registered profile for "@${username}".`);
+      setActiveProfile(null);
     }
   };
 

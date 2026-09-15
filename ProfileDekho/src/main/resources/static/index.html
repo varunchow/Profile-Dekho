@@ -1592,7 +1592,7 @@
           if (data && !data.error && data.username) return data;
         }
       } catch (_) { }
-      return buildDynamic(username);
+      return null;
     }
 
     /* ─── LOGO IMG component with onerror fallback ─── */
@@ -3534,6 +3534,7 @@
       });
       const [view, setView] = useState('home');
       const [profile, setProfile] = useState(null);
+      const [searchQuery, setSearchQuery] = useState('');
       const [authModal, setAuthModal] = useState(null);
       const [toast, setToast] = useState(null);
 
@@ -3550,12 +3551,16 @@
 
       const search = async (q) => {
         if (!q || !q.trim()) return;
-        const p = await fetchProfile(q.trim());
+        const cleanQ = q.trim();
+        setSearchQuery(cleanQ);
+        const p = await fetchProfile(cleanQ);
         if (p && p.username) {
           setProfile(p);
           setView('profile');
         } else {
-          showToast(`No profile found for "@${q.trim()}". Try searching for 'tourist' or 'neal_wu'.`);
+          setProfile(null);
+          setView('profile');
+          showToast(`No profile found for "@${cleanQ}".`);
         }
       };
 
@@ -3679,11 +3684,13 @@
           {view === 'profile' && !profile && (
             <div style={{ padding: '60px 20px', textAlign: 'center', maxWidth: '500px', margin: '0 auto' }}>
               <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>🔍</div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '8px' }}>User Not Found</h2>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '24px' }}>
-                The requested profile does not exist. Please check the spelling or search for a verified developer profile.
+              <h2 style={{ fontSize: '1.4rem', fontWeight: '700', marginBottom: '8px' }}>Profile Not Found</h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '24px', lineHeight: '1.5' }}>
+                {searchQuery
+                  ? <span>No registered developer profile found for <strong>@{searchQuery}</strong>. Please check the spelling or search for another username.</span>
+                  : 'The requested profile does not exist. Please check the spelling or search for a verified developer profile.'}
               </p>
-              <button className="btn btn-primary" onClick={() => { setView('home'); setProfile(null); }}>
+              <button className="btn btn-primary" onClick={() => { setView('home'); setProfile(null); setSearchQuery(''); }}>
                 Back to Home Search
               </button>
             </div>
