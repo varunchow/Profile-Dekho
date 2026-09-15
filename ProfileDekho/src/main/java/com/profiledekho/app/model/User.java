@@ -1,17 +1,42 @@
 package com.profiledekho.app.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 
+@Entity
+@Table(name = "users")
 public class User {
+
+    @Id
+    @Column(name = "id", nullable = false, length = 64)
     private String id;
+
+    @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
+
+    @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
+
+    @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
+
+    @Column(name = "provider", length = 50)
     private String provider; // "local", "google", "github"
+
+    @Column(name = "name", length = 150)
     private String name;
+
+    @Column(name = "avatar", length = 500)
     private String avatar;
+
+    @Column(name = "created_at")
     private String createdAt;
+
+    @Column(name = "last_login")
     private String lastLogin;
 
     public User() {

@@ -32,10 +32,7 @@ public class ProfileController {
         if (profile != null) {
             return ResponseEntity.ok(profile);
         }
-        // Auto generate if not found
-        UserProfile fetched = codingPlatformService.fetchAndAggregateStats(username, username, username, username, username, username, username);
-        profileStorageService.saveProfile(fetched);
-        return ResponseEntity.ok(fetched);
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/fetch")

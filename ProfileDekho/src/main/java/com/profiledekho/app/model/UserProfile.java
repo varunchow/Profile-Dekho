@@ -1,42 +1,112 @@
 package com.profiledekho.app.model;
 
+import com.profiledekho.app.model.converter.JsonIntegerMapConverter;
+import com.profiledekho.app.model.converter.JsonListConverter;
+import com.profiledekho.app.model.converter.JsonMapConverter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 import java.util.List;
 import java.util.Map;
 
+@Entity
+@Table(name = "user_profiles")
 public class UserProfile {
+
+    @Id
+    @Column(name = "username", nullable = false, length = 100)
     private String username;
+
+    @Column(name = "name", length = 150)
     private String name;
+
+    @Column(name = "avatar", length = 500)
     private String avatar;
+
+    @Column(name = "bio", length = 1000)
     private String bio;
+
+    @Column(name = "title", length = 100)
     private String title; // Grandmaster, Master, Knight, Specialist, etc.
+
+    @Column(name = "global_score")
     private int globalScore;
     
     // Coding platform handles
+    @Column(name = "leetcode_handle", length = 100)
     private String leetcodeHandle;
+
+    @Column(name = "codeforces_handle", length = 100)
     private String codeforcesHandle;
+
+    @Column(name = "codechef_handle", length = 100)
     private String codechefHandle;
+
+    @Column(name = "hackerrank_handle", length = 100)
     private String hackerrankHandle;
+
+    @Column(name = "interviewbit_handle", length = 100)
     private String interviewbitHandle;
+
+    @Column(name = "github_handle", length = 100)
     private String githubHandle;
 
-    // Platform Specific Detailed Stats
+    // Platform Specific Detailed Stats (Stored as JSON in PostgreSQL text columns)
+    @Column(name = "leetcode_stats", columnDefinition = "TEXT")
+    @Convert(converter = JsonMapConverter.class)
     private Map<String, Object> leetcodeStats;
+
+    @Column(name = "codeforces_stats", columnDefinition = "TEXT")
+    @Convert(converter = JsonMapConverter.class)
     private Map<String, Object> codeforcesStats;
+
+    @Column(name = "codechef_stats", columnDefinition = "TEXT")
+    @Convert(converter = JsonMapConverter.class)
     private Map<String, Object> codechefStats;
+
+    @Column(name = "hackerrank_stats", columnDefinition = "TEXT")
+    @Convert(converter = JsonMapConverter.class)
     private Map<String, Object> hackerrankStats;
+
+    @Column(name = "interviewbit_stats", columnDefinition = "TEXT")
+    @Convert(converter = JsonMapConverter.class)
     private Map<String, Object> interviewbitStats;
+
+    @Column(name = "github_stats", columnDefinition = "TEXT")
+    @Convert(converter = JsonMapConverter.class)
     private Map<String, Object> githubStats;
 
     // Aggregated Metrics
+    @Column(name = "total_solved")
     private int totalSolved;
+
+    @Column(name = "easy_solved")
     private int easySolved;
+
+    @Column(name = "medium_solved")
     private int mediumSolved;
+
+    @Column(name = "hard_solved")
     private int hardSolved;
+
+    @Column(name = "total_contests")
     private int totalContests;
+
+    @Column(name = "max_rating")
     private int maxRating;
+
+    @Column(name = "current_rating")
     private int currentRating;
 
+    @Column(name = "topic_scores", columnDefinition = "TEXT")
+    @Convert(converter = JsonIntegerMapConverter.class)
     private Map<String, Integer> topicScores;
+
+    @Column(name = "rating_history", columnDefinition = "TEXT")
+    @Convert(converter = JsonListConverter.class)
     private List<Map<String, Object>> ratingHistory;
 
     public UserProfile() {}

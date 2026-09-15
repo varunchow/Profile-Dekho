@@ -1,34 +1,30 @@
 package com.profiledekho.app.repository;
 
 import com.profiledekho.app.model.UserProfile;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 
 @Repository
-public class UserProfileRepository {
+public interface UserProfileRepository extends JpaRepository<UserProfile, String> {
 
-    private final Map<String, UserProfile> profileStorage = new ConcurrentHashMap<>();
+    Optional<UserProfile> findByUsernameIgnoreCase(String username);
 
-    public UserProfile save(UserProfile profile) {
-        if (profile != null && profile.getUsername() != null) {
-            profileStorage.put(profile.getUsername().toLowerCase(), profile);
-        }
-        return profile;
-    }
-
-    public Optional<UserProfile> findByUsername(String username) {
+    default Optional<UserProfile> findByUsername(String username) {
         if (username == null) return Optional.empty();
-        return Optional.ofNullable(profileStorage.get(username.toLowerCase()));
+        return findByUsernameIgnoreCase(username.trim());
     }
 
-    public List<UserProfile> findAll() {
-        return new ArrayList<>(profileStorage.values());
-    }
+    void deleteByUsernameIgnoreCase(String username);
 
-    public boolean deleteByUsername(String username) {
+    default boolean deleteByUsername(String username) {
         if (username == null) return false;
-        return profileStorage.remove(username.toLowerCase()) != null;
+        Optional<UserProfile> existing = findByUsernameIgnoreCase(username.trim());
+        if (existing.isPresent()) {
+            delete(existing.get());
+            return true;
+        }
+        return false;
     }
 }

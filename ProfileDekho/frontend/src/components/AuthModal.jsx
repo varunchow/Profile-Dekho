@@ -298,7 +298,7 @@ export default function AuthModal({ isOpen, mode: initialMode, onClose, onAuthSu
           )}
         </div>
       ) : oauthPopup === 'google' ? (
-        /* Direct Google Account Chooser Modal */
+        /* Direct Google Account Sign-In Modal */
         <div className="glass-card p-4 text-start position-relative w-100 mx-3" style={{ maxWidth: '400px' }}>
           <div className="d-flex align-items-center gap-2 mb-3">
             <svg viewBox="0 0 48 48" style={{ width: '28px', height: '28px' }}>
@@ -308,69 +308,33 @@ export default function AuthModal({ isOpen, mode: initialMode, onClose, onAuthSu
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.97 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
             </svg>
             <div>
-              <div className="fw-bold text-white fs-6">Choose an account</div>
-              <div className="text-secondary fs-8">to continue to ProfileDekho</div>
+              <div className="fw-bold text-white fs-6">Sign in with Google</div>
+              <div className="text-secondary fs-8">Enter your Google email to continue</div>
             </div>
           </div>
 
-          <div className="d-flex flex-column gap-2 mb-3">
-            {[
-              { email: 'alex.coder@gmail.com', name: 'Alex Coder' },
-              { email: 'tourist@gmail.com', name: 'Gennady Korotkevich' },
-              { email: 'neal.wu@gmail.com', name: 'Neal Wu' },
-              { email: 'dev.coder@gmail.com', name: 'Developer Account' }
-            ].map(acc => (
-              <div
-                key={acc.email}
-                className="p-2 rounded d-flex align-items-center justify-content-between border border-secondary border-opacity-25"
-                style={{ background: 'rgba(255,255,255,0.06)', cursor: 'pointer' }}
-                onClick={() => handleDirectOAuth('google', acc.email, acc.name)}
-              >
-                <div className="d-flex align-items-center gap-2">
-                  <img
-                    src={`https://api.dicebear.com/7.x/initials/svg?seed=${acc.name}&backgroundColor=4285F4&textColor=ffffff`}
-                    className="rounded-circle"
-                    width="28"
-                    height="28"
-                    alt=""
-                  />
-                  <div>
-                    <div className="fs-7 fw-bold text-white">{acc.name}</div>
-                    <div className="fs-8 text-secondary">{acc.email}</div>
-                  </div>
-                </div>
-                <span className="text-primary fs-7">➔</span>
-              </div>
-            ))}
+          <div className="d-flex flex-column gap-3 mb-3">
+            <div>
+              <label className="form-label text-secondary fs-8 mb-1">Google Email Address *</label>
+              <input
+                type="email"
+                placeholder="yourname@gmail.com"
+                className="form-input-neon"
+                value={customOauthInput}
+                onChange={e => setCustomOauthInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthInput.split('@')[0])}
+                autoFocus
+              />
+            </div>
 
-            {!showCustomOauth ? (
-              <button
-                type="button"
-                className="btn btn-outline-secondary w-100 py-2 fs-7 text-start"
-                onClick={() => setShowCustomOauth(true)}
-              >
-                ➕ Use another Google account
-              </button>
-            ) : (
-              <div className="mt-2">
-                <input
-                  type="email"
-                  placeholder="yourname@gmail.com"
-                  className="form-input-neon mb-2"
-                  value={customOauthInput}
-                  onChange={e => setCustomOauthInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthInput.split('@')[0])}
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary w-100 py-2"
-                  onClick={() => customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthInput.split('@')[0])}
-                >
-                  Sign In with this account
-                </button>
-              </div>
-            )}
+            <button
+              type="button"
+              className="btn btn-primary w-100 py-2"
+              disabled={loading || !customOauthInput.trim()}
+              onClick={() => customOauthInput.trim() && handleDirectOAuth('google', customOauthInput.trim(), customOauthInput.split('@')[0])}
+            >
+              {loading ? 'Authenticating…' : 'Continue with Google'}
+            </button>
           </div>
 
           <div className="text-end border-top border-secondary border-opacity-25 pt-2">
@@ -387,68 +351,33 @@ export default function AuthModal({ isOpen, mode: initialMode, onClose, onAuthSu
               <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
             </svg>
             <div>
-              <div className="fw-bold text-white fs-6">Authorize ProfileDekho</div>
-              <div className="text-secondary fs-8">Select GitHub account to authenticate</div>
+              <div className="fw-bold text-white fs-6">Sign in with GitHub</div>
+              <div className="text-secondary fs-8">Enter your GitHub username to continue</div>
             </div>
           </div>
 
-          <div className="d-flex flex-column gap-2 mb-3">
-            {[
-              { username: 'octocat', name: 'The Octocat' },
-              { username: 'tourist', name: 'tourist (Gennady)' },
-              { username: 'neal_wu', name: 'neal_wu' }
-            ].map(acc => (
-              <div
-                key={acc.username}
-                className="p-2 rounded d-flex align-items-center justify-content-between border border-secondary border-opacity-25"
-                style={{ background: 'rgba(255,255,255,0.06)', cursor: 'pointer' }}
-                onClick={() => handleDirectOAuth('github', acc.username, acc.name)}
-              >
-                <div className="d-flex align-items-center gap-2">
-                  <img
-                    src={`https://api.dicebear.com/7.x/bottts/svg?seed=${acc.username}`}
-                    className="rounded-circle"
-                    width="28"
-                    height="28"
-                    alt=""
-                  />
-                  <div>
-                    <div className="fs-7 fw-bold text-white">@{acc.username}</div>
-                    <div className="fs-8 text-secondary">{acc.name}</div>
-                  </div>
-                </div>
-                <span className="text-white fs-7">➔</span>
-              </div>
-            ))}
+          <div className="d-flex flex-column gap-3 mb-3">
+            <div>
+              <label className="form-label text-secondary fs-8 mb-1">GitHub Username / Handle *</label>
+              <input
+                type="text"
+                placeholder="e.g. octocat"
+                className="form-input-neon"
+                value={customOauthInput}
+                onChange={e => setCustomOauthInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthInput.trim())}
+                autoFocus
+              />
+            </div>
 
-            {!showCustomOauth ? (
-              <button
-                type="button"
-                className="btn btn-outline-secondary w-100 py-2 fs-7 text-start"
-                onClick={() => setShowCustomOauth(true)}
-              >
-                ➕ Use another GitHub username
-              </button>
-            ) : (
-              <div className="mt-2">
-                <input
-                  type="text"
-                  placeholder="your-github-username"
-                  className="form-input-neon mb-2"
-                  value={customOauthInput}
-                  onChange={e => setCustomOauthInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthInput.trim())}
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  className="btn btn-primary w-100 py-2"
-                  onClick={() => customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthInput.trim())}
-                >
-                  Authorize as @{customOauthInput.trim() || 'user'}
-                </button>
-              </div>
-            )}
+            <button
+              type="button"
+              className="btn btn-primary w-100 py-2"
+              disabled={loading || !customOauthInput.trim()}
+              onClick={() => customOauthInput.trim() && handleDirectOAuth('github', customOauthInput.trim(), customOauthInput.trim())}
+            >
+              {loading ? 'Authenticating…' : 'Continue with GitHub'}
+            </button>
           </div>
 
           <div className="text-end border-top border-secondary border-opacity-25 pt-2">
